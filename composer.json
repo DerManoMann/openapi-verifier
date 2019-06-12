@@ -1,0 +1,57 @@
+{
+    "name": "radebatz/openapi-verifier",
+    "description": "Verify JSON (api response) against OpenAPI specification.",
+    "license": [
+        "MIT"
+    ],
+    "homepage": "http://radebatz.net/mano/",
+    "authors": [
+        {
+            "name": "Martin Rademacher",
+            "email": "mano@radebatz.org"
+        }
+    ],
+    "prefer-stable": true,
+    "scripts": {
+        "fix-cs": [
+            "vendor/bin/php-cs-fixer fix src",
+            "vendor/bin/php-cs-fixer fix tests"
+        ],
+        "rebuild-specifications": [
+            "@php vendor/bin/openapi tests/Api -o tests/specifications/users.json",
+            "@php vendor/bin/openapi tests/Api -o tests/specifications/users.yaml"
+        ]
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "Radebatz\\OpenApi\\Verifier\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Radebatz\\OpenApi\\Verifier\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        }
+    },
+    "require": {
+        "php": ">=7.1",
+        "ext-json": "*",
+        "justinrainbow/json-schema": "^5.2"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.14.1",
+        "phpunit/phpunit": "^8.0",
+        "symfony/yaml": "^4.3",
+        "zircote/swagger-php": "^3.0"
+    },
+    "suggest": {
+        "symfony/yaml": "Required to load OpenApi specifications in YAML."
+    }
+}
