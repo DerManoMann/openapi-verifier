@@ -55,7 +55,7 @@ class OpenApiSpecificationLoaderTest extends TestCase
     {
         $specificationLoader = new OpenApiSpecificationLoader($specification);
 
-        $schemaUrl = $specificationLoader->getSchemaUrlFor($method, $path, $statusCode);
+        $schemaUrl = $specificationLoader->getResponseSchemaUrlFor($method, $path, $statusCode);
 
         $assert = $valid ? 'assertNotNull' : 'assertNull';
         $this->{$assert}($schemaUrl);

@@ -2,6 +2,7 @@
 
 namespace Radebatz\OpenApi\Verifier;
 
+use JsonSchema\SchemaStorage;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
@@ -15,46 +16,20 @@ class OpenApiSpecificationLoader
      */
     public function __construct($specification)
     {
-        if (is_object($specification)) {
-            $this->specification = $specification;
-        } elseif (is_string($specification)) {
-            if (false !== strpos($specification, '.yaml') || false !== strpos($specification, '.yml')) {
-                try {
-                    $this->specification = (object) Yaml::parseFile($specification);
-                } catch (ParseException $parseException) {
-                    throw new \InvalidArgumentException(
-                        sprintf('Could not load specification: %s', $specification),
-                        0,
-                        $parseException
-                    );
-                }
-            } else {
-                $this->specification = @json_decode(@file_get_contents($specification));
-            }
-
-            if (!$this->specification) {
-                throw new \InvalidArgumentException(sprintf('Could not load specification: %s', $specification));
-            }
-        } else {
-            throw new \InvalidArgumentException('Invalid specification');
-        }
+        $this->specification = $this->resolveSpecification($specification);
     }
 
     /**
-     * Get a schema url for the request/response matching the given parameter.
+     * Get a schema url for the response matching the given parameter.
      */
-    public function getSchemaUrlFor(string $method, string $path, int $statusCode = null): ?string
+    public function getResponseSchemaUrlFor(string $method, string $path, int $statusCode): ?string
     {
         $method = strtolower($method);
 
-        if ($statusCode) {
-            if ($schema = $this->findPath(null, $path, $method, 'responses', $statusCode, 'content', 'application/json', 'schema')) {
-                $schema->components = $this->specification->components;
+        if ($schema = $this->findPath(null, $path, $method, 'responses', $statusCode, 'content', 'application/json', 'schema')) {
+            $schema->components = $this->specification->components;
 
-                return 'data://application/json;base64,' . base64_encode(json_encode($schema));
-            }
-        } else {
-            // TODO
+            return 'data://application/json;base64,' . base64_encode(json_encode($schema));
         }
 
         return null;
@@ -74,5 +49,39 @@ class OpenApiSpecificationLoader
         }
 
         return null;
+    }
+
+    protected function resolveSpecification($specification)
+    {
+        $resolved = null;
+        if (is_string($specification)) {
+            if (false !== strpos($specification, '.yaml') || false !== strpos($specification, '.yml')) {
+                try {
+                    $resolved = (object) Yaml::parseFile($specification);
+                } catch (ParseException $parseException) {
+                    throw new \InvalidArgumentException(
+                        sprintf('Could not load specification: %s', $specification),
+                        0,
+                        $parseException
+                    );
+                }
+            } else {
+                $resolved = @json_decode(@file_get_contents($specification));
+            }
+
+            if (!$resolved) {
+                throw new \InvalidArgumentException(sprintf('Could not load specification: %s', $specification));
+            }
+        } elseif (is_object($specification)) {
+            $resolved = $specification;
+        } else {
+            throw new \InvalidArgumentException('Invalid specification');
+        }
+
+        // use SchemaStorage to expand specification...
+        $schemaStorage = new SchemaStorage();
+        $schemaStorage->addSchema('schema', $resolved);
+
+        return $schemaStorage->getSchema('schema');
     }
 }

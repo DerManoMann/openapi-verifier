@@ -14,7 +14,7 @@ trait VerifiesOpenApi
      */
     public function verifyResponse(string $method, string $path, int $statusCode, string $content): bool
     {
-        if ($schemaUrl = $this->getSpecificationLoader()->getSchemaUrlFor($method, $path, $statusCode)) {
+        if ($schemaUrl = $this->getSpecificationLoader()->getResponseSchemaUrlFor($method, $path, $statusCode)) {
             $retriever = new UriRetriever();
             if ($schema = $retriever->retrieve($schemaUrl)) {
                 $validator = new Validator();

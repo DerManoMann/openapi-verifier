@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Radebatz\OpenApi\Verifier\Tests\Api;
 
 use OpenApi\Annotations as OA;
@@ -16,5 +15,4 @@ use OpenApi\Annotations as OA;
  */
 class User
 {
-
 }
