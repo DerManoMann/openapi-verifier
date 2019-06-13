@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Radebatz\OpenApi\Verifier\Adapters;
 
 use Illuminate\Contracts\Http\Kernel;
@@ -22,7 +21,7 @@ trait LaravelOpenApiResponseVerifier
         if (!$specificationLoader) {
             // try some default filenames
             foreach (['openapi.json', 'openapi.yaml'] as $specfile) {
-                if (file_exists($specification = app_path('../tests/'. $specfile))) {
+                if (file_exists($specification = app_path('../tests/' . $specfile))) {
                     $this->openapiSpecification = $specification;
                     break;
                 }

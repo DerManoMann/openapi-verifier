@@ -99,12 +99,10 @@ class UsersTest extends TestCase
     /** @test */
     public function index()
     {
+        // will `fail` if schema found and validation fails
         $response = $this->get('/users');
 
         $response->assertOk();
-        
-        // will throw OpenApiVerificationException if verification fails
-        $this->verifyResponse('get', '/users', 200, $response->content());
     }
 }
 

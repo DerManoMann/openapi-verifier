@@ -1,13 +1,12 @@
 <?php
 
-
 namespace Radebatz\OpenApi\Verifier\Adapters;
 
 use Radebatz\OpenApi\Verifier\OpenApiVerificationException;
 use Radebatz\OpenApi\Verifier\VerifiesOpenApi;
 
 /**
- * Terminating middleware to verify OpenApi responses,
+ * Terminating middleware to verify OpenApi responses,.
  */
 class LaravelOpenApiVerifierMiddleware
 {

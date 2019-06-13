@@ -25,7 +25,7 @@ class OpenApiSpecificationLoader
         if (is_string($specification)) {
             if (false !== strpos($specification, '.yaml') || false !== strpos($specification, '.yml')) {
                 try {
-                    $resolved = (object)Yaml::parseFile($specification);
+                    $resolved = (object) Yaml::parseFile($specification);
                 } catch (ParseException $parseException) {
                     throw new \InvalidArgumentException(
                         sprintf('Could not load specification: %s', $specification),
@@ -65,7 +65,7 @@ class OpenApiSpecificationLoader
             // try absolue
             $schema = $this->findPath(null, '/' . $path, $method, 'responses', $statusCode, 'content', 'application/json', 'schema');
         }
-        
+
         if ($schema) {
             $schema->components = $this->specification->components;
 
@@ -77,15 +77,15 @@ class OpenApiSpecificationLoader
 
     protected function findPath($node, ...$path)
     {
-        $node = $node ?: (object)$this->specification->paths;
+        $node = $node ?: (object) $this->specification->paths;
         $next = array_shift($path);
 
         if (null !== $next && property_exists($node, $next)) {
             if ($path) {
-                return $this->findPath((object)$node->{$next}, ...$path);
+                return $this->findPath((object) $node->{$next}, ...$path);
             }
 
-            return (object)$node->{$next};
+            return (object) $node->{$next};
         }
 
         return null;
