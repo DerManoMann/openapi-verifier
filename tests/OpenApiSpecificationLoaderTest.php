@@ -38,12 +38,12 @@ class OpenApiSpecificationLoaderTest extends TestCase
     public function schemaUrls()
     {
         return [
-            [__DIR__ . '/specifications/users.json', 'GET', '/users', 200, true],
-            [__DIR__ . '/specifications/users.json', 'get', '/users', 200, true],
-            [__DIR__ . '/specifications/users.yaml', 'get', '/users', 200, true],
-            [__DIR__ . '/specifications/users.yaml', 'get', '/foo', 200, false],
-            [__DIR__ . '/specifications/users.json', 'get', '/users', 404, false],
-            [__DIR__ . '/specifications/users.yaml', 'get', '/users', 401, false],
+            'ucmethod-json-ok' => [__DIR__ . '/specifications/users.json', 'GET', '/users', 200, true],
+            'lcmethod-json-ok' =>[__DIR__ . '/specifications/users.json', 'get', '/users', 200, true],
+            'yaml-ok' => [__DIR__ . '/specifications/users.yaml', 'get', '/users', 200, true],
+            'path-no-match' => [__DIR__ . '/specifications/users.yaml', 'get', '/foo', 200, false],
+            'status-no-match' => [__DIR__ . '/specifications/users.json', 'get', '/users', 404, false],
+            'status-no-schema' => [__DIR__ . '/specifications/users.yaml', 'get', '/users', 401, false],
         ];
     }
 

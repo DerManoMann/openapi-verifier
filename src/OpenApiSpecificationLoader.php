@@ -25,7 +25,7 @@ class OpenApiSpecificationLoader
         if (is_string($specification)) {
             if (false !== strpos($specification, '.yaml') || false !== strpos($specification, '.yml')) {
                 try {
-                    $resolved = (object) Yaml::parseFile($specification);
+                    $resolved = (object) Yaml::parseFile($specification, Yaml::PARSE_OBJECT_FOR_MAP);
                 } catch (ParseException $parseException) {
                     throw new \InvalidArgumentException(
                         sprintf('Could not load specification: %s', $specification),
