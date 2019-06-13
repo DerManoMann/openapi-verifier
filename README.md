@@ -27,9 +27,16 @@ composer require radebatz/openapi-verifier
 ```
 After that all required classes should be availabe in your project to add routing support.
 
-## Basic usage
+## Usage
 
-Example use for a Laravel feature test:
+**Note:** Examples are based on Laravel 5.
+
+### Example of manually creating the scpecification loader:
+
+The `VerifiesOpenApi` trait can be customized in 3 ways in order to provide the reqired OpenApi specifications:
+* Overriding the method `getOpenApiSpecificationLoader()` as shown below
+* Populating the `$openapiSpecificationLoader` property.
+* Creating a property `$openapiSpecification` pointing to the specification file
 
 ```php
 <?php
@@ -44,15 +51,49 @@ class UsersTest extends TestCase
 {
     use VerifiesOpenApi;
     
-    protected $specificationLoader;
-
-    protected function getSpecificationLoader(): OpenApiSpecificationLoader
+    /** @inheritdoc */
+    protected function getOpenApiSpecificationLoader(): ?OpenApiSpecificationLoader
     {
-        if (!$this->specificationLoader) {
-            $this->specificationLoader = new OpenApiSpecificationLoader(__DIR__ . '/../../openapi.yaml');
-        }
+        return new OpenApiSpecificationLoader(__DIR__ . '/specifications/users.yaml');
+    }
 
-        return $this->specificationLoader;
+    /** @test */
+    public function index()
+    {
+        $response = $this->get('/users');
+
+        $response->assertOk();
+        
+        // will throw OpenApiVerificationException if verification fails
+        $this->verifyResponse('get', '/users', 200, $response->content());
+    }
+}
+
+```
+### Example using the Laravel adapter:
+The adapter will try to resolve the specification dynamically in this order:
+* filename passed into `registerOpenApiVerifier()`
+* `/tests/openapi.json`
+* `/tests/openapi.yaml`
+* Generate specification from scratch by scanning the `app` folder
+
+```php
+<?php
+
+namespace Tests\Feature;
+
+use Radebatz\OpenApi\Verifier\Adapters\LaravelOpenApiResponseVerifier;
+use Tests\TestCase;
+
+class UsersTest extends TestCase
+{
+    use LaravelOpenApiResponseVerifier;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->registerOpenApiVerifier(/* specification filename */);
     }
 
     /** @test */

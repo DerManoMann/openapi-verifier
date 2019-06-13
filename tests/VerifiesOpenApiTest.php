@@ -11,15 +11,10 @@ class VerifiesOpenApiTest extends TestCase
 {
     use VerifiesOpenApi;
 
-    protected $specificationLoader;
-
-    protected function getSpecificationLoader(): OpenApiSpecificationLoader
+    /** @inheritdoc */
+    protected function getOpenApiSpecificationLoader(): ?OpenApiSpecificationLoader
     {
-        if (!$this->specificationLoader) {
-            $this->specificationLoader = new OpenApiSpecificationLoader(__DIR__ . '/specifications/users.yaml');
-        }
-
-        return $this->specificationLoader;
+        return new OpenApiSpecificationLoader(__DIR__ . '/specifications/users.yaml');
     }
 
     public function responses()
