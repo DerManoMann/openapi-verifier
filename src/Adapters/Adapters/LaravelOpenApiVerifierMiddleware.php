@@ -26,7 +26,8 @@ class LaravelOpenApiVerifierMiddleware
         try {
             $verifier->verifyResponse($request->method(), $request->path(), $response->getStatusCode(), $response->content());
         } catch (OpenApiVerificationException $oave) {
-            $verifier->fail(sprintf('%s:%s%s%s%s%s%s%s',
+            $verifier->fail(sprintf(
+                '%s:%s%s%s%s%s%s%s',
                 $oave->getMessage(),
                 PHP_EOL,
                 $oave->getErrorSummary(),

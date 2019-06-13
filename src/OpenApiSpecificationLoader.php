@@ -2,7 +2,6 @@
 
 namespace Radebatz\OpenApi\Verifier;
 
-use JsonSchema\SchemaStorage;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
@@ -90,9 +89,9 @@ class OpenApiSpecificationLoader
     // https://github.com/justinrainbow/json-schema/issues/551
     protected function fixNullable(&$node)
     {
-        if (is_object($node) && property_exists($node,'nullable') && property_exists($node, 'type')) {
+        if (is_object($node) && property_exists($node, 'nullable') && property_exists($node, 'type')) {
             $anyOf = [
-                ['type' => $node->type, 'format' => property_exists($node,'format') ? $node->format : ''],
+                ['type' => $node->type, 'format' => property_exists($node, 'format') ? $node->format : ''],
                 ['type' => null],
             ];
             unset($node->type);
