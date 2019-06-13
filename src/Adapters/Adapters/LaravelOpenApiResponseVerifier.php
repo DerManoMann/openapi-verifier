@@ -17,7 +17,7 @@ trait LaravelOpenApiResponseVerifier
         }
 
         // try loader
-        $specificationLoader = $this->getSpecificationLoader();
+        $specificationLoader = $this->getOpenApiSpecificationLoader();
 
         if (!$specificationLoader) {
             // try some default filenames
@@ -29,7 +29,7 @@ trait LaravelOpenApiResponseVerifier
             }
 
             // try loader again
-            $specificationLoader = $this->getSpecificationLoader();
+            $specificationLoader = $this->getOpenApiSpecificationLoader();
         }
 
         if (!$specificationLoader) {
@@ -38,7 +38,7 @@ trait LaravelOpenApiResponseVerifier
         }
 
         // and finally!
-        if ($this->getSpecificationLoader()) {
+        if ($this->getOpenApiSpecificationLoader()) {
             $this->app->instance('openapi-verifier', $this);
             $this->app[Kernel::class]->pushMiddleware(LaravelOpenApiVerifierMiddleware::class);
         }
