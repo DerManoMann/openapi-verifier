@@ -66,7 +66,7 @@ class OpenApiSpecificationLoader
             $schema = $this->findPath(null, '/' . $path, $method, 'responses', $statusCode, 'content', 'application/json', 'schema');
         }
         
-        if ($schema = $this->findPath(null, $path, $method, 'responses', $statusCode, 'content', 'application/json', 'schema')) {
+        if ($schema) {
             $schema->components = $this->specification->components;
 
             return 'data://application/json;base64,' . base64_encode(json_encode($schema));
