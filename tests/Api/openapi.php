@@ -19,14 +19,11 @@ namespace App;
  * @OA\Schema(
  *     schema="paginate",
  *     @OA\Property(property="links", type="object",
- *         @OA\Schema(
  *         schema="links",
- *         required={"first","last"},
  *         @OA\Property(property="first", type="string"),
- *         @OA\Property(property="last", type="string"),
- *         @OA\Property(property="prev", type="string"),
+ *         @OA\Property(property="last", type="string", nullable=true),
+ *         @OA\Property(property="prev", type="string", nullable=true),
  *         @OA\Property(property="next", type="string")
- *         )
  *     ),
  *     @OA\Property(property="meta", type="object",
  *         schema="meta",
