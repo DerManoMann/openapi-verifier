@@ -25,7 +25,7 @@ class OpenApiSpecificationLoader
         if (is_string($specification)) {
             if (false !== strpos($specification, '.yaml') || false !== strpos($specification, '.yml')) {
                 try {
-                    $resolved = (object) Yaml::parseFile($specification);
+                    $resolved = (object) Yaml::parseFile($specification, Yaml::PARSE_OBJECT_FOR_MAP);
                 } catch (ParseException $parseException) {
                     throw new \InvalidArgumentException(
                         sprintf('Could not load specification: %s', $specification),
@@ -46,11 +46,7 @@ class OpenApiSpecificationLoader
             throw new \InvalidArgumentException('Invalid specification');
         }
 
-        // use SchemaStorage to expand specification...
-        $schemaStorage = new SchemaStorage();
-        $schemaStorage->addSchema('schema', $this->fixNullable($resolved));
-
-        return $schemaStorage->getSchema('schema');
+        return $this->fixNullable($resolved);
     }
 
     /**
@@ -94,13 +90,13 @@ class OpenApiSpecificationLoader
     // https://github.com/justinrainbow/json-schema/issues/551
     protected function fixNullable(&$node)
     {
-        if (is_array($node) && array_key_exists('nullable', $node) && array_key_exists('type', $node)) {
+        if (is_object($node) && property_exists($node,'nullable') && property_exists($node, 'type')) {
             $anyOf = [
-                ['type' => $node['type'], 'format' => array_key_exists('format', $node) ? $node['format'] : ''],
+                ['type' => $node->type, 'format' => property_exists($node,'format') ? $node->format : ''],
                 ['type' => null],
             ];
-            unset($node['type']);
-            $node['anyOf'] = $anyOf;
+            unset($node->type);
+            $node->anyOf = $anyOf;
         }
 
         if (is_iterable($node) || is_object($node)) {

@@ -100,6 +100,23 @@
             "paginate": {
                 "properties": {
                     "links": {
+                        "schema": "links",
+                        "properties": {
+                            "first": {
+                                "type": "string"
+                            },
+                            "last": {
+                                "type": "string",
+                                "nullable": true
+                            },
+                            "prev": {
+                                "type": "string",
+                                "nullable": true
+                            },
+                            "next": {
+                                "type": "string"
+                            }
+                        },
                         "type": "object"
                     },
                     "meta": {
