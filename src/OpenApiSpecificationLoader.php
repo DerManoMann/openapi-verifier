@@ -48,7 +48,7 @@ class OpenApiSpecificationLoader
 
         // use SchemaStorage to expand specification...
         $schemaStorage = new SchemaStorage();
-        $schemaStorage->addSchema('schema', $resolved);
+        $schemaStorage->addSchema('schema', $this->fixNullable($resolved));
 
         return $schemaStorage->getSchema('schema');
     }
@@ -89,5 +89,26 @@ class OpenApiSpecificationLoader
         }
 
         return null;
+    }
+
+    // https://github.com/justinrainbow/json-schema/issues/551
+    protected function fixNullable(&$node)
+    {
+        if (is_array($node) && array_key_exists('nullable', $node) && array_key_exists('type', $node)) {
+            $anyOf = [
+                ['type' => $node['type'], 'format' => array_key_exists('format', $node) ? $node['format'] : ''],
+                ['type' => null],
+            ];
+            unset($node['type']);
+            $node['anyOf'] = $anyOf;
+        }
+
+        if (is_iterable($node) || is_object($node)) {
+            foreach ($node as $key => &$value) {
+                $this->fixNullable($value);
+            }
+        }
+
+        return $node;
     }
 }

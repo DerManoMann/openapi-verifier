@@ -89,6 +89,10 @@
                     },
                     "email": {
                         "type": "string"
+                    },
+                    "dob": {
+                        "type": "string",
+                        "nullable": true
                     }
                 },
                 "type": "object"

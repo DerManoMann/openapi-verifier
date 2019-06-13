@@ -52,6 +52,9 @@ components:
           type: string
         email:
           type: string
+        dob:
+          type: string
+          nullable: true
       type: object
     paginate:
       properties:

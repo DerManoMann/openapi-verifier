@@ -20,11 +20,12 @@ class VerifiesOpenApiTest extends TestCase
     public function responses()
     {
         return [
-            ['get', '/users', 200, 'xxx', false, false],
-            ['get', '/xxxxx', 200, 'xxx', true, false],
-            ['get', '/users', 401, 'xxx', true, false],
-            ['get', '/users', 200, '{"data":[{}]}', false, true],
-            ['get', '/users', 200, '{"data":[{"id":1,"name":"joe","email":"joe@cool.com"}]}', true, true],
+            'invalid-json' => ['get', '/users', 200, 'xxx', false, false],
+            'invalid-path' => ['get', '/xxxxx', 200, 'xxx', true, false],
+            'no-schema-invalid-json' => ['get', '/users', 401, 'xxx', true, false],
+            'verified-bad' => ['get', '/users', 200, '{"data":[{}]}', false, true],
+            'verified-ok' => ['get', '/users', 200, '{"data":[{"id":1,"name":"joe","email":"joe@cool.com"}]}', true, true],
+            'verified-nullable-ok' => ['get', '/users', 200, '{"data":[{"id":1,"name":"joe","email":"joe@cool.com", "dob": null}]}', true, true],
         ];
     }
 
@@ -36,9 +37,15 @@ class VerifiesOpenApiTest extends TestCase
     {
         if (!$isValid) {
             $this->expectException(OpenApiVerificationException::class);
-        }
 
-        $verified = $this->verifyResponse($method, $path, $statusCode, $content);
+            $verified = $this->verifyResponse($method, $path, $statusCode, $content);
+        } else {
+            try {
+                $verified = $this->verifyResponse($method, $path, $statusCode, $content);
+            } catch (OpenApiVerificationException $oave) {
+                $this->fail(sprintf('%s:%s%s', $oave->getMessage(), PHP_EOL, $oave->getErrorSummary()));
+            }
+        }
 
         $this->assertEquals($isVerified, $verified);
     }
