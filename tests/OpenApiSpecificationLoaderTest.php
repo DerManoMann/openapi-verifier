@@ -32,7 +32,7 @@ class OpenApiSpecificationLoaderTest extends TestCase
 
         $specificationLoader = new OpenApiSpecificationLoader($filename);
 
-        $this->assertIsObject($specificationLoader);
+        $this->assertTrue(is_object($specificationLoader));
     }
 
     public function schemaUrls()
