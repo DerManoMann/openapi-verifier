@@ -7,6 +7,9 @@ use JsonSchema\Validator;
 
 trait VerifiesOpenApi
 {
+    /** @var OpenApiSpecificationLoader $openapiSpecificationLoader */
+    protected $openapiSpecificationLoader = null;
+
     /*
      * @return bool `true` if the content has been validated, `false` if not.
      *
@@ -14,7 +17,7 @@ trait VerifiesOpenApi
      */
     public function verifyResponse(string $method, string $path, int $statusCode, string $content): bool
     {
-        if ($schemaUrl = $this->getSpecificationLoader()->getResponseSchemaUrlFor($method, $path, $statusCode)) {
+        if ($schemaUrl = $this->getOpenApiSpecificationLoader()->getResponseSchemaUrlFor($method, $path, $statusCode)) {
             $retriever = new UriRetriever();
             if ($schema = $retriever->retrieve($schemaUrl)) {
                 $validator = new Validator();
@@ -33,5 +36,14 @@ trait VerifiesOpenApi
         return false;
     }
 
-    abstract public function getSpecificationLoader(): OpenApiSpecificationLoader;
+    public function getOpenApiSpecificationLoader(): ?OpenApiSpecificationLoader
+    {
+        if (!$this->openapiSpecificationLoader) {
+            if (property_exists($this, 'openapiSpecification') && $this->openapiSpecification) {
+                $this->openapiSpecificationLoader = new OpenApiSpecificationLoader($this->openapiSpecification);
+            }
+        }
+
+        return $this->openapiSpecificationLoader;
+    }
 }

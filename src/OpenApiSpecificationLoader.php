@@ -19,45 +19,13 @@ class OpenApiSpecificationLoader
         $this->specification = $this->resolveSpecification($specification);
     }
 
-    /**
-     * Get a schema url for the response matching the given parameter.
-     */
-    public function getResponseSchemaUrlFor(string $method, string $path, int $statusCode): ?string
-    {
-        $method = strtolower($method);
-
-        if ($schema = $this->findPath(null, $path, $method, 'responses', $statusCode, 'content', 'application/json', 'schema')) {
-            $schema->components = $this->specification->components;
-
-            return 'data://application/json;base64,' . base64_encode(json_encode($schema));
-        }
-
-        return null;
-    }
-
-    protected function findPath($node, ...$path)
-    {
-        $node = $node ?: (object) $this->specification->paths;
-        $next = array_shift($path);
-
-        if (null !== $next && property_exists($node, $next)) {
-            if ($path) {
-                return $this->findPath((object) $node->{$next}, ...$path);
-            }
-
-            return (object) $node->{$next};
-        }
-
-        return null;
-    }
-
     protected function resolveSpecification($specification)
     {
         $resolved = null;
         if (is_string($specification)) {
             if (false !== strpos($specification, '.yaml') || false !== strpos($specification, '.yml')) {
                 try {
-                    $resolved = (object) Yaml::parseFile($specification);
+                    $resolved = (object)Yaml::parseFile($specification);
                 } catch (ParseException $parseException) {
                     throw new \InvalidArgumentException(
                         sprintf('Could not load specification: %s', $specification),
@@ -83,5 +51,43 @@ class OpenApiSpecificationLoader
         $schemaStorage->addSchema('schema', $resolved);
 
         return $schemaStorage->getSchema('schema');
+    }
+
+    /**
+     * Get a schema url for the response matching the given parameter.
+     */
+    public function getResponseSchemaUrlFor(string $method, string $path, int $statusCode): ?string
+    {
+        $method = strtolower($method);
+
+        $schema = $this->findPath(null, $path, $method, 'responses', $statusCode, 'content', 'application/json', 'schema');
+        if (!$schema && '/' != $path[0]) {
+            // try absolue
+            $schema = $this->findPath(null, '/' . $path, $method, 'responses', $statusCode, 'content', 'application/json', 'schema');
+        }
+        
+        if ($schema = $this->findPath(null, $path, $method, 'responses', $statusCode, 'content', 'application/json', 'schema')) {
+            $schema->components = $this->specification->components;
+
+            return 'data://application/json;base64,' . base64_encode(json_encode($schema));
+        }
+
+        return null;
+    }
+
+    protected function findPath($node, ...$path)
+    {
+        $node = $node ?: (object)$this->specification->paths;
+        $next = array_shift($path);
+
+        if (null !== $next && property_exists($node, $next)) {
+            if ($path) {
+                return $this->findPath((object)$node->{$next}, ...$path);
+            }
+
+            return (object)$node->{$next};
+        }
+
+        return null;
     }
 }
