@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Radebatz\OpenApi\Verifier;
 
@@ -33,7 +33,9 @@ class OpenApiSpecificationLoader
                     );
                 }
             } else {
-                $resolved = @json_decode(@file_get_contents($specification));
+                if (file_exists($specification)) {
+                    $resolved = json_decode(file_get_contents($specification));
+                }
             }
 
             if (!$resolved) {
@@ -75,7 +77,7 @@ class OpenApiSpecificationLoader
         $node = $node ?: (object) $this->specification->paths;
         $next = array_shift($path);
 
-        if (null !== $next && property_exists($node, $next)) {
+        if (null !== $next && property_exists($node, (string) $next)) {
             if ($path) {
                 return $this->findPath((object) $node->{$next}, ...$path);
             }
