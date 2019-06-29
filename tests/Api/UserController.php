@@ -50,5 +50,6 @@ class UserController
      */
     public function index()
     {
+        return '{"data":[{"id":1,"name":"joe","email":"joe@cool.com"}';
     }
 }

@@ -114,7 +114,8 @@
                                 "nullable": true
                             },
                             "next": {
-                                "type": "string"
+                                "type": "string",
+                                "nullable": true
                             }
                         },
                         "type": "object"
@@ -126,10 +127,12 @@
                                 "type": "integer"
                             },
                             "from": {
-                                "type": "integer"
+                                "type": "integer",
+                                "nullable": true
                             },
                             "to": {
-                                "type": "integer"
+                                "type": "integer",
+                                "nullable": true
                             },
                             "per_page": {
                                 "type": "integer"

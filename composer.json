@@ -43,10 +43,15 @@
     "require": {
         "php": ">=7.1",
         "ext-json": "*",
-        "justinrainbow/json-schema": "^5.2"
+        "justinrainbow/json-schema": "^5.2",
+        "nyholm/psr7": "^1.1",
+        "nyholm/psr7-server": "^0.3.0",
+        "psr/http-message": "^1.0",
+        "symfony/psr-http-message-bridge": "^1.2"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.14.1",
+        "laravel/laravel": "^5.7",
         "phpunit/phpunit": "^7.0|^8.0",
         "symfony/yaml": "^4.3",
         "zircote/swagger-php": "^3.0"

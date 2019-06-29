@@ -65,7 +65,7 @@ class UsersTest extends TestCase
         $response->assertOk();
         
         // will throw OpenApiVerificationException if verification fails
-        $this->verifyResponse('get', '/users', 200, $response->content());
+        $this->verifyOpenApiResponseBody('get', '/users', 200, (string) $response->getBody());
     }
 }
 
@@ -82,18 +82,18 @@ The adapter will try to resolve the specification dynamically in this order:
 
 namespace Tests\Feature;
 
-use Radebatz\OpenApi\Verifier\Adapters\LaravelOpenApiResponseVerifier;
+use Radebatz\OpenApi\Verifier\Adapters\Laravel\OpenApiResponseVerifier;
 use Tests\TestCase;
 
 class UsersTest extends TestCase
 {
-    use LaravelOpenApiResponseVerifier;
+    use OpenApiResponseVerifier;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->registerOpenApiVerifier(/* specification filename */);
+        $this->registerOpenApiVerifier(/* [specification filename] */);
     }
 
     /** @test */

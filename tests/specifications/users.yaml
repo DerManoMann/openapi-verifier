@@ -71,6 +71,7 @@ components:
               nullable: true
             next:
               type: string
+              nullable: true
           type: object
         meta:
           schema: meta
@@ -79,8 +80,10 @@ components:
               type: integer
             from:
               type: integer
+              nullable: true
             to:
               type: integer
+              nullable: true
             per_page:
               type: integer
             path:
