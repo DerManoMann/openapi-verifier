@@ -2,25 +2,16 @@
 
 namespace Radebatz\OpenApi\Verifier\Adapters\Laravel;
 
-use Nyholm\Psr7\Factory\Psr17Factory;
 use PHPUnit\Framework\TestCase;
+use Radebatz\OpenApi\Verifier\Adapters\Middleware;
 use Radebatz\OpenApi\Verifier\OpenApiSchemaMismatchException;
 use Radebatz\OpenApi\Verifier\VerifiesOpenApi;
-use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 
 /**
  * Terminating middleware to verify OpenApi responses,.
  */
-class OpenApiVerifierMiddleware
+class OpenApiVerifierMiddleware extends Middleware
 {
-    protected $psrHttpFactory;
-
-    public function __construct()
-    {
-        $psr17Factory = new Psr17Factory();
-        $this->psrHttpFactory = new PsrHttpFactory($psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory);
-    }
-
     public function handle($request, \Closure $next)
     {
         return $next($request);

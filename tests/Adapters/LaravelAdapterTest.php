@@ -21,7 +21,7 @@ class LaravelAdapterTest extends TestCase
     }
 
     /** @test */
-    public function basic()
+    public function ok()
     {
         $this->createApplication()
             ->get('router')->get('/users', function () {

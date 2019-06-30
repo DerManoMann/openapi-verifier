@@ -1,19 +1,16 @@
 <?php
 
-namespace Radebatz\OpenApi\Verifier\Adapters\Laravel;
+namespace Radebatz\OpenApi\Verifier\Adapters\Slim;
 
 use Illuminate\Contracts\Http\Kernel;
-use Illuminate\Foundation\Application;
 use Radebatz\OpenApi\Verifier\VerifiesOpenApi;
+use Slim\App;
 
-/**
- * Assumes to be used in a Laravel `Illuminate\Foundation\Testing\TestCase`.
- */
 trait OpenApiResponseVerifier
 {
     use VerifiesOpenApi;
 
-    public function registerOpenApiVerifier(?Application $container = null, ?string $specification = null)
+    public function registerOpenApiVerifier(?App $container = null, ?string $specification = null)
     {
         $container = $container ?: $this->app;
         $appPath = $container['path'];
