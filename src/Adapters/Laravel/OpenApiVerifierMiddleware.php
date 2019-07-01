@@ -2,15 +2,14 @@
 
 namespace Radebatz\OpenApi\Verifier\Adapters\Laravel;
 
-use PHPUnit\Framework\TestCase;
-use Radebatz\OpenApi\Verifier\Adapters\Middleware;
+use Radebatz\OpenApi\Verifier\Adapters\PSR17Middleware;
 use Radebatz\OpenApi\Verifier\OpenApiSchemaMismatchException;
 use Radebatz\OpenApi\Verifier\VerifiesOpenApi;
 
 /**
  * Terminating middleware to verify OpenApi responses,.
  */
-class OpenApiVerifierMiddleware extends Middleware
+class OpenApiVerifierMiddleware extends PSR17Middleware
 {
     public function handle($request, \Closure $next)
     {
@@ -28,19 +27,7 @@ class OpenApiVerifierMiddleware extends Middleware
                 $psrResponse = $this->psrHttpFactory->createResponse($response)
             );
         } catch (OpenApiSchemaMismatchException $oasme) {
-            if ($verifier instanceof TestCase) {
-                $verifier->fail(sprintf(
-                    '%s:%s%s%s%s%s%s%s',
-                    $oasme->getMessage(),
-                    PHP_EOL,
-                    $oasme->getErrorSummary(),
-                    PHP_EOL,
-                    '',
-                    PHP_EOL,
-                    (string) $psrRequest->getBody(),
-                    PHP_EOL
-                ));
-            }
+            $verifier->failSchemaMismatch($oasme, $psrResponse);
 
             throw $oasme;
         }

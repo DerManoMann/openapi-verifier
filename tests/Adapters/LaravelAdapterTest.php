@@ -21,7 +21,7 @@ class LaravelAdapterTest extends TestCase
     }
 
     /** @test */
-    public function ok()
+    public function passVerification()
     {
         $this->createApplication()
             ->get('router')->get('/users', function () {

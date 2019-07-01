@@ -93,7 +93,7 @@ class UsersTest extends TestCase
     {
         parent::setUp();
 
-        $this->registerOpenApiVerifier(/* [specification filename] */);
+        $this->registerOpenApiVerifier(/* $this->>createApplication() */ /* , [specification filename] */);
     }
 
     /** @test */

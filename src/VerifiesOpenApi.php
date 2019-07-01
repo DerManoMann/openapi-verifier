@@ -4,6 +4,7 @@ namespace Radebatz\OpenApi\Verifier;
 
 use JsonSchema\Uri\UriRetriever;
 use JsonSchema\Validator;
+use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -61,5 +62,22 @@ trait VerifiesOpenApi
         }
 
         return $this->openapiSpecificationLoader;
+    }
+
+    public function failSchemaMismatch(OpenApiSchemaMismatchException $oasme, ResponseInterface $response)
+    {
+        if ($this instanceof TestCase) {
+            $this->fail(sprintf(
+                '%s:%s%s%s%s%s%s%s',
+                $oasme->getMessage(),
+                PHP_EOL,
+                $oasme->getErrorSummary(),
+                PHP_EOL,
+                '',
+                PHP_EOL,
+                (string) $response->getBody(),
+                PHP_EOL
+            ));
+        }
     }
 }

@@ -5,7 +5,7 @@ namespace Radebatz\OpenApi\Verifier\Adapters;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 
-class Middleware
+class PSR17Middleware
 {
     protected $psrHttpFactory;
 
