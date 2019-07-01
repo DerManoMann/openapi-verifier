@@ -31,7 +31,7 @@ After that all required classes should be availabe in your project to add routin
 
 **Note:** Examples are based on Laravel 5.
 
-### Example of manually creating the scpecification loader:
+### Manually creating the scpecification loader:
 
 The `VerifiesOpenApi` trait can be customized in 3 ways in order to provide the reqired OpenApi specifications:
 * Overriding the method `getOpenApiSpecificationLoader()` as shown below
@@ -70,12 +70,14 @@ class UsersTest extends TestCase
 }
 
 ```
-### Example using the Laravel adapter:
+### Laravel adapter
 The adapter will try to resolve the specification dynamically in this order:
 * filename passed into `registerOpenApiVerifier()`
 * `/tests/openapi.json`
 * `/tests/openapi.yaml`
 * Generate specification from scratch by scanning the `app` folder
+
+The code expects to be in the context of a Laravel `Test\TestCase`.
 
 ```php
 <?php
@@ -106,6 +108,39 @@ class UsersTest extends TestCase
     }
 }
 
+```
+
+### Slim adapter
+The adapter will try to resolve the specification dynamically in this order:
+* filename passed into `registerOpenApiVerifier()`
+* `/tests/openapi.json`
+* `/tests/openapi.yaml`
+* Generate specification from scratch by scanning the `src` folder
+
+Simplest way is to register the verifier in the `Tests\Functional\BaseTestCase`.
+
+```php
+<?php
+
+namespace Tests\Functional;
+
+use ...
+use PHPUnit\Framework\TestCase;
+
+class BaseTestCase extends TestCase
+{
+    public function runApp($requestMethod, $requestUri, $requestData = null)
+    {
+        ...
+        
+        $app = new App();
+        
+        // register OpenApi verifier
+        $this->registerOpenApiVerifier($app, __DIR__ . '/../specifications/users.yaml');
+        
+        ...
+    }
+}
 ```
 
 ## License
