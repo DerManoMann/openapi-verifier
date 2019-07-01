@@ -1,5 +1,4 @@
 # openapi-verifier
-
 [![Build Status](https://travis-ci.org/DerManoMann/openapi-verifier.png)](https://travis-ci.org/DerManoMann/openapi-router)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -11,7 +10,6 @@ specification.
 * [PHP 7.1 or higher](http://www.php.net/)
 
 ## Installation
-
 You can use **composer** or simply **download the release**.
 
 **Composer**
@@ -28,12 +26,8 @@ composer require radebatz/openapi-verifier
 After that all required classes should be availabe in your project to add routing support.
 
 ## Usage
-
-**Note:** Examples are based on Laravel 5.
-
-### Manually creating the scpecification loader:
-
-The `VerifiesOpenApi` trait can be customized in 3 ways in order to provide the reqired OpenApi specifications:
+### Manual verification
+The `VerifiesOpenApi` trait can be used directly and customized in 3 ways in order to provide the reqired OpenApi specifications:
 * Overriding the method `getOpenApiSpecificationLoader()` as shown below
 * Populating the `$openapiSpecificationLoader` property.
 * Creating a property `$openapiSpecification` pointing to the specification file
@@ -45,7 +39,7 @@ namespace Tests\Feature;
 
 use Radebatz\OpenApi\Verifier\VerifiesOpenApi;
 use Radebatz\OpenApi\Verifier\OpenApiSpecificationLoader;
-use Tests\TestCase;
+use PHPUnit\Framework\TestCase;
 
 class UsersTest extends TestCase
 {
@@ -60,11 +54,13 @@ class UsersTest extends TestCase
     /** @test */
     public function index()
     {
-        $response = $this->get('/users');
+        // PSR client
+        $client = $this->client();
+        $response = $client->get('/users');
 
-        $response->assertOk();
+        $this->assertEquals(200, $response->getStatusCode());
         
-        // will throw OpenApiVerificationException if verification fails
+        // will throw OpenApiSchemaMismatchException if verification fails
         $this->verifyOpenApiResponseBody('get', '/users', 200, (string) $response->getBody());
     }
 }
@@ -142,7 +138,23 @@ class BaseTestCase extends TestCase
     }
 }
 ```
+```php
+<?php
+
+namespace Tests\Functional;
+
+class UsersTest extends BaseTestCase
+{
+    /** @test */
+    public function index()
+    {
+        // will `fail` if schema found and validation fails
+        $response = $this->runApp('GET', '/users');
+
+        $this->assertEquals(200, $response->getStatusCode());
+    }
+}
+```
 
 ## License
-
-The openapi-router project is released under the [MIT license](LICENSE).
+The openapi-verifier project is released under the [MIT license](LICENSE).

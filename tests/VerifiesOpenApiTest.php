@@ -16,12 +16,12 @@ class VerifiesOpenApiTest extends TestCase
     public function responses()
     {
         return [
-//            'invalid-json' => ['get', '/users', 200, 'xxx', false, false],
-//            'invalid-path' => ['get', '/xxxxx', 200, 'xxx', true, false],
-//            'no-schema-invalid-json' => ['get', '/users', 401, 'xxx', true, false],
-//            'verified-bad' => ['get', '/users', 200, '{"data":[{}]}', false, true],
+            'invalid-json' => ['get', '/users', 200, 'xxx', false, false],
+            'invalid-path' => ['get', '/xxxxx', 200, 'xxx', true, false],
+            'no-schema-invalid-json' => ['get', '/users', 401, 'xxx', true, false],
+            'verified-bad' => ['get', '/users', 200, '{"data":[{}]}', false, true],
             'verified-ok' => ['get', '/users', 200, '{"data":[{"id":1,"name":"joe","email":"joe@cool.com"}]}', true, true],
-//            'verified-nullable-ok' => ['get', '/users', 200, '{"data":[{"id":1,"name":"joe","email":"joe@cool.com", "dob": null}]}', true, true],
+            'verified-nullable-ok' => ['get', '/users', 200, '{"data":[{"id":1,"name":"joe","email":"joe@cool.com", "dob": null}]}', true, true],
         ];
     }
 
