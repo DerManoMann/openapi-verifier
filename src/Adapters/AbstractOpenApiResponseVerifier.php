@@ -33,7 +33,7 @@ trait AbstractOpenApiResponseVerifier
         if (!$specificationLoader) {
             $appRoot = $appRoot ?: $this->getAppRoot();
 
-            $openApi = \OpenApi\scan($appRoot . $srcDir);
+            $openApi = \OpenApi\scan($appRoot . '/' . $srcDir);
             $this->openapiSpecification = json_decode($openApi->toJson());
         }
     }
