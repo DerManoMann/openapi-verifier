@@ -2,7 +2,7 @@
 
 namespace Radebatz\OpenApi\Verifier;
 
-class OpenApiVerificationException extends \Exception
+class OpenApiSchemaMismatchException extends \Exception
 {
     protected $errors = [];
 
@@ -11,7 +11,7 @@ class OpenApiVerificationException extends \Exception
         return $this->errors;
     }
 
-    public function setErrors(array $errors): OpenApiVerificationException
+    public function setErrors(array $errors): OpenApiSchemaMismatchException
     {
         $this->errors = $errors;
 

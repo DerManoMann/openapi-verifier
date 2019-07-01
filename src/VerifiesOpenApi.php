@@ -4,28 +4,33 @@ namespace Radebatz\OpenApi\Verifier;
 
 use JsonSchema\Uri\UriRetriever;
 use JsonSchema\Validator;
+use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 trait VerifiesOpenApi
 {
     /** @var OpenApiSpecificationLoader $openapiSpecificationLoader */
     protected $openapiSpecificationLoader = null;
 
-    /*
-     * @return bool `true` if the content has been validated, `false` if not.
+    /**
+     * Verify the response body for the given request method, path and status code.
      *
-     * @throws OpenApiVerificationException
+     * @return bool `true` if the content has been validated, `false` if not (no matching schema)
+     *
+     * @throws OpenApiSchemaMismatchException
      */
-    public function verifyResponse(string $method, string $path, int $statusCode, string $content): bool
+    public function verifyOpenApiResponseBody(string $method, string $path, int $statusCode, string $body): bool
     {
         if ($schemaUrl = $this->getOpenApiSpecificationLoader()->getResponseSchemaUrlFor($method, $path, $statusCode)) {
             $retriever = new UriRetriever();
             if ($schema = $retriever->retrieve($schemaUrl)) {
                 $validator = new Validator();
 
-                $validator->check(json_decode($content), $schema);
+                $validator->check(json_decode($body), $schema);
 
                 if (!$validator->isValid()) {
-                    throw (new OpenApiVerificationException(sprintf('Schema mismatch: %s[%s]:%s', $method, $statusCode, $path)))
+                    throw (new OpenApiSchemaMismatchException(sprintf('Schema mismatch: %s[%s]:%s', $method, $statusCode, $path)))
                         ->setErrors($validator->getErrors());
                 }
 
@@ -34,6 +39,18 @@ trait VerifiesOpenApi
         }
 
         return false;
+    }
+
+    /**
+     * Verify the response body for the given request and response.
+     *
+     * @return bool `true` if the content has been validated, `false` if not (no matching schema)
+     *
+     * @throws OpenApiSchemaMismatchException
+     */
+    public function verifyOpenApi(ServerRequestInterface $request, ResponseInterface $response): bool
+    {
+        return $this->verifyOpenApiResponseBody($request->getMethod(), $request->getUri()->getPath(), $response->getStatusCode(), (string) $response->getBody());
     }
 
     public function getOpenApiSpecificationLoader(): ?OpenApiSpecificationLoader
@@ -45,5 +62,22 @@ trait VerifiesOpenApi
         }
 
         return $this->openapiSpecificationLoader;
+    }
+
+    public function failSchemaMismatch(OpenApiSchemaMismatchException $oasme, ResponseInterface $response)
+    {
+        if ($this instanceof TestCase) {
+            $this->fail(sprintf(
+                '%s:%s%s%s%s%s%s%s',
+                $oasme->getMessage(),
+                PHP_EOL,
+                $oasme->getErrorSummary(),
+                PHP_EOL,
+                '',
+                PHP_EOL,
+                (string) $response->getBody(),
+                PHP_EOL
+            ));
+        }
     }
 }

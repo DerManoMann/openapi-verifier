@@ -23,13 +23,13 @@ namespace App;
  *         @OA\Property(property="first", type="string"),
  *         @OA\Property(property="last", type="string", nullable=true),
  *         @OA\Property(property="prev", type="string", nullable=true),
- *         @OA\Property(property="next", type="string")
+ *         @OA\Property(property="next", type="string", nullable=true)
  *     ),
  *     @OA\Property(property="meta", type="object",
  *         schema="meta",
  *         @OA\Property(property="current_page", type="integer"),
- *         @OA\Property(property="from", type="integer"),
- *         @OA\Property(property="to", type="integer"),
+ *         @OA\Property(property="from", type="integer", nullable=true),
+ *         @OA\Property(property="to", type="integer", nullable=true),
  *         @OA\Property(property="per_page", type="integer"),
  *         @OA\Property(property="path", type="string")
  *     )

@@ -2,15 +2,12 @@
 
 namespace Radebatz\OpenApi\Verifier\Adapters;
 
-use Illuminate\Contracts\Http\Kernel;
-use Radebatz\OpenApi\Verifier\VerifiesOpenApi;
-
-trait LaravelOpenApiResponseVerifier
+trait AbstractOpenApiResponseVerifier
 {
-    use VerifiesOpenApi;
-
-    public function registerOpenApiVerifier(?string $specification = null)
+    protected function prepareOpenApiSpecificationLoader(string $srcDir, ?string $specification = null)
     {
+        $appRoot = null;
+
         if ($specification) {
             $this->openapiSpecification = $specification;
         }
@@ -19,9 +16,11 @@ trait LaravelOpenApiResponseVerifier
         $specificationLoader = $this->getOpenApiSpecificationLoader();
 
         if (!$specificationLoader) {
+            $appRoot = $appRoot ?: $this->getAppRoot();
+
             // try some default filenames
             foreach (['openapi.json', 'openapi.yaml'] as $specfile) {
-                if (file_exists($specification = app_path('../tests/' . $specfile))) {
+                if (file_exists($specification = $appRoot . '/tests/' . $specfile)) {
                     $this->openapiSpecification = $specification;
                     break;
                 }
@@ -32,14 +31,17 @@ trait LaravelOpenApiResponseVerifier
         }
 
         if (!$specificationLoader) {
-            $openApi = \OpenApi\scan(app_path());
+            $appRoot = $appRoot ?: $this->getAppRoot();
+
+            $openApi = \OpenApi\scan($appRoot . $srcDir);
             $this->openapiSpecification = json_decode($openApi->toJson());
         }
+    }
 
-        // and finally!
-        if ($this->getOpenApiSpecificationLoader()) {
-            $this->app->instance('openapi-verifier', $this);
-            $this->app[Kernel::class]->pushMiddleware(LaravelOpenApiVerifierMiddleware::class);
-        }
+    protected function getAppRoot()
+    {
+        $rc = new \ReflectionClass('\Composer\Autoload\ClassLoader');
+
+        return dirname(dirname(dirname($rc->getFileName())));
     }
 }
