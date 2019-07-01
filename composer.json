@@ -58,6 +58,7 @@
         "zircote/swagger-php": "^3.0"
     },
     "suggest": {
-        "symfony/yaml": "Required to load OpenApi specifications in YAML."
+        "symfony/yaml": "Required to load OpenApi specifications in YAML.",
+        "zircote/swagger-php": "OpenApi library to generate OpenAPI documentation from PHP annotations."
     }
 }
