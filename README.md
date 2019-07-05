@@ -1,5 +1,5 @@
 # openapi-verifier
-[![Build Status](https://travis-ci.org/DerManoMann/openapi-verifier.png)](https://travis-ci.org/DerManoMann/openapi-router)
+[![Build Status](https://travis-ci.org/DerManoMann/openapi-verifier.png)](https://travis-ci.org/DerManoMann/openapi-verifier)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Introduction
