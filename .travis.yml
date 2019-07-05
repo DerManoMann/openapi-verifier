@@ -25,12 +25,11 @@ install:
 
 script:
   - ./vendor/bin/phpunit
-  - composer run-script fix-cs
+  - if [[ $TRAVIS_PHP_VERSION < 7.4 ]] ; then composer run-script fix-cs; fi;
 
 after_script:
   - php vendor/bin/coveralls -v
 
 matrix:
   allow_failures:
-    - php: 7.4snapshot
-    - php: nightly
+   - php: nightly
