@@ -53,6 +53,7 @@
         "friendsofphp/php-cs-fixer": "^2.14.1",
         "laravel/laravel": "^5.7",
         "php-coveralls/php-coveralls": "^2.1",
+        "phpunit/php-code-coverage": "^6.1|^7.0.5",
         "phpunit/phpunit": "^7.0|^8.0",
         "slim/slim": "^3.12",
         "symfony/yaml": "^4.3",
