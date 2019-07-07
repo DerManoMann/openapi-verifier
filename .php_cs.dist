@@ -1,7 +1,7 @@
 <?php
 
 $finder = PhpCsFixer\Finder::create()
-    ->in(__DIR__.'/src')
+    ->in(__DIR__)
 ;
 
 return PhpCsFixer\Config::create()
@@ -17,6 +17,8 @@ return PhpCsFixer\Config::create()
         'magic_constant_casing' => true,
         'method_separation' => true,
         'single_blank_line_before_namespace' => true,
+        'no_singleline_whitespace_before_semicolons' => true,
+        'no_spaces_around_offset' => true,
         'no_unused_imports' => true,
         'no_whitespace_before_comma_in_array' => true,
         'no_whitespace_in_blank_line' => true,
@@ -26,10 +28,20 @@ return PhpCsFixer\Config::create()
         'no_blank_lines_after_phpdoc' => true,
         'no_extra_consecutive_blank_lines' => true,
         'return_type_declaration' => ['space_before' => 'none'],
+        'no_trailing_comma_in_list_call' => true,
+        'no_trailing_comma_in_singleline_array' => true,
+        'no_unneeded_control_parentheses' => true,
+        'no_unneeded_curly_braces' => true,
+        'short_scalar_cast' => true,
+        'space_after_semicolon' => true,
+        'ternary_operator_spaces' => true,
+        'trailing_comma_in_multiline_array' => true,
+        'trim_array_spaces' => true,
 
         'no_empty_phpdoc' => true,
-        'no_superfluous_phpdoc_tags' => true,
+        // 7.3 only 'no_superfluous_phpdoc_tags' => true,
         'phpdoc_align' => true,
+        'phpdoc_inline_tag' => true,
         'phpdoc_annotation_without_dot' => true,
         'phpdoc_indent' => true,
         'phpdoc_var_without_name' => true,

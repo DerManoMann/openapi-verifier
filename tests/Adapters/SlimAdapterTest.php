@@ -25,7 +25,7 @@ class SlimAdapterTest extends TestCase
     {
         $request = Request::createFromEnvironment(Environment::mock([
             'REQUEST_METHOD' => $requestMethod,
-            'REQUEST_URI' => $requestUri
+            'REQUEST_URI' => $requestUri,
         ]));
 
         if ($requestData) {

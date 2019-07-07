@@ -12,7 +12,7 @@ class LaravelAdapterTest extends TestCase
 {
     use OpenApiResponseVerifier;
 
-    /** @inheritdoc */
+    /** {@inheritdoc} */
     public function setUp(): void
     {
         parent::setUp();
@@ -33,7 +33,7 @@ class LaravelAdapterTest extends TestCase
         $response->assertStatus(200);
     }
 
-    /** @inheritdoc */
+    /** {@inheritdoc} */
     public function createApplication()
     {
         if (!$this->app) {

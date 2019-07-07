@@ -65,7 +65,7 @@ class VerifiesOpenApiTest extends TestCase
         $this->assertTrue($verified);
     }
 
-    /** @inheritdoc */
+    /** {@inheritdoc} */
     protected function getOpenApiSpecificationLoader(): ?OpenApiSpecificationLoader
     {
         return new OpenApiSpecificationLoader(__DIR__ . '/specifications/users.yaml');
