@@ -122,7 +122,7 @@ Simplest way is to register the verifier in the `Tests\Functional\BaseTestCase`.
 namespace Tests\Functional;
 
 use ...
-use Radebatz\OpenApi\Verifier\Adapters\Laravel\OpenApiResponseVerifier;
+use Radebatz\OpenApi\Verifier\Adapters\Slim\OpenApiResponseVerifier;
 use PHPUnit\Framework\TestCase;
 
 class BaseTestCase extends TestCase
