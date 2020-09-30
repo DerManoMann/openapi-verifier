@@ -13,9 +13,11 @@
     ],
     "prefer-stable": true,
     "scripts": {
-        "fix-cs": [
-            "vendor/bin/php-cs-fixer fix src",
-            "vendor/bin/php-cs-fixer fix tests"
+        "cs": "php-cs-fixer fix --allow-risky=yes",
+        "lint": "@cs --dry-run",
+        "test": [
+          "phpunit",
+          "@lint"
         ],
         "rebuild-specifications": [
             "@php vendor/bin/openapi tests/Api -o tests/specifications/users.json",
