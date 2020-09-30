@@ -10,7 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
 
 trait VerifiesOpenApi
 {
-    /** @var OpenApiSpecificationLoader $openapiSpecificationLoader */
+    /** @var OpenApiSpecificationLoader */
     protected $openapiSpecificationLoader = null;
 
     /**
