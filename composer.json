@@ -45,6 +45,7 @@
     "require": {
         "php": ">=7.1",
         "ext-json": "*",
+        "doctrine/annotations": "^1.7",
         "justinrainbow/json-schema": "^5.2",
         "nyholm/psr7": "^1.1",
         "nyholm/psr7-server": "^1.0.0",
@@ -52,7 +53,7 @@
         "symfony/psr-http-message-bridge": "^2.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.14.1",
+        "friendsofphp/php-cs-fixer": "^2.16",
         "laravel/laravel": "^5.7",
         "php-coveralls/php-coveralls": "^2.1",
         "phpunit/php-code-coverage": "^6.1|^7.0.5",
