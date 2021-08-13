@@ -47,7 +47,6 @@
         "ext-json": "*",
         "doctrine/annotations": "^1.7",
         "justinrainbow/json-schema": "^5.2",
-        "laravel/laravel": "^8.5",
         "nyholm/psr7": "^1.1",
         "nyholm/psr7-server": "^1.0.0",
         "psr/http-message": "^1.0",
