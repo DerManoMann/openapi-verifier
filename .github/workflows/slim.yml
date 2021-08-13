@@ -1,4 +1,4 @@
-`name: Slim
+name: Slim
 
 on:
   push:
