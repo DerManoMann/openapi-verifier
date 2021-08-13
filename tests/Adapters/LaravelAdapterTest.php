@@ -4,17 +4,20 @@ namespace Radebatz\OpenApi\Verifier\Tests\Adapters;
 
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Application;
-use Illuminate\Foundation\Testing\TestCase;
 use Illuminate\Support\Facades\Facade;
 use Radebatz\OpenApi\Verifier\Adapters\Laravel\OpenApiResponseVerifier;
 
-class LaravelAdapterTest extends TestCase
+class LaravelAdapterTest extends LaravelTestCase
 {
     use OpenApiResponseVerifier;
 
-    /** {@inheritdoc} */
+    /** @inheritdoc */
     public function setUp(): void
     {
+        if (!class_exists('\\Illuminate\\Foundation\\Application')) {
+            $this->markTestSkipped('not installed.');
+        }
+
         parent::setUp();
 
         $this->registerOpenApiVerifier(null, __DIR__ . '/../specifications/users.yaml');
@@ -33,7 +36,7 @@ class LaravelAdapterTest extends TestCase
         $response->assertStatus(200);
     }
 
-    /** {@inheritdoc} */
+    /** @inheritdoc */
     public function createApplication()
     {
         if (!$this->app) {

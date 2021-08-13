@@ -43,24 +43,21 @@
         }
     },
     "require": {
-        "php": ">=7.1",
+        "php": ">=7.2",
         "ext-json": "*",
         "doctrine/annotations": "^1.7",
         "justinrainbow/json-schema": "^5.2",
+        "laravel/laravel": "^8.5",
         "nyholm/psr7": "^1.1",
         "nyholm/psr7-server": "^1.0.0",
         "psr/http-message": "^1.0",
         "symfony/psr-http-message-bridge": "^2.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.16",
-        "laravel/laravel": "^5.7",
-        "php-coveralls/php-coveralls": "^2.1",
-        "phpunit/php-code-coverage": "^6.1|^7.0.5",
-        "phpunit/phpunit": "^7.0|^8.0",
-        "slim/slim": "^3.12",
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "phpunit/phpunit": ">=8.0",
         "symfony/yaml": "^4.3|^5",
-        "zircote/swagger-php": "^3.0"
+        "zircote/swagger-php": "^3.1"
     },
     "suggest": {
         "symfony/yaml": "Required to load OpenApi specifications in YAML.",

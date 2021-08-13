@@ -13,6 +13,13 @@ class SlimAdapterTest extends TestCase
 {
     use OpenApiResponseVerifier;
 
+    protected function setUp(): void
+    {
+        if (!class_exists('\\Slim\\App') || version_compare(App::VERSION, '4.0.0', '<')) {
+            $this->markTestSkipped('not installed.');
+        }
+    }
+
     /** @test */
     public function passVerification()
     {
