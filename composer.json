@@ -19,9 +19,9 @@
           "phpunit",
           "@lint"
         ],
-        "rebuild-specifications": [
-            "@php vendor/bin/openapi tests/Api -o tests/specifications/users.json",
-            "@php vendor/bin/openapi tests/Api -o tests/specifications/users.yaml"
+        "refresh-specs": [
+            "@php vendor/bin/openapi tests/Fixtures -o tests/specifications/users.json",
+            "@php vendor/bin/openapi tests/Fixtures -o tests/specifications/users.yaml"
         ]
     },
     "config": {

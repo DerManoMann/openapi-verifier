@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Radebatz\OpenApi\Verifier\Tests\Api;
+namespace Radebatz\OpenApi\Verifier\Tests\Fixtures;
 
 use OpenApi\Annotations as OA;
 
