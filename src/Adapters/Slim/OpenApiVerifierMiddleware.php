@@ -3,6 +3,7 @@
 namespace Radebatz\OpenApi\Verifier\Adapters\Slim;
 
 use Psr\Container\ContainerInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Radebatz\OpenApi\Verifier\OpenApiSchemaMismatchException;
 use Radebatz\OpenApi\Verifier\VerifiesOpenApi;
 
@@ -15,9 +16,10 @@ class OpenApiVerifierMiddleware
         $this->container = $container;
     }
 
-    public function __invoke($request, $response, $next)
+    public function __invoke($request, $response, $next = null)
     {
-        $response = $next($request, $response);
+        $response = $next ? $next($request, $response) : $response;
+        $response = ($response instanceof RequestHandlerInterface) ? $response->handle($request) : $response;
 
         /** @var VerifiesOpenApi $verifier */
         $verifier = $this->container->get('openapi-verifier');

@@ -20,7 +20,14 @@ trait OpenApiResponseVerifier
         if ($this->getOpenApiSpecificationLoader()) {
             $container = $app->getContainer();
 
-            $container['openapi-verifier'] = $this;
+            // deal with different container implementations
+            if ($container instanceof \ArrayAccess) {
+                $container['openapi-verifier'] = $this;
+            } elseif (method_exists($container, 'set')) {
+                $container->set('openapi-verifier', $this);
+            } else {
+                throw new \RuntimeException('Unusable container');
+            }
             $app->add(new OpenApiVerifierMiddleware($container));
         }
     }
