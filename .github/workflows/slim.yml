@@ -36,6 +36,7 @@ jobs:
       - name: Install framework deps
         run: |
           composer require --dev slim/slim "^${{ matrix.slim }}"
+          composer require php-di/php-di
 
       - name: Composer install
         uses: ramsey/composer-install@v1
