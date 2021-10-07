@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Tests\Functional;
+namespace Radebatz\OpenApi\Verifier\Tests\Adapters;
 
 use PHPUnit\Framework\TestCase;
 use Radebatz\OpenApi\Verifier\Adapters\Slim\OpenApiResponseVerifier;
@@ -9,9 +9,16 @@ use Slim\Http\Environment;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-class SlimAdapterTest extends TestCase
+class Slim3AdapterTest extends TestCase
 {
     use OpenApiResponseVerifier;
+
+    protected function setUp(): void
+    {
+        if (!class_exists('\\Slim\\App') || version_compare(App::VERSION, '4.0.0', '>=')) {
+            $this->markTestSkipped('not installed.');
+        }
+    }
 
     /** @test */
     public function passVerification()

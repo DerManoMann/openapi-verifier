@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App;
+namespace Radebatz\OpenApi\Verifier\Tests\Fixtures;
 
 /**
  * @OA\Info(

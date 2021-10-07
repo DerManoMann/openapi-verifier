@@ -1,0 +1,50 @@
+name: Slim
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ ubuntu-latest ]
+        php: [ '7.2', '7.3', '7.4', '8.0' ]
+        slim: [ '3.12', '4.0' ]
+        dependencies: [ 'lowest', 'highest' ]
+
+    name: PHP ${{ matrix.php }} / Slim ${{ matrix.slim }} on ${{ matrix.operating-system }} with ${{ matrix.dependencies }} dependencies
+
+    steps:
+      - uses: actions/checkout@v2
+        name: Checkout repository
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: pcov
+
+      - name: Install framework deps
+        run: |
+          composer require --dev slim/slim "^${{ matrix.slim }}"
+          composer require php-di/php-di
+
+      - name: Composer install
+        uses: ramsey/composer-install@v1
+        with:
+          dependency-versions: ${{ matrix.dependencies }}
+          composer-options: ${{ matrix.composer-options }}
+
+      - name: PHPUnit + Code coverage
+        run: |
+          mkdir -p build/logs
+          vendor/bin/phpunit --coverage-text --coverage-clover build/logs/clover.xml

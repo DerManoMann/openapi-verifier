@@ -19,9 +19,9 @@
           "phpunit",
           "@lint"
         ],
-        "rebuild-specifications": [
-            "@php vendor/bin/openapi tests/Api -o tests/specifications/users.json",
-            "@php vendor/bin/openapi tests/Api -o tests/specifications/users.yaml"
+        "refresh-specs": [
+            "@php vendor/bin/openapi tests/Fixtures -o tests/specifications/users.json",
+            "@php vendor/bin/openapi tests/Fixtures -o tests/specifications/users.yaml"
         ]
     },
     "config": {
@@ -43,7 +43,7 @@
         }
     },
     "require": {
-        "php": ">=7.1",
+        "php": ">=7.2",
         "ext-json": "*",
         "doctrine/annotations": "^1.7",
         "justinrainbow/json-schema": "^5.2",
@@ -53,14 +53,10 @@
         "symfony/psr-http-message-bridge": "^2.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.16",
-        "laravel/laravel": "^5.7",
-        "php-coveralls/php-coveralls": "^2.1",
-        "phpunit/php-code-coverage": "^6.1|^7.0.5",
-        "phpunit/phpunit": "^7.0|^8.0",
-        "slim/slim": "^3.12",
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "phpunit/phpunit": ">=8.0",
         "symfony/yaml": "^4.3|^5",
-        "zircote/swagger-php": "^3.0"
+        "zircote/swagger-php": "^3.1"
     },
     "suggest": {
         "symfony/yaml": "Required to load OpenApi specifications in YAML.",
