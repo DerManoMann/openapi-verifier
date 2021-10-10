@@ -1,0 +1,11 @@
+name: build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  call-laravel:
+    uses: DerManoMann/openapi-verifier/.github/workflows/laravel.yml@single-build-workflow
+  call-slim:
+    uses: DerManoMann/openapi-verifier/.github/workflows/slim.yml@single-build-workflow
