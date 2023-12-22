@@ -2,6 +2,8 @@
 
 namespace Radebatz\OpenApi\Verifier\Adapters;
 
+use OpenApi\Generator;
+
 trait AbstractOpenApiResponseVerifier
 {
     protected string $openapiSpecification;
@@ -35,7 +37,7 @@ trait AbstractOpenApiResponseVerifier
         if (!$specificationLoader) {
             $appRoot = $appRoot ?: $this->getAppRoot();
 
-            $openApi = \OpenApi\scan($appRoot . '/' . $srcDir);
+            $openApi = Generator::scan($appRoot . '/' . $srcDir);
             $this->openapiSpecification = json_decode($openApi->toJson());
         }
     }

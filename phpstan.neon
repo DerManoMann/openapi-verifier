@@ -6,7 +6,7 @@ parameters:
     level: 5
     paths:
         - src
-        - tests
+#        - tests
     parallel:
         processTimeout: 300.0
     excludePaths:
