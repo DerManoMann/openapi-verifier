@@ -1,0 +1,13 @@
+includes:
+	- phpstan-baseline.neon
+
+parameters:
+    phpVersion: 80100
+    level: 5
+    paths:
+        - src
+        - tests
+    parallel:
+        processTimeout: 300.0
+    excludePaths:
+        - 'tests/Fixtures/*'

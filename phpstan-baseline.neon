@@ -1,0 +1,296 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Call to method failSchemaMismatch\\(\\) on an unknown class Radebatz\\\\OpenApi\\\\Verifier\\\\VerifiesOpenApi\\.$#"
+			count: 1
+			path: src/Adapters/Laravel/OpenApiVerifierMiddleware.php
+
+		-
+			message: "#^Call to method verifyOpenApi\\(\\) on an unknown class Radebatz\\\\OpenApi\\\\Verifier\\\\VerifiesOpenApi\\.$#"
+			count: 1
+			path: src/Adapters/Laravel/OpenApiVerifierMiddleware.php
+
+		-
+			message: "#^Function app not found\\.$#"
+			count: 1
+			path: src/Adapters/Laravel/OpenApiVerifierMiddleware.php
+
+		-
+			message: "#^PHPDoc tag @var for variable \\$verifier has invalid type Radebatz\\\\OpenApi\\\\Verifier\\\\VerifiesOpenApi\\.$#"
+			count: 1
+			path: src/Adapters/Laravel/OpenApiVerifierMiddleware.php
+
+		-
+			message: "#^Undefined variable\\: \\$psrResponse$#"
+			count: 1
+			path: src/Adapters/Laravel/OpenApiVerifierMiddleware.php
+
+		-
+			message: "#^Call to method failSchemaMismatch\\(\\) on an unknown class Radebatz\\\\OpenApi\\\\Verifier\\\\VerifiesOpenApi\\.$#"
+			count: 1
+			path: src/Adapters/Slim/OpenApiVerifierMiddleware.php
+
+		-
+			message: "#^Call to method handle\\(\\) on an unknown class Psr\\\\Http\\\\Server\\\\RequestHandlerInterface\\.$#"
+			count: 1
+			path: src/Adapters/Slim/OpenApiVerifierMiddleware.php
+
+		-
+			message: "#^Call to method verifyOpenApi\\(\\) on an unknown class Radebatz\\\\OpenApi\\\\Verifier\\\\VerifiesOpenApi\\.$#"
+			count: 1
+			path: src/Adapters/Slim/OpenApiVerifierMiddleware.php
+
+		-
+			message: "#^Class Psr\\\\Http\\\\Server\\\\RequestHandlerInterface not found\\.$#"
+			count: 1
+			path: src/Adapters/Slim/OpenApiVerifierMiddleware.php
+
+		-
+			message: "#^PHPDoc tag @var for variable \\$verifier has invalid type Radebatz\\\\OpenApi\\\\Verifier\\\\VerifiesOpenApi\\.$#"
+			count: 1
+			path: src/Adapters/Slim/OpenApiVerifierMiddleware.php
+
+		-
+			message: "#^Call to sprintf contains 2 placeholders, 1 value given\\.$#"
+			count: 1
+			path: src/OpenApiSchemaMismatchException.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$anyOf\\.$#"
+			count: 1
+			path: src/OpenApiSpecificationLoader.php
+
+		-
+			message: "#^Access to an undefined property Radebatz\\\\OpenApi\\\\Verifier\\\\Tests\\\\Adapters\\\\LaravelAdapterTest\\:\\:\\$app\\.$#"
+			count: 2
+			path: tests/Adapters/LaravelAdapterTest.php
+
+		-
+			message: "#^Access to an undefined property Radebatz\\\\OpenApi\\\\Verifier\\\\Tests\\\\Adapters\\\\LaravelAdapterTest\\:\\:\\$openapiSpecification\\.$#"
+			count: 3
+			path: tests/Adapters/LaravelAdapterTest.php
+
+		-
+			message: "#^Access to offset 'config' on an unknown class Illuminate\\\\Foundation\\\\Application\\.$#"
+			count: 1
+			path: tests/Adapters/LaravelAdapterTest.php
+
+		-
+			message: "#^Call to an undefined method Radebatz\\\\OpenApi\\\\Verifier\\\\Tests\\\\Adapters\\\\LaravelAdapterTest\\:\\:get\\(\\)\\.$#"
+			count: 1
+			path: tests/Adapters/LaravelAdapterTest.php
+
+		-
+			message: "#^Call to an undefined method Radebatz\\\\OpenApi\\\\Verifier\\\\Tests\\\\Adapters\\\\LaravelAdapterTest\\:\\:markTestSkipped\\(\\)\\.$#"
+			count: 1
+			path: tests/Adapters/LaravelAdapterTest.php
+
+		-
+			message: "#^Call to an undefined static method Radebatz\\\\OpenApi\\\\Verifier\\\\Tests\\\\Adapters\\\\LaravelTestCase\\:\\:setUp\\(\\)\\.$#"
+			count: 1
+			path: tests/Adapters/LaravelAdapterTest.php
+
+		-
+			message: "#^Call to method make\\(\\) on an unknown class Illuminate\\\\Foundation\\\\Application\\.$#"
+			count: 1
+			path: tests/Adapters/LaravelAdapterTest.php
+
+		-
+			message: "#^Call to static method setFacadeApplication\\(\\) on an unknown class Illuminate\\\\Support\\\\Facades\\\\Facade\\.$#"
+			count: 1
+			path: tests/Adapters/LaravelAdapterTest.php
+
+		-
+			message: "#^Class Illuminate\\\\Contracts\\\\Console\\\\Kernel not found\\.$#"
+			count: 1
+			path: tests/Adapters/LaravelAdapterTest.php
+
+		-
+			message: "#^Class Illuminate\\\\Contracts\\\\Http\\\\Kernel not found\\.$#"
+			count: 1
+			path: tests/Adapters/LaravelAdapterTest.php
+
+		-
+			message: "#^Function OpenApi\\\\scan not found\\.$#"
+			count: 1
+			path: tests/Adapters/LaravelAdapterTest.php
+
+		-
+			message: "#^If condition is always true\\.$#"
+			count: 1
+			path: tests/Adapters/LaravelAdapterTest.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: tests/Adapters/LaravelAdapterTest.php
+
+		-
+			message: "#^PHPDoc tag @var for variable \\$app contains unknown class Illuminate\\\\Foundation\\\\Application\\.$#"
+			count: 1
+			path: tests/Adapters/LaravelAdapterTest.php
+
+		-
+			message: "#^Parameter \\$app of method Radebatz\\\\OpenApi\\\\Verifier\\\\Tests\\\\Adapters\\\\LaravelAdapterTest\\:\\:registerOpenApiVerifier\\(\\) has invalid type Illuminate\\\\Foundation\\\\Application\\.$#"
+			count: 1
+			path: tests/Adapters/LaravelAdapterTest.php
+
+		-
+			message: "#^Ternary operator condition is always false\\.$#"
+			count: 1
+			path: tests/Adapters/LaravelAdapterTest.php
+
+		-
+			message: "#^Access to an undefined property Radebatz\\\\OpenApi\\\\Verifier\\\\Tests\\\\Adapters\\\\Slim3AdapterTest\\:\\:\\$app\\.$#"
+			count: 1
+			path: tests/Adapters/Slim3AdapterTest.php
+
+		-
+			message: "#^Access to an undefined property Radebatz\\\\OpenApi\\\\Verifier\\\\Tests\\\\Adapters\\\\Slim3AdapterTest\\:\\:\\$openapiSpecification\\.$#"
+			count: 3
+			path: tests/Adapters/Slim3AdapterTest.php
+
+		-
+			message: "#^Call to method add\\(\\) on an unknown class Slim\\\\App\\.$#"
+			count: 1
+			path: tests/Adapters/Slim3AdapterTest.php
+
+		-
+			message: "#^Call to method get\\(\\) on an unknown class Slim\\\\App\\.$#"
+			count: 1
+			path: tests/Adapters/Slim3AdapterTest.php
+
+		-
+			message: "#^Call to method getContainer\\(\\) on an unknown class Slim\\\\App\\.$#"
+			count: 1
+			path: tests/Adapters/Slim3AdapterTest.php
+
+		-
+			message: "#^Call to method process\\(\\) on an unknown class Slim\\\\App\\.$#"
+			count: 1
+			path: tests/Adapters/Slim3AdapterTest.php
+
+		-
+			message: "#^Call to static method createFromEnvironment\\(\\) on an unknown class Slim\\\\Http\\\\Request\\.$#"
+			count: 1
+			path: tests/Adapters/Slim3AdapterTest.php
+
+		-
+			message: "#^Call to static method mock\\(\\) on an unknown class Slim\\\\Http\\\\Environment\\.$#"
+			count: 1
+			path: tests/Adapters/Slim3AdapterTest.php
+
+		-
+			message: "#^Function OpenApi\\\\scan not found\\.$#"
+			count: 1
+			path: tests/Adapters/Slim3AdapterTest.php
+
+		-
+			message: "#^If condition is always true\\.$#"
+			count: 1
+			path: tests/Adapters/Slim3AdapterTest.php
+
+		-
+			message: "#^Instantiated class Slim\\\\App not found\\.$#"
+			count: 1
+			path: tests/Adapters/Slim3AdapterTest.php
+
+		-
+			message: "#^Instantiated class Slim\\\\Http\\\\Response not found\\.$#"
+			count: 1
+			path: tests/Adapters/Slim3AdapterTest.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: tests/Adapters/Slim3AdapterTest.php
+
+		-
+			message: "#^PHPDoc tag @var for variable \\$app contains unknown class Slim\\\\App\\.$#"
+			count: 1
+			path: tests/Adapters/Slim3AdapterTest.php
+
+		-
+			message: "#^Parameter \\$app of method Radebatz\\\\OpenApi\\\\Verifier\\\\Tests\\\\Adapters\\\\Slim3AdapterTest\\:\\:registerOpenApiVerifier\\(\\) has invalid type Slim\\\\App\\.$#"
+			count: 1
+			path: tests/Adapters/Slim3AdapterTest.php
+
+		-
+			message: "#^Ternary operator condition is always false\\.$#"
+			count: 1
+			path: tests/Adapters/Slim3AdapterTest.php
+
+		-
+			message: "#^Access to an undefined property Radebatz\\\\OpenApi\\\\Verifier\\\\Tests\\\\Adapters\\\\Slim4AdapterTest\\:\\:\\$app\\.$#"
+			count: 1
+			path: tests/Adapters/Slim4AdapterTest.php
+
+		-
+			message: "#^Access to an undefined property Radebatz\\\\OpenApi\\\\Verifier\\\\Tests\\\\Adapters\\\\Slim4AdapterTest\\:\\:\\$openapiSpecification\\.$#"
+			count: 3
+			path: tests/Adapters/Slim4AdapterTest.php
+
+		-
+			message: "#^Call to method add\\(\\) on an unknown class Slim\\\\App\\.$#"
+			count: 1
+			path: tests/Adapters/Slim4AdapterTest.php
+
+		-
+			message: "#^Call to method build\\(\\) on an unknown class DI\\\\ContainerBuilder\\.$#"
+			count: 1
+			path: tests/Adapters/Slim4AdapterTest.php
+
+		-
+			message: "#^Call to method getContainer\\(\\) on an unknown class Slim\\\\App\\.$#"
+			count: 1
+			path: tests/Adapters/Slim4AdapterTest.php
+
+		-
+			message: "#^Call to static method create\\(\\) on an unknown class Slim\\\\Factory\\\\AppFactory\\.$#"
+			count: 1
+			path: tests/Adapters/Slim4AdapterTest.php
+
+		-
+			message: "#^Call to static method setContainer\\(\\) on an unknown class Slim\\\\Factory\\\\AppFactory\\.$#"
+			count: 1
+			path: tests/Adapters/Slim4AdapterTest.php
+
+		-
+			message: "#^Function OpenApi\\\\scan not found\\.$#"
+			count: 1
+			path: tests/Adapters/Slim4AdapterTest.php
+
+		-
+			message: "#^If condition is always true\\.$#"
+			count: 1
+			path: tests/Adapters/Slim4AdapterTest.php
+
+		-
+			message: "#^Instantiated class DI\\\\ContainerBuilder not found\\.$#"
+			count: 1
+			path: tests/Adapters/Slim4AdapterTest.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: tests/Adapters/Slim4AdapterTest.php
+
+		-
+			message: "#^PHPDoc tag @var for variable \\$app contains unknown class Slim\\\\App\\.$#"
+			count: 1
+			path: tests/Adapters/Slim4AdapterTest.php
+
+		-
+			message: "#^Parameter \\$app of method Radebatz\\\\OpenApi\\\\Verifier\\\\Tests\\\\Adapters\\\\Slim4AdapterTest\\:\\:registerOpenApiVerifier\\(\\) has invalid type Slim\\\\App\\.$#"
+			count: 1
+			path: tests/Adapters/Slim4AdapterTest.php
+
+		-
+			message: "#^Ternary operator condition is always false\\.$#"
+			count: 1
+			path: tests/Adapters/Slim4AdapterTest.php
+
+		-
+			message: "#^If condition is always true\\.$#"
+			count: 1
+			path: tests/VerifiesOpenApiTest.php

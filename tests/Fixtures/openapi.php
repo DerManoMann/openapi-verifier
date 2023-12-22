@@ -18,6 +18,7 @@ namespace Radebatz\OpenApi\Verifier\Tests\Fixtures;
  *
  * @OA\Schema(
  *     schema="paginate",
+ *
  *     @OA\Property(property="links", type="object",
  *         schema="links",
  *         @OA\Property(property="first", type="string"),

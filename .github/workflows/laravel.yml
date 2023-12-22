@@ -10,14 +10,9 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-latest ]
-        php: [ '7.2', '7.3', '7.4', '8.0' ]
-        laravel: [ '7.0', '8.0' ]
+        php: [ '7.4', '8.0', '8.1', '8.2', '8.3' ]
+        laravel: [ '9.0', '10.0' ]
         dependencies: [ 'lowest', 'highest' ]
-        exclude:
-          - php: '7.2'
-            laravel: '8.0'
-          - php: '8.0'
-            dependencies: 'lowest'
 
     name: PHP ${{ matrix.php }} / Laravel ${{ matrix.laravel }} on ${{ matrix.operating-system }} with ${{ matrix.dependencies }} dependencies
 

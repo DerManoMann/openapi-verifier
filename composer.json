@@ -12,16 +12,26 @@
         }
     ],
     "prefer-stable": true,
+    "scripts-descriptions": {
+        "cs": "Fix all codestyle issues",
+        "lint": "Test codestyle",
+        "test": "Run all non-legacy and codestyle tests",
+        "refresh-specs": "Refresh spec fixtures",
+        "analyse": "Run static analysis (phpstan/psalm)"
+    },
     "scripts": {
         "cs": "php-cs-fixer fix --allow-risky=yes",
         "lint": "@cs --dry-run",
         "test": [
-          "phpunit",
-          "@lint"
+            "phpunit",
+            "@lint"
         ],
         "refresh-specs": [
             "@php vendor/bin/openapi tests/Fixtures -o tests/specifications/users.json",
             "@php vendor/bin/openapi tests/Fixtures -o tests/specifications/users.yaml"
+        ],
+        "analyse": [
+            "export XDEBUG_MODE=off && phpstan analyse --memory-limit=2G"
         ]
     },
     "config": {
@@ -43,9 +53,8 @@
         }
     },
     "require": {
-        "php": ">=7.2",
+        "php": ">=7.4",
         "ext-json": "*",
-        "doctrine/annotations": "^1.7",
         "justinrainbow/json-schema": "^5.2",
         "nyholm/psr7": "^1.1",
         "nyholm/psr7-server": "^1.0.0",
@@ -53,10 +62,12 @@
         "symfony/psr-http-message-bridge": "^2.0"
     },
     "require-dev": {
+        "doctrine/annotations": "^1.7 || ^2.0",
         "friendsofphp/php-cs-fixer": "^3.0",
-        "phpunit/phpunit": ">=8.0",
-        "symfony/yaml": "^4.3|^5",
-        "zircote/swagger-php": "^3.1"
+        "phpstan/phpstan": "^1.10",
+        "phpunit/phpunit": "^9.0",
+        "symfony/yaml": "^4.3 || ^5",
+        "zircote/swagger-php": "^4.8"
     },
     "suggest": {
         "laravel/laravel": "A PHP framework",
