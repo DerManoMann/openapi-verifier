@@ -4,6 +4,8 @@ namespace Radebatz\OpenApi\Verifier\Adapters;
 
 trait AbstractOpenApiResponseVerifier
 {
+    protected string $openapiSpecification;
+
     protected function prepareOpenApiSpecificationLoader(string $srcDir, ?string $specification = null)
     {
         $appRoot = null;
