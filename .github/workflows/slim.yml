@@ -17,7 +17,7 @@ jobs:
     name: PHP ${{ matrix.php }} / Slim ${{ matrix.slim }} on ${{ matrix.operating-system }} with ${{ matrix.dependencies }} dependencies
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         name: Checkout repository
 
       - name: Cache dependencies
