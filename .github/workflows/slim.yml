@@ -50,5 +50,4 @@ jobs:
 
       - name: PHPUnit + Code coverage
         run: |
-          mkdir -p build/logs
-          vendor/bin/phpunit --coverage-text --coverage-clover build/logs/clover.xml
+          vendor/bin/phpunit

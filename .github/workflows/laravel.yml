@@ -50,13 +50,18 @@ jobs:
           dependency-versions: ${{ matrix.dependencies }}
           composer-options: ${{ matrix.composer-options }}
 
+      - name: PHPUnit
+        run: |
+          vendor/bin/phpunit
+
       - name: PHPUnit + Code coverage
         run: |
           mkdir -p build/logs
           vendor/bin/phpunit --coverage-text --coverage-clover build/logs/clover.xml
+        if: matrix.php == '8.2' && matrix.dependencies == 'highest' && matrix.laravel == '8.2'
 
       - name: Code coverage upload to Coveralls
-        if: matrix.php == '8.0' && matrix.dependencies == 'highest' && matrix.laravel == '8.0'
+        if: matrix.php == '8.2' && matrix.dependencies == 'highest' && matrix.laravel == '8.2'
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
