@@ -54,12 +54,11 @@
         "symfony/psr-http-message-bridge": "^6.0"
     },
     "require-dev": {
-        "doctrine/annotations": "^2.0",
         "friendsofphp/php-cs-fixer": "^3.47.1",
         "phpstan/phpstan": "^1.10",
         "phpunit/phpunit": "^10.0",
         "symfony/yaml": "^6.0|^7.0",
-        "zircote/swagger-php": "^3.1|^4.8"
+        "zircote/swagger-php": "^4.8"
     },
     "suggest": {
         "laravel/laravel": "A PHP framework",
