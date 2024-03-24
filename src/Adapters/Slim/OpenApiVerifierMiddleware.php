@@ -16,7 +16,7 @@ class OpenApiVerifierMiddleware
         $this->container = $container;
     }
 
-    public function __invoke($request, $response, ?$next = null)
+    public function __invoke($request, $response, $next = null)
     {
         $response = $next ? $next($request, $response) : $response;
         $response = ($response instanceof RequestHandlerInterface) ? $response->handle($request) : $response;
