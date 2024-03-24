@@ -50,8 +50,8 @@
         "ext-json": "*", "justinrainbow/json-schema": "^5.2",
         "nyholm/psr7": "^1.1",
         "nyholm/psr7-server": "^1.0",
-        "psr/http-message": "^1.0",
-        "symfony/psr-http-message-bridge": "^2.0"
+        "psr/http-message": "^2.0",
+        "symfony/psr-http-message-bridge": "^6.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.47.1",
