@@ -53,8 +53,8 @@ components:
         email:
           type: string
         dob:
-          nullable: true
           type: string
+          nullable: true
       type: object
     paginate:
       properties:
@@ -64,14 +64,14 @@ components:
             first:
               type: string
             last:
-              nullable: true
               type: string
+              nullable: true
             prev:
-              nullable: true
               type: string
+              nullable: true
             next:
-              nullable: true
               type: string
+              nullable: true
           type: object
         meta:
           schema: meta
@@ -79,11 +79,11 @@ components:
             current_page:
               type: integer
             from:
-              nullable: true
               type: integer
+              nullable: true
             to:
-              nullable: true
               type: integer
+              nullable: true
             per_page:
               type: integer
             path:

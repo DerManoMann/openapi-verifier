@@ -2,19 +2,18 @@
 
 namespace Radebatz\OpenApi\Verifier\Tests\Fixtures;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
-/**
- * @OA\Schema(
- *     schema="user",
- *     required={"id", "name", "email"},
- *
- *     @OA\Property(property="id", type="integer"),
- *     @OA\Property(property="name", type="string"),
- *     @OA\Property(property="email", type="string"),
- *     @OA\Property(property="dob", type="string", nullable=true),
- * )
- */
+#[OAT\Schema(
+    schema: 'user',
+    required: ['id', 'name', 'email'],
+    properties: [
+        new OAT\Property(property: 'id', type: 'integer'),
+        new OAT\Property(property: 'name', type: 'string'),
+        new OAT\Property(property: 'email', type: 'string'),
+        new OAT\Property(property: 'dob', type: 'string', nullable: true),
+    ]
+)]
 class User
 {
 }

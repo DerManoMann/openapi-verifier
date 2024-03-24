@@ -2,59 +2,55 @@
 
 namespace Radebatz\OpenApi\Verifier\Tests\Fixtures;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 
 class UserController
 {
-    /**
-     * @OA\Get(
-     *     path="/users",
-     *     operationId="users.index",
-     *     summary="Get all users",
-     *     security={{"JWT":{}}},
-     *
-     *     @OA\Parameter(
-     *         name="perPage",
-     *         in="query",
-     *         description="Number of results",
-     *         required=false,
-     *
-     *         @OA\Schema(
-     *             type="integer",
-     *             default=6,
-     *         )
-     *     ),
-     *
-     *     @OA\Parameter(
-     *         name="page",
-     *         in="query",
-     *         description="Page number",
-     *         required=false,
-     *
-     *         @OA\Schema(
-     *             type="integer",
-     *             default=1,
-     *         )
-     *     ),
-     *
-     *     @OA\Response(
-     *         response="200",
-     *         description="Users",
-     *
-     *         @OA\JsonContent(allOf={
-     *
-     *             @OA\Schema(ref="#components/schemas/paginate"),
-     *             @OA\Schema(
-     *                 required={"data"},
-     *
-     *                 @OA\Property(property="data", type="array", @OA\Items(ref="#components/schemas/user"))
-     *             )
-     *         })
-     *     ),
-     *
-     *     @OA\Response(response="401", ref="#components/responses/401")
-     * )
-     */
+    #[OAT\Get(
+        path: '/users',
+        operationId: 'users.index',
+        summary: 'Get all users',
+        security: [['JWT' => []]],
+        parameters: [
+            new OAT\QueryParameter(
+                name: 'perPage',
+                description: 'Number of results',
+                required: false,
+                schema: new OAT\Schema(type: 'integer', default: 6)
+            ),
+            new OAT\QueryParameter(
+                name: 'page',
+                description: 'Page number',
+                required: false,
+                schema: new OAT\Schema(type: 'integer', default: 1)
+            ),
+        ],
+        responses: [
+            new OAT\Response(
+                response: 200,
+                description: 'Users',
+                content: new OAT\JsonContent(
+                    allOf: [
+                        new OAT\Schema(ref: '#components/schemas/paginate'),
+                        new OAT\Schema(
+                            required: ['data'],
+                            properties: [
+                                new OAT\Property(
+                                    property: 'data',
+                                    type: 'array',
+                                    items: new OAT\Items(ref: '#components/schemas/user')
+                                ),
+                            ],
+                        ),
+                    ],
+                )
+            ),
+            new OAT\Response(
+                response: 401,
+                ref: '#components/responses/401'
+            ),
+        ],
+    )]
     public function index()
     {
         return '{"data":[{"id":1,"name":"joe","email":"joe@cool.com"}';
