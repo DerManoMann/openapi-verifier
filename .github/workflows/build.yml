@@ -10,6 +10,6 @@ on:
 
 jobs:
   call-laravel:
-    uses: DerManoMann/openapi-verifier/.github/workflows/laravel.yml@master
+    uses: DerManoMann/openapi-verifier/.github/workflows/laravel.yml
   call-slim:
-    uses: DerManoMann/openapi-verifier/.github/workflows/slim.yml@master
+    uses: DerManoMann/openapi-verifier/.github/workflows/slim.yml
