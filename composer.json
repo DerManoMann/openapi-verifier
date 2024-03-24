@@ -22,6 +22,9 @@
         "refresh-specs": [
             "@php vendor/bin/openapi tests/Fixtures -o tests/specifications/users.json",
             "@php vendor/bin/openapi tests/Fixtures -o tests/specifications/users.yaml"
+        ],
+        "analyse": [
+            "export XDEBUG_MODE=off && phpstan analyse --memory-limit=2G"
         ]
     },
     "config": {
@@ -52,6 +55,7 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.47.1",
+        "phpstan/phpstan": "^1.10",
         "phpunit/phpunit": ">=9.0",
         "symfony/yaml": "^6.0|^7.0",
         "zircote/swagger-php": "^3.1|^4.8"
