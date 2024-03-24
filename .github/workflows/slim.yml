@@ -10,8 +10,8 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-latest ]
-        php: [ '7.2', '7.3', '7.4', '8.0' ]
-        slim: [ '3.12', '4.0' ]
+        php: [ '8.1', '8.2', '8.3', '8.4' ]
+        slim: [ '4.0' ]
         dependencies: [ 'lowest', 'highest' ]
 
     name: PHP ${{ matrix.php }} / Slim ${{ matrix.slim }} on ${{ matrix.operating-system }} with ${{ matrix.dependencies }} dependencies

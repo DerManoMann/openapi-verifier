@@ -13,7 +13,7 @@ class VerifiesOpenApiTest extends TestCase
 {
     use VerifiesOpenApi;
 
-    public function responses()
+    public static function responses()
     {
         return [
             'invalid-json' => ['get', '/users', 200, 'xxx', false, false],
@@ -27,6 +27,7 @@ class VerifiesOpenApiTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider responses
      */
     public function verifyBody($method, $path, $statusCode, $content, $isValid, $isVerified)
