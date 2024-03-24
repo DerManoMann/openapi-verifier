@@ -57,7 +57,7 @@
         "doctrine/annotations": "^2.0",
         "friendsofphp/php-cs-fixer": "^3.47.1",
         "phpstan/phpstan": "^1.10",
-        "phpunit/phpunit": "^9.0",
+        "phpunit/phpunit": "^10.0",
         "symfony/yaml": "^6.0|^7.0",
         "zircote/swagger-php": "^3.1|^4.8"
     },
