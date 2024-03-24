@@ -1,7 +1,12 @@
 name: laravel
 
 on:
-  workflow_call:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   test:
