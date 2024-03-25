@@ -22,6 +22,9 @@
         "refresh-specs": [
             "@php vendor/bin/openapi tests/Fixtures -o tests/specifications/users.json",
             "@php vendor/bin/openapi tests/Fixtures -o tests/specifications/users.yaml"
+        ],
+        "analyse": [
+            "export XDEBUG_MODE=off && phpstan analyse --memory-limit=2G"
         ]
     },
     "config": {
@@ -39,24 +42,23 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.x-dev"
+            "dev-master": "2.x-dev"
         }
     },
     "require": {
-        "php": ">=7.2",
-        "ext-json": "*",
-        "doctrine/annotations": "^1.7",
-        "justinrainbow/json-schema": "^5.2",
+        "php": ">=8.1",
+        "ext-json": "*", "justinrainbow/json-schema": "^5.2.13",
         "nyholm/psr7": "^1.1",
-        "nyholm/psr7-server": "^1.0.0",
-        "psr/http-message": "^1.0",
-        "symfony/psr-http-message-bridge": "^2.0"
+        "nyholm/psr7-server": "^1.0",
+        "psr/http-message": "^2.0",
+        "symfony/psr-http-message-bridge": "^6.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.0",
-        "phpunit/phpunit": ">=8.0",
-        "symfony/yaml": "^4.3|^5",
-        "zircote/swagger-php": "^3.1"
+        "friendsofphp/php-cs-fixer": "^3.47.1",
+        "phpstan/phpstan": "^1.10",
+        "phpunit/phpunit": "^10.0",
+        "symfony/yaml": "^6.0|^7.0",
+        "zircote/swagger-php": "^4.8"
     },
     "suggest": {
         "laravel/laravel": "A PHP framework",

@@ -8,7 +8,7 @@ Allows to validate a controller response from your API project against a given [
 specification. 
 
 ## Requirements
-* [PHP 7.1 or higher](http://www.php.net/)
+* [PHP 8.1 or higher](http://www.php.net/)
 
 ## Installation
 You can use **composer** or simply **download the release**.

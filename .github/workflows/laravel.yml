@@ -1,7 +1,12 @@
 name: laravel
 
 on:
-  workflow_call:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   test:
@@ -10,14 +15,12 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-latest ]
-        php: [ '7.2', '7.3', '7.4', '8.0' ]
-        laravel: [ '7.0', '8.0' ]
+        php: [ '8.1', '8.2', '8.3' ]
+        laravel: [ '10.0', '11.0' ]
         dependencies: [ 'lowest', 'highest' ]
         exclude:
-          - php: '7.2'
-            laravel: '8.0'
-          - php: '8.0'
-            dependencies: 'lowest'
+          - php: '8.1'
+            laravel: '11.0'
 
     name: PHP ${{ matrix.php }} / Laravel ${{ matrix.laravel }} on ${{ matrix.operating-system }} with ${{ matrix.dependencies }} dependencies
 
@@ -47,13 +50,18 @@ jobs:
           dependency-versions: ${{ matrix.dependencies }}
           composer-options: ${{ matrix.composer-options }}
 
+      - name: PHPUnit
+        run: |
+          vendor/bin/phpunit
+
       - name: PHPUnit + Code coverage
         run: |
           mkdir -p build/logs
           vendor/bin/phpunit --coverage-text --coverage-clover build/logs/clover.xml
+        if: matrix.php == '8.2' && matrix.dependencies == 'highest' && matrix.laravel == '8.2'
 
       - name: Code coverage upload to Coveralls
-        if: matrix.php == '8.0' && matrix.dependencies == 'highest' && matrix.laravel == '8.0'
+        if: matrix.php == '8.2' && matrix.dependencies == 'highest' && matrix.laravel == '8.2'
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

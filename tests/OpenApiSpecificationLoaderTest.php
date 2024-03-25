@@ -7,7 +7,7 @@ use Radebatz\OpenApi\Verifier\OpenApiSpecificationLoader;
 
 class OpenApiSpecificationLoaderTest extends TestCase
 {
-    public function specifications()
+    public static function specifications()
     {
         return [
             [__DIR__ . '/specifications/users.json', true],
@@ -22,6 +22,7 @@ class OpenApiSpecificationLoaderTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider specifications
      */
     public function loadSpecification($filename, $valid)
@@ -35,7 +36,7 @@ class OpenApiSpecificationLoaderTest extends TestCase
         $this->assertTrue(is_object($specificationLoader));
     }
 
-    public function schemaUrls()
+    public static function schemaUrls()
     {
         return [
             'ucmethod-json-ok' => [__DIR__ . '/specifications/users.json', 'GET', '/users', 200, true],
@@ -49,6 +50,7 @@ class OpenApiSpecificationLoaderTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider schemaUrls
      */
     public function getSchemaUrlFor($specification, $method, $path, $statusCode, $valid)

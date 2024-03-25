@@ -91,8 +91,8 @@
                         "type": "string"
                     },
                     "dob": {
-                        "nullable": true,
-                        "type": "string"
+                        "type": "string",
+                        "nullable": true
                     }
                 },
                 "type": "object"
@@ -106,16 +106,16 @@
                                 "type": "string"
                             },
                             "last": {
-                                "nullable": true,
-                                "type": "string"
+                                "type": "string",
+                                "nullable": true
                             },
                             "prev": {
-                                "nullable": true,
-                                "type": "string"
+                                "type": "string",
+                                "nullable": true
                             },
                             "next": {
-                                "nullable": true,
-                                "type": "string"
+                                "type": "string",
+                                "nullable": true
                             }
                         },
                         "type": "object"
@@ -127,12 +127,12 @@
                                 "type": "integer"
                             },
                             "from": {
-                                "nullable": true,
-                                "type": "integer"
+                                "type": "integer",
+                                "nullable": true
                             },
                             "to": {
-                                "nullable": true,
-                                "type": "integer"
+                                "type": "integer",
+                                "nullable": true
                             },
                             "per_page": {
                                 "type": "integer"
