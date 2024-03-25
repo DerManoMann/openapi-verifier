@@ -1,0 +1,15 @@
+name: build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  laravel-adapter:
+    uses: ./.github/workflows/laravel.yml
+  slim-adapter:
+    uses: ./.github/workflows/slim.yml
