@@ -1,0 +1,15 @@
+name: build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  call-laravel:
+    uses: ./.github/workflows/laravel.yml
+  call-slim:
+    uses: ./.github/workflows/slim.yml
