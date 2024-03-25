@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  call-laravel:
+  laravel-adapter:
     uses: ./.github/workflows/laravel.yml
-  call-slim:
+  slim-adapter:
     uses: ./.github/workflows/slim.yml
