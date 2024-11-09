@@ -53,6 +53,43 @@ class UserController
     )]
     public function index()
     {
-        return '{"data":[{"id":1,"name":"joe","email":"joe@cool.com"}';
+        return '{"data":[{"id":1,"name":"joe","email":"joe@cool.com"}]';
+    }
+
+    #[OAT\Get(
+        path: '/user/{id}',
+        operationId: 'users.user',
+        summary: 'Get user for id',
+        security: [['JWT' => []]],
+        parameters: [
+            new OAT\PathParameter(
+                name: 'id',
+                description: 'User id',
+                schema: new OAT\Schema(type: 'integer')
+            ),
+        ],
+        responses: [
+            new OAT\Response(
+                response: 200,
+                description: 'User',
+                content: new OAT\JsonContent(
+                    required: ['data'],
+                    properties: [
+                        new OAT\Property(
+                            property: 'data',
+                            ref: User::class
+                        ),
+                    ],
+                ),
+            ),
+            new OAT\Response(
+                response: 401,
+                ref: '#components/responses/401'
+            ),
+        ],
+    )]
+    public function user(int $id)
+    {
+        return '{"data":{"id":1,"name":"joe","email":"joe@cool.com"}';
     }
 }

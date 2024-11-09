@@ -47,6 +47,9 @@ jobs:
           dependency-versions: ${{ matrix.dependencies }}
           composer-options: ${{ matrix.composer-options }}
 
+      - name: Refresh fixture specs
+        run: composer refresh-specs
+
       - name: PHPUnit + Code coverage
         run: |
           vendor/bin/phpunit
