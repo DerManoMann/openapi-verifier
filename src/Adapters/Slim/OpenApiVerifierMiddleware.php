@@ -22,12 +22,13 @@ class OpenApiVerifierMiddleware
     {
         $response = $next ? $next($request, $response) : $response;
         $response = ($response instanceof RequestHandlerInterface) ? $response->handle($request) : $response;
+        $routePath = null;
 
         /** @var VerifiesOpenApi $verifier */
         $verifier = $this->container->get(OpenApiVerifierMiddleware::OPENAPI_VERFIER_CONTAINER_KEY);
 
         try {
-            $verifier->verifyOpenApi($request, $response);
+            $verifier->verifyOpenApi($request, $response, $routePath);
         } catch (OpenApiSchemaMismatchException $oasme) {
             $verifier->failSchemaMismatch($oasme, $response);
 
