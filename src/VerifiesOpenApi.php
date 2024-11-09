@@ -44,13 +44,24 @@ trait VerifiesOpenApi
     /**
      * Verify the response body for the given request and response.
      *
-     * @return bool `true` if the content has been validated, `false` if not (no matching schema)
+     * The optional path override will enforce using the given path to lookup the spec, instead
+     * of taking the path from the given `$request`.
+     * This is useful in cases of dynamic path elements where the configured route contains
+     * placeholders (typically something like `{id}`).
+     *
+     * @param  string|null $path optional path override
+     * @return bool        `true` if the content has been validated, `false` if not (no matching schema)
      *
      * @throws OpenApiSchemaMismatchException
      */
-    public function verifyOpenApi(ServerRequestInterface $request, ResponseInterface $response): bool
+    public function verifyOpenApi(ServerRequestInterface $request, ResponseInterface $response, ?string $path = null): bool
     {
-        return $this->verifyOpenApiResponseBody($request->getMethod(), $request->getUri()->getPath(), $response->getStatusCode(), (string) $response->getBody());
+        return $this->verifyOpenApiResponseBody(
+            $request->getMethod(),
+            $path ?? $request->getUri()->getPath(),
+            $response->getStatusCode(),
+            (string) $response->getBody()
+        );
     }
 
     public function getOpenApiSpecificationLoader(): ?OpenApiSpecificationLoader
