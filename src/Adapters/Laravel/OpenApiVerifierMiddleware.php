@@ -28,6 +28,10 @@ class OpenApiVerifierMiddleware extends PSR17Middleware
             $psrResponse = $this->psrHttpFactory->createResponse($response);
 
             $routePath = null;
+            if ($route = $request->route()) {
+                $routePath = $route->uri;
+            }
+
             $verifier->verifyOpenApi($psrRequest, $psrResponse, $routePath);
         } catch (OpenApiSchemaMismatchException $oasme) {
             $verifier->failSchemaMismatch($oasme, $psrResponse);
