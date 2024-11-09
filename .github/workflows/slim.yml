@@ -38,14 +38,16 @@ jobs:
 
       - name: Install framework deps
         run: |
-          composer require --dev slim/slim "^${{ matrix.slim }}"
-          composer require php-di/php-di
+          composer require slim/slim "^${{ matrix.slim }}"
 
       - name: Composer install
         uses: ramsey/composer-install@v3
         with:
           dependency-versions: ${{ matrix.dependencies }}
           composer-options: ${{ matrix.composer-options }}
+
+      - name: Refresh fixture specs
+        run: composer refresh-specs
 
       - name: PHPUnit + Code coverage
         run: |
