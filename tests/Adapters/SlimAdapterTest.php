@@ -2,11 +2,11 @@
 
 namespace Radebatz\OpenApi\Verifier\Tests\Adapters;
 
+use League\Container\Container;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Psr\Container\ContainerInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Radebatz\OpenApi\Verifier\Adapters\Slim\OpenApiResponseVerifier;
@@ -62,7 +62,7 @@ class SlimAdapterTest extends TestCase
     {
         $request = (new Psr17Factory())->createServerRequest($requestMethod, $requestUri);
 
-        $app = AppFactory::create(container: $this->container());
+        $app = AppFactory::create(container: new Container());
 
         // register test route as we do not have an actual app...
         if ($valid) {
@@ -94,27 +94,5 @@ class SlimAdapterTest extends TestCase
         $app->addRoutingMiddleware();
 
         return $app->handle($request);
-    }
-
-    protected function container(): ContainerInterface
-    {
-        return new class() implements ContainerInterface {
-            protected $container = [];
-
-            public function get(string $id)
-            {
-                return $this->container[$id] ?? null;
-            }
-
-            public function has(string $id): bool
-            {
-                return array_key_exists($id, $this->container);
-            }
-
-            public function set(string $id, $value)
-            {
-                $this->container[$id] = $value;
-            }
-        };
     }
 }

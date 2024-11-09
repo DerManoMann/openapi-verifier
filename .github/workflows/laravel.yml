@@ -41,7 +41,7 @@ jobs:
 
       - name: Install framework deps
         run: |
-          composer require --dev laravel/laravel "^${{ matrix.laravel }}"
+          composer require laravel/laravel "^${{ matrix.laravel }}"
 
       - name: Composer install
         uses: ramsey/composer-install@v3
