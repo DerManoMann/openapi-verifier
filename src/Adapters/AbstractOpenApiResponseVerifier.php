@@ -6,6 +6,8 @@ use OpenApi\Generator;
 
 trait AbstractOpenApiResponseVerifier
 {
+    protected ?string $openapiSpecification;
+
     protected function prepareOpenApiSpecificationLoader(string $srcDir, ?string $specification = null)
     {
         $appRoot = null;

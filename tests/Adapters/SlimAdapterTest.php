@@ -62,8 +62,7 @@ class SlimAdapterTest extends TestCase
     {
         $request = (new Psr17Factory())->createServerRequest($requestMethod, $requestUri);
 
-        AppFactory::setContainer($this->container());
-        $app = AppFactory::create();
+        $app = AppFactory::create(container: $this->container());
 
         // register test route as we do not have an actual app...
         if ($valid) {
@@ -90,8 +89,9 @@ class SlimAdapterTest extends TestCase
             });
         }
 
-        // register OpenApi verifier
+        // register OpenApi verifier BEFORE routing middleware
         $this->registerOpenApiVerifier($app, __DIR__ . '/../specifications/users.yaml');
+        $app->addRoutingMiddleware();
 
         return $app->handle($request);
     }
