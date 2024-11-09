@@ -17,7 +17,7 @@ class LaravelAdapterTest extends LaravelTestCase
     public function setUp(): void
     {
         if (!class_exists('\\Illuminate\\Foundation\\Application')) {
-            $this->markTestSkipped('not installed.');
+            $this->markTestSkipped('Laravel not installed.');
         }
 
         parent::setUp();
