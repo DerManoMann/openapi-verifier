@@ -6,6 +6,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Radebatz\OpenApi\Verifier\OpenApiSchemaMismatchException;
 use Radebatz\OpenApi\Verifier\VerifiesOpenApi;
+use Slim\Routing\RouteContext;
 
 class OpenApiVerifierMiddleware
 {
@@ -22,7 +23,11 @@ class OpenApiVerifierMiddleware
     {
         $response = $next ? $next($request, $response) : $response;
         $response = ($response instanceof RequestHandlerInterface) ? $response->handle($request) : $response;
+
         $routePath = null;
+        if ($route = RouteContext::fromRequest($request)->getRoute()) {
+            $routePath = $route->getPattern();
+        }
 
         /** @var VerifiesOpenApi $verifier */
         $verifier = $this->container->get(OpenApiVerifierMiddleware::OPENAPI_VERFIER_CONTAINER_KEY);
