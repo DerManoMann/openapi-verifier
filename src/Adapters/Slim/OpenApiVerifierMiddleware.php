@@ -9,6 +9,8 @@ use Radebatz\OpenApi\Verifier\VerifiesOpenApi;
 
 class OpenApiVerifierMiddleware
 {
+    public const OPENAPI_VERFIER_CONTAINER_KEY = 'openapi-verifier';
+
     protected $container;
 
     public function __construct(ContainerInterface $container)
@@ -22,7 +24,7 @@ class OpenApiVerifierMiddleware
         $response = ($response instanceof RequestHandlerInterface) ? $response->handle($request) : $response;
 
         /** @var VerifiesOpenApi $verifier */
-        $verifier = $this->container->get('openapi-verifier');
+        $verifier = $this->container->get(OpenApiVerifierMiddleware::OPENAPI_VERFIER_CONTAINER_KEY);
 
         try {
             $verifier->verifyOpenApi($request, $response);

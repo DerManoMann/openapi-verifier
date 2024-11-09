@@ -21,7 +21,7 @@ trait OpenApiResponseVerifier
         $this->prepareOpenApiSpecificationLoader('app', $specification);
 
         if ($this->getOpenApiSpecificationLoader()) {
-            $app->instance('openapi-verifier', $this);
+            $app->instance(OpenApiVerifierMiddleware::OPENAPI_VERFIER_CONTAINER_KEY, $this);
             $app[Kernel::class]->pushMiddleware(OpenApiVerifierMiddleware::class);
         }
     }
