@@ -111,11 +111,6 @@ parameters:
 			path: tests/Adapters/LaravelAdapterTest.php
 
 		-
-			message: "#^Function OpenApi\\\\scan not found\\.$#"
-			count: 1
-			path: tests/Adapters/LaravelAdapterTest.php
-
-		-
 			message: "#^If condition is always true\\.$#"
 			count: 1
 			path: tests/Adapters/LaravelAdapterTest.php
@@ -139,86 +134,6 @@ parameters:
 			message: "#^Ternary operator condition is always false\\.$#"
 			count: 1
 			path: tests/Adapters/LaravelAdapterTest.php
-
-		-
-			message: "#^Access to an undefined property Radebatz\\\\OpenApi\\\\Verifier\\\\Tests\\\\Adapters\\\\Slim3AdapterTest\\:\\:\\$app\\.$#"
-			count: 1
-			path: tests/Adapters/Slim3AdapterTest.php
-
-		-
-			message: "#^Access to an undefined property Radebatz\\\\OpenApi\\\\Verifier\\\\Tests\\\\Adapters\\\\Slim3AdapterTest\\:\\:\\$openapiSpecification\\.$#"
-			count: 3
-			path: tests/Adapters/Slim3AdapterTest.php
-
-		-
-			message: "#^Call to method add\\(\\) on an unknown class Slim\\\\App\\.$#"
-			count: 1
-			path: tests/Adapters/Slim3AdapterTest.php
-
-		-
-			message: "#^Call to method get\\(\\) on an unknown class Slim\\\\App\\.$#"
-			count: 1
-			path: tests/Adapters/Slim3AdapterTest.php
-
-		-
-			message: "#^Call to method getContainer\\(\\) on an unknown class Slim\\\\App\\.$#"
-			count: 1
-			path: tests/Adapters/Slim3AdapterTest.php
-
-		-
-			message: "#^Call to method process\\(\\) on an unknown class Slim\\\\App\\.$#"
-			count: 1
-			path: tests/Adapters/Slim3AdapterTest.php
-
-		-
-			message: "#^Call to static method createFromEnvironment\\(\\) on an unknown class Slim\\\\Http\\\\Request\\.$#"
-			count: 1
-			path: tests/Adapters/Slim3AdapterTest.php
-
-		-
-			message: "#^Call to static method mock\\(\\) on an unknown class Slim\\\\Http\\\\Environment\\.$#"
-			count: 1
-			path: tests/Adapters/Slim3AdapterTest.php
-
-		-
-			message: "#^Function OpenApi\\\\scan not found\\.$#"
-			count: 1
-			path: tests/Adapters/Slim3AdapterTest.php
-
-		-
-			message: "#^If condition is always true\\.$#"
-			count: 1
-			path: tests/Adapters/Slim3AdapterTest.php
-
-		-
-			message: "#^Instantiated class Slim\\\\App not found\\.$#"
-			count: 1
-			path: tests/Adapters/Slim3AdapterTest.php
-
-		-
-			message: "#^Instantiated class Slim\\\\Http\\\\Response not found\\.$#"
-			count: 1
-			path: tests/Adapters/Slim3AdapterTest.php
-
-		-
-			message: "#^Negated boolean expression is always false\\.$#"
-			count: 1
-			path: tests/Adapters/Slim3AdapterTest.php
-
-		-
-			message: "#^PHPDoc tag @var for variable \\$app contains unknown class Slim\\\\App\\.$#"
-			count: 1
-			path: tests/Adapters/Slim3AdapterTest.php
-
-		-
-			message: "#^Parameter \\$app of method Radebatz\\\\OpenApi\\\\Verifier\\\\Tests\\\\Adapters\\\\Slim3AdapterTest\\:\\:registerOpenApiVerifier\\(\\) has invalid type Slim\\\\App\\.$#"
-			count: 1
-			path: tests/Adapters/Slim3AdapterTest.php
-
-		-
-			message: "#^Ternary operator condition is always false\\.$#"
-			count: 1
-			path: tests/Adapters/Slim3AdapterTest.php
 
 		-
 			message: "#^Access to an undefined property Radebatz\\\\OpenApi\\\\Verifier\\\\Tests\\\\Adapters\\\\Slim4AdapterTest\\:\\:\\$app\\.$#"
@@ -252,11 +167,6 @@ parameters:
 
 		-
 			message: "#^Call to static method setContainer\\(\\) on an unknown class Slim\\\\Factory\\\\AppFactory\\.$#"
-			count: 1
-			path: tests/Adapters/Slim4AdapterTest.php
-
-		-
-			message: "#^Function OpenApi\\\\scan not found\\.$#"
 			count: 1
 			path: tests/Adapters/Slim4AdapterTest.php
 
