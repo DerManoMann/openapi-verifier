@@ -22,9 +22,9 @@ trait OpenApiResponseVerifier
 
             // deal with different container implementations
             if ($container instanceof \ArrayAccess) {
-                $container['openapi-verifier'] = $this;
+                $container[OpenApiVerifierMiddleware::OPENAPI_VERFIER_CONTAINER_KEY] = $this;
             } elseif (method_exists($container, 'set')) {
-                $container->set('openapi-verifier', $this);
+                $container->set(OpenApiVerifierMiddleware::OPENAPI_VERFIER_CONTAINER_KEY, $this);
             } else {
                 throw new \RuntimeException('Unusable container');
             }

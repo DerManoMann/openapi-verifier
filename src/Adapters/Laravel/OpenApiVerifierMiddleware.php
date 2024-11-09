@@ -11,6 +11,8 @@ use Radebatz\OpenApi\Verifier\VerifiesOpenApi;
  */
 class OpenApiVerifierMiddleware extends PSR17Middleware
 {
+    public const OPENAPI_VERFIER_CONTAINER_KEY = 'openapi-verifier';
+
     public function handle($request, \Closure $next)
     {
         return $next($request);
@@ -19,7 +21,7 @@ class OpenApiVerifierMiddleware extends PSR17Middleware
     public function terminate($request, $response)
     {
         /** @var VerifiesOpenApi $verifier */
-        $verifier = app('openapi-verifier');
+        $verifier = app(OpenApiVerifierMiddleware::OPENAPI_VERFIER_CONTAINER_KEY);
 
         try {
             $verifier->verifyOpenApi(
