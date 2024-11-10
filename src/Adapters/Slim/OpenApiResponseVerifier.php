@@ -25,6 +25,8 @@ trait OpenApiResponseVerifier
                 $container[OpenApiVerifierMiddleware::OPENAPI_VERFIER_CONTAINER_KEY] = $this;
             } elseif (method_exists($container, 'set')) {
                 $container->set(OpenApiVerifierMiddleware::OPENAPI_VERFIER_CONTAINER_KEY, $this);
+            } elseif (method_exists($container, 'add')) {
+                $container->add(OpenApiVerifierMiddleware::OPENAPI_VERFIER_CONTAINER_KEY, $this);
             } else {
                 throw new \RuntimeException('Unusable container');
             }

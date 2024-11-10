@@ -31,7 +31,7 @@ After that all required classes should be availabe in your project to add routin
 The `VerifiesOpenApi` trait can be used directly and customized in 3 ways in order to provide the reqired OpenApi specifications:
 * Overriding the method `getOpenApiSpecificationLoader()` as shown below
 * Populating the `$openapiSpecificationLoader` property.
-* Creating a property `$openapiSpecification` pointing to the specification file
+* Setting a property `$openapiSpecification` pointing to the specification file
 
 ```php
 <?php
@@ -116,6 +116,8 @@ The adapter will try to resolve the specification dynamically in this order:
 
 Simplest way is to register the verifier in the `Tests\Functional\BaseTestCase`.
 
+**Attention**: In order to be able to resolve routes with placeholders (i.e. something like `/user/{id}`) it is required to register the verifier **before** the routing middleware.
+
 ```php
 <?php
 
@@ -137,8 +139,9 @@ class BaseTestCase extends TestCase
         
         // register OpenApi verifier
         $this->registerOpenApiVerifier($app, __DIR__ . '/../specifications/users.yaml');
+        $app->addRoutingMiddleware();
         
-        ...
+        // ...
     }
 }
 ```

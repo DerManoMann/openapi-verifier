@@ -41,13 +41,16 @@ jobs:
 
       - name: Install framework deps
         run: |
-          composer require --dev laravel/laravel "^${{ matrix.laravel }}"
+          composer require laravel/laravel "^${{ matrix.laravel }}"
 
       - name: Composer install
         uses: ramsey/composer-install@v3
         with:
           dependency-versions: ${{ matrix.dependencies }}
           composer-options: ${{ matrix.composer-options }}
+
+      - name: Refresh fixture specs
+        run: composer refresh-specs
 
       - name: PHPUnit
         run: |

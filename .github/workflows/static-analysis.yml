@@ -24,5 +24,10 @@ jobs:
         with:
           dependency-versions: 'highest'
 
+      - name: Install frameworks
+        run: |
+          composer require laravel/laravel
+          composer require  slim/slim
+
       - name: Static Code Analysis
         run: composer analyse
