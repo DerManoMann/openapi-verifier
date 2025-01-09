@@ -1,86 +1,121 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Call to method failSchemaMismatch\\(\\) on an unknown class Radebatz\\\\OpenApi\\\\Verifier\\\\VerifiesOpenApi\\.$#"
+			message: '#^Call to method failSchemaMismatch\(\) on an unknown class Radebatz\\OpenApi\\Verifier\\VerifiesOpenApi\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Adapters/Laravel/OpenApiVerifierMiddleware.php
 
 		-
-			message: "#^Call to method verifyOpenApi\\(\\) on an unknown class Radebatz\\\\OpenApi\\\\Verifier\\\\VerifiesOpenApi\\.$#"
+			message: '#^Call to method verifyOpenApi\(\) on an unknown class Radebatz\\OpenApi\\Verifier\\VerifiesOpenApi\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Adapters/Laravel/OpenApiVerifierMiddleware.php
 
 		-
-			message: "#^PHPDoc tag @var for variable \\$verifier has invalid type Radebatz\\\\OpenApi\\\\Verifier\\\\VerifiesOpenApi\\.$#"
+			message: '#^PHPDoc tag @var for variable \$verifier has invalid type Radebatz\\OpenApi\\Verifier\\VerifiesOpenApi\.$#'
+			identifier: varTag.trait
 			count: 1
 			path: src/Adapters/Laravel/OpenApiVerifierMiddleware.php
 
 		-
-			message: "#^Call to method failSchemaMismatch\\(\\) on an unknown class Radebatz\\\\OpenApi\\\\Verifier\\\\VerifiesOpenApi\\.$#"
+			message: '#^Call to method failSchemaMismatch\(\) on an unknown class Radebatz\\OpenApi\\Verifier\\VerifiesOpenApi\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Adapters/Slim/OpenApiVerifierMiddleware.php
 
 		-
-			message: "#^Call to method verifyOpenApi\\(\\) on an unknown class Radebatz\\\\OpenApi\\\\Verifier\\\\VerifiesOpenApi\\.$#"
+			message: '#^Call to method verifyOpenApi\(\) on an unknown class Radebatz\\OpenApi\\Verifier\\VerifiesOpenApi\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Adapters/Slim/OpenApiVerifierMiddleware.php
 
 		-
-			message: "#^PHPDoc tag @var for variable \\$verifier has invalid type Radebatz\\\\OpenApi\\\\Verifier\\\\VerifiesOpenApi\\.$#"
+			message: '#^PHPDoc tag @var for variable \$verifier has invalid type Radebatz\\OpenApi\\Verifier\\VerifiesOpenApi\.$#'
+			identifier: varTag.trait
 			count: 1
 			path: src/Adapters/Slim/OpenApiVerifierMiddleware.php
 
 		-
-			message: "#^Call to sprintf contains 2 placeholders, 1 value given\\.$#"
+			message: '#^Call to sprintf contains 2 placeholders, 1 value given\.$#'
+			identifier: argument.sprintf
 			count: 1
 			path: src/OpenApiSchemaMismatchException.php
 
 		-
-			message: "#^Access to an undefined property object\\:\\:\\$anyOf\\.$#"
-			count: 1
-			path: src/OpenApiSpecificationLoader.php
-
-		-
-			message: "#^If condition is always true\\.$#"
+			message: '#^Call to function property_exists\(\) with \$this\(Radebatz\\OpenApi\\Verifier\\Tests\\Adapters\\LaravelAdapterTest\) and ''openapiSpecification'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
 			count: 1
 			path: tests/Adapters/LaravelAdapterTest.php
 
 		-
-			message: "#^Negated boolean expression is always false\\.$#"
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: tests/Adapters/LaravelAdapterTest.php
+
+		-
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
 			count: 2
 			path: tests/Adapters/LaravelAdapterTest.php
 
 		-
-			message: "#^Ternary operator condition is always false\\.$#"
+			message: '#^Ternary operator condition is always false\.$#'
+			identifier: ternary.alwaysFalse
 			count: 1
 			path: tests/Adapters/LaravelAdapterTest.php
 
 		-
-			message: "#^Access to an undefined property Radebatz\\\\OpenApi\\\\Verifier\\\\Tests\\\\Adapters\\\\SlimAdapterTest\\:\\:\\$app\\.$#"
+			message: '#^Access to an undefined property Radebatz\\OpenApi\\Verifier\\Tests\\Adapters\\SlimAdapterTest\:\:\$app\.$#'
+			identifier: property.notFound
 			count: 1
 			path: tests/Adapters/SlimAdapterTest.php
 
 		-
-			message: "#^If condition is always true\\.$#"
+			message: '#^Call to function property_exists\(\) with \$this\(Radebatz\\OpenApi\\Verifier\\Tests\\Adapters\\SlimAdapterTest\) and ''openapiSpecification'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
 			count: 1
 			path: tests/Adapters/SlimAdapterTest.php
 
 		-
-			message: "#^Negated boolean expression is always false\\.$#"
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
 			count: 1
 			path: tests/Adapters/SlimAdapterTest.php
 
 		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
 			count: 1
 			path: tests/Adapters/SlimAdapterTest.php
 
 		-
-			message: "#^Ternary operator condition is always false\\.$#"
+			message: '#^Right side of \|\| is always false\.$#'
+			identifier: booleanOr.rightAlwaysFalse
 			count: 1
 			path: tests/Adapters/SlimAdapterTest.php
 
 		-
-			message: "#^If condition is always true\\.$#"
+			message: '#^Ternary operator condition is always false\.$#'
+			identifier: ternary.alwaysFalse
+			count: 1
+			path: tests/Adapters/SlimAdapterTest.php
+
+		-
+			message: '#^Call to function is_object\(\) with Radebatz\\OpenApi\\Verifier\\OpenApiSpecificationLoader will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: tests/OpenApiSpecificationLoaderTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/OpenApiSpecificationLoaderTest.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
 			count: 1
 			path: tests/VerifiesOpenApiTest.php
