@@ -11,4 +11,3 @@ parameters:
         processTimeout: 300.0
     excludePaths:
         - 'tests/Fixtures/*'
-    ignoreErrors:
