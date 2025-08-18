@@ -1,6 +1,8 @@
 name: build
 
 on:
+  schedule:
+    - cron: "0 13 * * 1"
   push:
     branches:
       - main
@@ -16,4 +18,4 @@ jobs:
   slim-adapter:
     uses: ./.github/workflows/slim.yml
     with:
-      php-versions: '8.1,8.2,8.3,8.4'
+      php-versions: '8.1,8.2,8.3,8.4,8.5'
