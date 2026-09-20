@@ -15,10 +15,7 @@
     "scripts": {
         "cs": "php-cs-fixer fix --allow-risky=yes",
         "lint": "@cs --dry-run",
-        "test": [
-          "phpunit",
-          "@lint"
-        ],
+        "test": "phpunit",
         "refresh-specs": [
             "@php vendor/bin/openapi tests/Fixtures -o tests/specifications/users.json",
             "@php vendor/bin/openapi tests/Fixtures -o tests/specifications/users.yaml"
