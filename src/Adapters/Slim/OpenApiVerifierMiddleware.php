@@ -12,7 +12,7 @@ class OpenApiVerifierMiddleware
 {
     public const OPENAPI_VERFIER_CONTAINER_KEY = 'openapi-verifier';
 
-    protected $container;
+    protected ContainerInterface $container;
 
     public function __construct(ContainerInterface $container)
     {

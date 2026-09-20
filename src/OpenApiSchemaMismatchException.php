@@ -43,7 +43,7 @@ class OpenApiSchemaMismatchException extends \Exception
         // sanitize
         $errorTypeMap = [];
         foreach ($this->errors as $error) {
-            $wildcarded = preg_replace('/\[[0-9]+\]/', '[*]', $error['property']);
+            $wildcarded = preg_replace('/\[\d+\]/', '[*]', $error['property']);
 
             // ensures compatibility with both, JsonSchema 5.x and 6.x
             $constraintName = $error['constraint']['name']
@@ -58,13 +58,11 @@ class OpenApiSchemaMismatchException extends \Exception
                     'constraint' => $constraintName,
                     'message' => $error['message'],
                 ];
-            } else {
+            } elseif (!array_key_exists($wildcarded, $errorTypeMap[$errorType]['properties'])) {
                 // track usage of the same wildcard-property
-                if (!array_key_exists($wildcarded, $errorTypeMap[$errorType]['properties'])) {
-                    $errorTypeMap[$errorType]['properties'][$wildcarded] = 1;
-                } else {
-                    $errorTypeMap[$errorType]['properties'][$wildcarded]++;
-                }
+                $errorTypeMap[$errorType]['properties'][$wildcarded] = 1;
+            } else {
+                $errorTypeMap[$errorType]['properties'][$wildcarded]++;
             }
         }
 
