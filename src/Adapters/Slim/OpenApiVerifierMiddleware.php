@@ -25,7 +25,7 @@ class OpenApiVerifierMiddleware
         $response = ($response instanceof RequestHandlerInterface) ? $response->handle($request) : $response;
 
         $routePath = null;
-        if ($route = RouteContext::fromRequest($request)->getRoute()) {
+        if (($route = RouteContext::fromRequest($request)->getRoute()) instanceof \Slim\Interfaces\RouteInterface) {
             $routePath = $route->getPattern();
         }
 
