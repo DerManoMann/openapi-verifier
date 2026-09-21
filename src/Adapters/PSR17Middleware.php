@@ -7,7 +7,7 @@ use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 
 class PSR17Middleware
 {
-    protected $psrHttpFactory;
+    protected PsrHttpFactory $psrHttpFactory;
 
     public function __construct()
     {

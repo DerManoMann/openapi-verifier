@@ -12,7 +12,7 @@ class OpenApiVerifierMiddleware
 {
     public const OPENAPI_VERFIER_CONTAINER_KEY = 'openapi-verifier';
 
-    protected $container;
+    protected ContainerInterface $container;
 
     public function __construct(ContainerInterface $container)
     {
@@ -25,7 +25,7 @@ class OpenApiVerifierMiddleware
         $response = ($response instanceof RequestHandlerInterface) ? $response->handle($request) : $response;
 
         $routePath = null;
-        if ($route = RouteContext::fromRequest($request)->getRoute()) {
+        if (($route = RouteContext::fromRequest($request)->getRoute()) instanceof \Slim\Interfaces\RouteInterface) {
             $routePath = $route->getPattern();
         }
 

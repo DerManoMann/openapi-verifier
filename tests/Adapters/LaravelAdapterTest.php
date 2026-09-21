@@ -13,8 +13,7 @@ class LaravelAdapterTest extends LaravelTestCase
 {
     use OpenApiResponseVerifier;
 
-    /** @inheritdoc */
-    public function setUp(): void
+    protected function setUp(): void
     {
         if (!class_exists('\\Illuminate\\Foundation\\Application')) {
             $this->markTestSkipped('Laravel not installed.');

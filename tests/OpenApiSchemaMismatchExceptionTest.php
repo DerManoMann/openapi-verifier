@@ -29,7 +29,7 @@ class OpenApiSchemaMismatchExceptionTest extends TestCase
 
         $this->subject->setErrors($value);
 
-        static::assertSame(
+        self::assertSame(
             $value,
             $this->subject->getErrors(),
         );
@@ -43,7 +43,7 @@ class OpenApiSchemaMismatchExceptionTest extends TestCase
     ): void {
         $this->subject->setErrors($errors);
 
-        static::assertSame(
+        self::assertSame(
             $expected_result,
             $this->subject->getErrorSummary(),
         );

@@ -10,8 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
 
 trait VerifiesOpenApi
 {
-    /** @var OpenApiSpecificationLoader */
-    protected $openapiSpecificationLoader = null;
+    protected ?OpenApiSpecificationLoader $openapiSpecificationLoader = null;
 
     /**
      * Verify the response body for the given request method, path and status code.
@@ -66,10 +65,8 @@ trait VerifiesOpenApi
 
     public function getOpenApiSpecificationLoader(): ?OpenApiSpecificationLoader
     {
-        if (!$this->openapiSpecificationLoader) {
-            if (property_exists($this, 'openapiSpecification') && $this->openapiSpecification) {
-                $this->openapiSpecificationLoader = new OpenApiSpecificationLoader($this->openapiSpecification);
-            }
+        if (!$this->openapiSpecificationLoader && (property_exists($this, 'openapiSpecification') && $this->openapiSpecification)) {
+            $this->openapiSpecificationLoader = new OpenApiSpecificationLoader($this->openapiSpecification);
         }
 
         return $this->openapiSpecificationLoader;

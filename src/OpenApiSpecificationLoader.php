@@ -7,8 +7,8 @@ use Symfony\Component\Yaml\Yaml;
 
 class OpenApiSpecificationLoader
 {
-    protected $filename = null;
-    protected $specification = null;
+    protected $filename;
+    protected $specification;
 
     /**
      * @param $specification object|string The specification object or filename
@@ -32,10 +32,8 @@ class OpenApiSpecificationLoader
                         $parseException
                     );
                 }
-            } else {
-                if (file_exists($specification)) {
-                    $resolved = json_decode(file_get_contents($specification));
-                }
+            } elseif (file_exists($specification)) {
+                $resolved = json_decode(file_get_contents($specification));
             }
 
             if (!$resolved) {
@@ -58,7 +56,7 @@ class OpenApiSpecificationLoader
         $method = strtolower($method);
 
         $schema = $this->findPath(null, $path, $method, 'responses', $statusCode, 'content', 'application/json', 'schema');
-        if (!$schema && '/' != $path[0]) {
+        if (!$schema && '/' !== $path[0]) {
             // try absolue
             $schema = $this->findPath(null, '/' . $path, $method, 'responses', $statusCode, 'content', 'application/json', 'schema');
         }
@@ -78,7 +76,7 @@ class OpenApiSpecificationLoader
         $next = array_shift($path);
 
         if (null !== $next && property_exists($node, (string) $next)) {
-            if ($path) {
+            if ($path !== []) {
                 return $this->findPath((object) $node->{$next}, ...$path);
             }
 
@@ -101,7 +99,7 @@ class OpenApiSpecificationLoader
         }
 
         if (is_iterable($node) || is_object($node)) {
-            foreach ($node as $key => &$value) {
+            foreach ($node as &$value) {
                 $this->fixNullable($value);
             }
         }
