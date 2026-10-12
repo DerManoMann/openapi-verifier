@@ -3,6 +3,7 @@
 namespace Radebatz\OpenApi\Verifier\Adapters;
 
 use OpenApi\Generator;
+use Radebatz\OpenApi\Verifier\OpenApiSpecificationLoader;
 
 trait AbstractOpenApiResponseVerifier
 {
@@ -37,8 +38,9 @@ trait AbstractOpenApiResponseVerifier
         if (!$specificationLoader) {
             $appRoot = $appRoot ?: $this->getAppRoot();
 
+            // the generated document is an object, which the ?string property cannot hold
             $openApi = (new Generator())->generate([$appRoot . '/' . $srcDir]);
-            $this->openapiSpecification = json_decode($openApi->toJson());
+            $this->openapiSpecificationLoader = new OpenApiSpecificationLoader(json_decode($openApi->toJson()));
         }
     }
 
