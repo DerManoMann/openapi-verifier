@@ -26,3 +26,6 @@ jobs:
 
       - name: Static Code Analysis
         run: composer lint
+
+      - name: Fixture specs match the generator
+        run: composer check-specs

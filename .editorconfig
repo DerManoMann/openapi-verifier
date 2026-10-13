@@ -13,3 +13,7 @@ trim_trailing_whitespace = false
 
 [*.yml]
 indent_size = 2
+
+# written by `composer refresh-specs`, which ends the JSON without a newline
+[tests/specifications/*.json]
+insert_final_newline = false

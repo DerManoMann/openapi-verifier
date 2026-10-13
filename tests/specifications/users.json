@@ -80,6 +80,7 @@
                         "name": "id",
                         "in": "path",
                         "description": "User id",
+                        "required": true,
                         "schema": {
                             "type": "integer"
                         }

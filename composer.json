@@ -21,6 +21,10 @@
             "@php vendor/bin/openapi tests/Fixtures -o tests/specifications/users.json",
             "@php vendor/bin/openapi tests/Fixtures -o tests/specifications/users.yaml"
         ],
+        "check-specs": [
+            "@refresh-specs",
+            "git diff --exit-code -- tests/specifications"
+        ],
         "analyse": [
             "export XDEBUG_MODE=off && phpstan analyse --memory-limit=2G",
             "@rector --dry-run"
