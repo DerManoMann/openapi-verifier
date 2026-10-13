@@ -4,8 +4,14 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Introduction
-Allows to validate a controller response from your API project against a given [OpenAPI](https://www.openapis.org/)
-specification. 
+Verifies API responses against an [OpenAPI](https://www.openapis.org/) specification. A response body that does not
+match its documented schema is reported as a mismatch, so the specification and the API cannot drift apart unnoticed.
+
+Supported ways to hook in:
+* **Laravel and Slim tests**: a trait for the framework's test case. Every response a test receives is verified.
+* **PSR-15 middleware**: verifies the responses of any PSR-15 stack, such as Slim or Mezzio.
+* **Guzzle and PSR-18 clients**: verifies responses on the client side, against a running server or a mock.
+* **The verifier on its own**: `OpenApiVerifier` needs only a request and its response.
 
 ## Requirements
 * [PHP 8.2 or higher](http://www.php.net/)
@@ -24,7 +30,7 @@ Once composer is installed, execute the following command in your project root t
 ```sh
 composer require radebatz/openapi-verifier
 ```
-After that all required classes should be availabe in your project to add routing support.
+After that all required classes should be available in your project.
 
 ## Usage
 ### The verifier
