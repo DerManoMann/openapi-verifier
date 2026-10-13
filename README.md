@@ -65,6 +65,18 @@ required - The required properties (name) are missing
   - /data/* (2 more)
 ```
 
+### What is verified
+Only response bodies are verified. Requests, parameters and response headers are not checked.
+
+A response is only verified if the specification has a schema for it. A path, method or status code without one is
+skipped: `verify()` returns `false` and the adapters do nothing.
+
+The body is validated against that schema as written:
+* `required` properties and types are checked.
+* Formats that opis knows, such as `date-time` and `email`, are checked.
+* Properties the schema does not declare are allowed, unless it sets `additionalProperties: false`.
+* A body that is not valid JSON is validated as `null`.
+
 ### Guzzle and PSR-18 clients
 Verifying on the client side needs no framework. It works against a running server, a mock
 handler or anything else a client can talk to.
@@ -247,6 +259,34 @@ class UsersTest extends BaseTestCase
     }
 }
 ```
+
+## Upgrading from 2.x
+**Requirements**
+* PHP 8.2 or higher.
+* `opis/json-schema` replaces `justinrainbow/json-schema`.
+* `symfony/psr-http-message-bridge` 7 is allowed alongside 6.
+
+**Validation**
+* A `$ref` must be a JSON pointer such as `#/components/schemas/User`. `justinrainbow` also accepted
+  `#components/schemas/User`, which now fails as an unresolved reference.
+* Messages are opis's: "The required properties (name) are missing" where it was "The property name is required".
+* OpenAPI 3.1 documents are no longer rewritten. A `nullable` in one has no effect, as in the specification.
+
+**API**
+* `OpenApiSchemaMismatchException::getErrors()` returns `Schema\SchemaError` objects.
+* `OpenApiSpecificationLoader::getResponseSchemaUrlFor()` and `findPath()` are removed. `getResponseSchemaFor()`
+  returns the schema with its components attached.
+* `VerifiesOpenApi::verifyOpenApi()` takes a `RequestInterface`.
+* `VerifiesOpenApi::failSchemaMismatch()` returns `void` and joins its parts with newlines.
+* `$openapiSpecification` is `object|string|null`, with a `null` default.
+
+**Adapters**
+* Nothing is put in a container any more, and `OPENAPI_VERFIER_CONTAINER_KEY` is gone from both middleware.
+* `Adapters\Slim\OpenApiVerifierMiddleware` and `Adapters\PSR17Middleware` are removed. The
+  [PSR-15 middleware](#psr-15-middleware) replaces the first.
+* The Slim adapter's `registerOpenApiVerifier()` requires an `App`.
+* The Laravel middleware is `final` and takes an `OpenApiVerifier` in its constructor.
+* The Slim verifier can be registered before or after the routing middleware.
 
 ## License
 The openapi-verifier project is released under the [MIT license](LICENSE).
