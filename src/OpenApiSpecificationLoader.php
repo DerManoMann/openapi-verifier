@@ -45,29 +45,23 @@ class OpenApiSpecificationLoader
             throw new \InvalidArgumentException('Invalid specification');
         }
 
-        return $this->fixNullable($resolved);
+        return $resolved;
     }
 
     /**
-     * Get a schema url for the response matching the given parameters.
-     *
-     * `$path` may be a concrete path (`/user/1`) or a template from the specification (`/user/{id}`).
+     * The document's OpenAPI version, `3.0.0` if it does not say.
      */
-    public function getResponseSchemaUrlFor(string $method, string $path, int $statusCode, ?string $contentType = null): ?string
+    public function getOpenApiVersion(): string
     {
-        if (!($schema = $this->getResponseSchemaFor($method, $path, $statusCode, $contentType)) instanceof \stdClass) {
-            return null;
-        }
-
-        // copy, so the components do not end up inside the specification itself
-        $schema = clone $schema;
-        $schema->components = $this->property($this->specification, 'components') ?? new \stdClass();
-
-        return 'data://application/json;base64,' . base64_encode((string) json_encode($schema));
+        return (string) ($this->property($this->specification, 'openapi') ?? '3.0.0');
     }
 
     /**
      * Get the schema of the response matching the given parameters, if there is one.
+     *
+     * `$path` may be a concrete path (`/user/1`) or a template from the specification (`/user/{id}`).
+     * The schema is as the document writes it, in the dialect of `getOpenApiVersion()`, and
+     * carries the specification's `components`, so `#/components/...` references resolve within it.
      */
     public function getResponseSchemaFor(string $method, string $path, int $statusCode, ?string $contentType = null): ?\stdClass
     {
@@ -79,9 +73,15 @@ class OpenApiSpecificationLoader
         $operation = $this->property($pathItem, strtolower($method));
         $response = $this->resolveResponse($this->property($operation, 'responses'), $statusCode);
         $mediaType = $this->resolveMediaType($this->property($response, 'content'), $contentType);
-        $schema = $this->property($mediaType, 'schema');
+        if (null === ($schema = $this->property($mediaType, 'schema'))) {
+            return null;
+        }
 
-        return null !== $schema ? (object) $schema : null;
+        // copy, so the components do not end up inside the specification itself
+        $schema = is_object($schema) ? clone $schema : (object) $schema;
+        $schema->components = $this->property($this->specification, 'components') ?? new \stdClass();
+
+        return $schema;
     }
 
     /**
@@ -217,26 +217,5 @@ class OpenApiSpecificationLoader
         }
 
         return null;
-    }
-
-    // https://github.com/justinrainbow/json-schema/issues/551
-    protected function fixNullable(&$node)
-    {
-        if (is_object($node) && property_exists($node, 'nullable') && property_exists($node, 'type')) {
-            $anyOf = [
-                ['type' => $node->type, 'format' => property_exists($node, 'format') ? $node->format : ''],
-                ['type' => null],
-            ];
-            unset($node->type);
-            $node->anyOf = $anyOf;
-        }
-
-        if (is_iterable($node) || is_object($node)) {
-            foreach ($node as &$value) {
-                $this->fixNullable($value);
-            }
-        }
-
-        return $node;
     }
 }

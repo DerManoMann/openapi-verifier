@@ -2,22 +2,15 @@
 
 namespace Radebatz\OpenApi\Verifier;
 
-/**
- * @phpstan-type JsonSchemaValidationError array{
- *  property: string,
- *  pointer: string,
- *  message: string,
- *  constraint: string|array{name: string, params: array<mixed>},
- *  context: int
- * }
- */
+use Radebatz\OpenApi\Verifier\Schema\SchemaError;
+
 class OpenApiSchemaMismatchException extends \Exception
 {
-    /** @var list<JsonSchemaValidationError> */
+    /** @var list<SchemaError> */
     protected array $errors = [];
 
     /**
-     * @return list<JsonSchemaValidationError>
+     * @return list<SchemaError>
      */
     public function getErrors(): array
     {
@@ -25,7 +18,7 @@ class OpenApiSchemaMismatchException extends \Exception
     }
 
     /**
-     * @param list<JsonSchemaValidationError> $errors
+     * @param list<SchemaError> $errors
      */
     public function setErrors(array $errors): OpenApiSchemaMismatchException
     {
@@ -34,49 +27,32 @@ class OpenApiSchemaMismatchException extends \Exception
         return $this;
     }
 
+    /**
+     * The errors grouped by keyword and message, one line per failing pointer.
+     *
+     * Array indices in a pointer are replaced by `*`, so the same error on every item of a list
+     * is one line with a count.
+     */
     public function getErrorSummary(): ?string
     {
         if (!$this->errors) {
             return null;
         }
 
-        // sanitize
-        $errorTypeMap = [];
+        $groups = [];
         foreach ($this->errors as $error) {
-            $wildcarded = preg_replace('/\[\d+\]/', '[*]', $error['property']);
-
-            // ensures compatibility with both, JsonSchema 5.x and 6.x
-            $constraintName = $error['constraint']['name']
-                ?? $error['constraint'];
-
-            $errorType = sprintf('%s|%s', $constraintName, $error['message']);
-            if (!array_key_exists($errorType, $errorTypeMap)) {
-                $errorTypeMap[$errorType] = [
-                    'properties' => [
-                        $wildcarded => 1,
-                    ],
-                    'constraint' => $constraintName,
-                    'message' => $error['message'],
-                ];
-            } elseif (!array_key_exists($wildcarded, $errorTypeMap[$errorType]['properties'])) {
-                // track usage of the same wildcard-property
-                $errorTypeMap[$errorType]['properties'][$wildcarded] = 1;
-            } else {
-                $errorTypeMap[$errorType]['properties'][$wildcarded]++;
-            }
+            $pointer = (string) preg_replace('#/\d+(?=/|$)#', '/*', $error->pointer) ?: '/';
+            $key = $error->keyword . '|' . $error->message;
+            $groups[$key]['keyword'] = $error->keyword;
+            $groups[$key]['message'] = $error->message;
+            $groups[$key]['pointers'][$pointer] = ($groups[$key]['pointers'][$pointer] ?? 0) + 1;
         }
 
         $summary = [];
-        foreach ($errorTypeMap as $errorType) {
-            $summary[] = sprintf('%s - %s', $errorType['constraint'], $errorType['message']);
-
-            foreach ($errorType['properties'] as $propertyName => $propertyAmount) {
-                // if the property errored multiple times, add the amount to the error-message
-                if (1 === $propertyAmount) {
-                    $summary[] = sprintf('  - %s', $propertyName);
-                } else {
-                    $summary[] = sprintf('  - %s (%s more)', $propertyName, $propertyAmount - 1);
-                }
+        foreach ($groups as $group) {
+            $summary[] = sprintf('%s - %s', $group['keyword'], $group['message']);
+            foreach ($group['pointers'] as $pointer => $count) {
+                $summary[] = 1 === $count ? sprintf('  - %s', $pointer) : sprintf('  - %s (%s more)', $pointer, $count - 1);
             }
         }
 

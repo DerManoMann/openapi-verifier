@@ -2,10 +2,10 @@
 
 namespace Radebatz\OpenApi\Verifier;
 
-use JsonSchema\Uri\UriRetriever;
-use JsonSchema\Validator;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Radebatz\OpenApi\Verifier\Schema\OpisSchemaValidator;
+use Radebatz\OpenApi\Verifier\Schema\SchemaValidator;
 
 /**
  * Verifies responses against an OpenAPI specification.
@@ -14,16 +14,21 @@ use Psr\Http\Message\ResponseInterface;
  */
 final class OpenApiVerifier
 {
-    public function __construct(private readonly OpenApiSpecificationLoader $specificationLoader)
-    {
+    private readonly SchemaValidator $schemaValidator;
+
+    public function __construct(
+        private readonly OpenApiSpecificationLoader $specificationLoader,
+        ?SchemaValidator $schemaValidator = null,
+    ) {
+        $this->schemaValidator = $schemaValidator ?? new OpisSchemaValidator();
     }
 
     /**
      * @param object|string $specification the specification object or filename
      */
-    public static function fromSpecification(object|string $specification): self
+    public static function fromSpecification(object|string $specification, ?SchemaValidator $schemaValidator = null): self
     {
-        return new self(new OpenApiSpecificationLoader($specification));
+        return new self(new OpenApiSpecificationLoader($specification), $schemaValidator);
     }
 
     public function getSpecificationLoader(): OpenApiSpecificationLoader
@@ -68,16 +73,13 @@ final class OpenApiVerifier
      */
     public function verifyResponseBody(string $method, string $path, int $statusCode, string $body, ?string $contentType = null): bool
     {
-        if (!$schemaUrl = $this->specificationLoader->getResponseSchemaUrlFor($method, $path, $statusCode, $contentType)) {
+        if (!($schema = $this->specificationLoader->getResponseSchemaFor($method, $path, $statusCode, $contentType)) instanceof \stdClass) {
             return false;
         }
 
-        $validator = new Validator();
-        $validator->check(json_decode($body), (new UriRetriever())->retrieve($schemaUrl));
-
-        if (!$validator->isValid()) {
+        if ([] !== ($errors = $this->schemaValidator->validate(json_decode($body), $schema, $this->specificationLoader->getOpenApiVersion()))) {
             throw (new OpenApiSchemaMismatchException(sprintf('Schema mismatch: %s[%s]:%s', $method, $statusCode, $path)))
-                ->setErrors($validator->getErrors());
+                ->setErrors($errors);
         }
 
         return true;

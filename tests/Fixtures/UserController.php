@@ -31,14 +31,14 @@ class UserController
                 description: 'Users',
                 content: new OAT\JsonContent(
                     allOf: [
-                        new OAT\Schema(ref: '#components/schemas/paginate'),
+                        new OAT\Schema(ref: '#/components/schemas/paginate'),
                         new OAT\Schema(
                             required: ['data'],
                             properties: [
                                 new OAT\Property(
                                     property: 'data',
                                     type: 'array',
-                                    items: new OAT\Items(ref: '#components/schemas/user')
+                                    items: new OAT\Items(ref: '#/components/schemas/user')
                                 ),
                             ],
                         ),
@@ -47,7 +47,7 @@ class UserController
             ),
             new OAT\Response(
                 response: 401,
-                ref: '#components/responses/401'
+                ref: '#/components/responses/401'
             ),
         ],
     )]
@@ -84,7 +84,7 @@ class UserController
             ),
             new OAT\Response(
                 response: 401,
-                ref: '#components/responses/401'
+                ref: '#/components/responses/401'
             ),
         ],
     )]

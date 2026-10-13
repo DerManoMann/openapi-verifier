@@ -36,7 +36,7 @@ class SlimAdapterTest extends TestCase
     public function failVerificationUsers(): void
     {
         $this->expectException(AssertionFailedError::class);
-        $this->expectExceptionMessageMatches('/required - The property name is required/');
+        $this->expectExceptionMessageMatches('/required - The required properties \(name\) are missing/');
 
         $this->runApp('GET', '/users', valid: false);
     }
@@ -53,7 +53,7 @@ class SlimAdapterTest extends TestCase
     public function failVerificationUser(): void
     {
         $this->expectException(AssertionFailedError::class);
-        $this->expectExceptionMessageMatches('/required - The property email is required/');
+        $this->expectExceptionMessageMatches('/required - The required properties \(email\) are missing/');
 
         $this->runApp('GET', '/user/1', valid: false);
     }
@@ -63,7 +63,7 @@ class SlimAdapterTest extends TestCase
     {
         // the path is matched against the specification's templates, so the order no longer matters
         $this->expectException(AssertionFailedError::class);
-        $this->expectExceptionMessageMatches('/required - The property email is required/');
+        $this->expectExceptionMessageMatches('/required - The required properties \(email\) are missing/');
 
         $this->runApp('GET', '/user/1', valid: false, verifierFirst: false);
     }

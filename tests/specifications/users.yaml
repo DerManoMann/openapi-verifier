@@ -31,10 +31,10 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - { $ref: '#components/schemas/paginate' }
-                  - { required: [data], properties: { data: { type: array, items: { $ref: '#components/schemas/user' } } }, type: object }
+                  - { $ref: '#/components/schemas/paginate' }
+                  - { required: [data], properties: { data: { type: array, items: { $ref: '#/components/schemas/user' } } }, type: object }
         '401':
-          $ref: '#components/responses/401'
+          $ref: '#/components/responses/401'
       security:
         -
           JWT: []
@@ -62,7 +62,7 @@ paths:
                   data: { $ref: '#/components/schemas/user' }
                 type: object
         '401':
-          $ref: '#components/responses/401'
+          $ref: '#/components/responses/401'
       security:
         -
           JWT: []
