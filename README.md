@@ -49,6 +49,37 @@ How the response is looked up:
 * **Media type**: the response's `Content-Type`, including `+json` types such as `application/problem+json`.
   Without a match it falls back to `application/json`. Only JSON bodies are validated.
 
+### Guzzle and PSR-18 clients
+Verifying on the client side needs no framework. It works against a running server, a mock
+handler or anything else a client can talk to.
+
+**Guzzle**: push the middleware onto the handler stack. A response that does not match makes the
+request throw `OpenApiSchemaMismatchException`.
+
+```php
+use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
+use Radebatz\OpenApi\Verifier\Adapters\Guzzle\OpenApiVerifierMiddleware;
+use Radebatz\OpenApi\Verifier\OpenApiVerifier;
+
+$stack = HandlerStack::create();
+$stack->push(new OpenApiVerifierMiddleware(OpenApiVerifier::fromSpecification('openapi.yaml')), 'openapi-verifier');
+
+$client = new Client(['handler' => $stack, 'base_uri' => 'http://localhost:8080']);
+$client->get('/user/1'); // verified against `/user/{id}`
+```
+
+**PSR-18**: wrap any `Psr\Http\Client\ClientInterface`, Guzzle's included.
+
+```php
+use Radebatz\OpenApi\Verifier\Adapters\Psr18\OpenApiVerifyingClient;
+
+$client = new OpenApiVerifyingClient($psr18Client, OpenApiVerifier::fromSpecification('openapi.yaml'));
+$response = $client->sendRequest($request);
+```
+
+Either way the response body is left at its start, so it can be read as usual afterwards.
+
 ### Manual verification
 The `VerifiesOpenApi` trait can be used directly and customized in 3 ways in order to provide the reqired OpenApi specifications:
 * Overriding the method `getOpenApiSpecificationLoader()` as shown below

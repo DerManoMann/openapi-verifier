@@ -56,11 +56,13 @@
         "justinrainbow/json-schema": "^5.2.13 || ^6",
         "nyholm/psr7": "^1.1",
         "nyholm/psr7-server": "^1.0",
+        "psr/http-client": "^1.0",
         "psr/http-message": "^2.0",
         "symfony/psr-http-message-bridge": "^6.0 || ^7.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.62.0",
+        "guzzlehttp/guzzle": "^7.8",
         "laravel/laravel": "^12.0 || ^13.0",
         "league/container": "^4.2",
         "phpstan/phpstan": "^2.1",
@@ -71,6 +73,7 @@
         "zircote/swagger-php": "^4.8 || ^5.0 || ^6.0"
     },
     "suggest": {
+        "guzzlehttp/guzzle": "To verify responses in a Guzzle client, with the Guzzle middleware",
         "laravel/framework": "To use the Laravel adapter",
         "slim/slim": "To use the Slim adapter",
         "zircote/swagger-php": "To generate the specification from PHP attributes when none is given"
