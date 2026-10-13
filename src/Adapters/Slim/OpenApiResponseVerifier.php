@@ -2,7 +2,10 @@
 
 namespace Radebatz\OpenApi\Verifier\Adapters\Slim;
 
+use Psr\Http\Message\ResponseInterface;
 use Radebatz\OpenApi\Verifier\Adapters\AbstractOpenApiResponseVerifier;
+use Radebatz\OpenApi\Verifier\Adapters\Psr15\OpenApiVerifierMiddleware;
+use Radebatz\OpenApi\Verifier\OpenApiSchemaMismatchException;
 use Radebatz\OpenApi\Verifier\VerifiesOpenApi;
 use Slim\App;
 
@@ -10,27 +13,15 @@ trait OpenApiResponseVerifier
 {
     use AbstractOpenApiResponseVerifier, VerifiesOpenApi;
 
-    public function registerOpenApiVerifier(?App $app, ?string $specification = null)
+    public function registerOpenApiVerifier(App $app, ?string $specification = null): void
     {
-        /** @var App $app */
-        $app = $app ?: $this->app;
-
         $this->prepareOpenApiSpecificationLoader('src', $specification);
 
         if ($this->getOpenApiSpecificationLoader()) {
-            $container = $app->getContainer();
-
-            // deal with different container implementations
-            if ($container instanceof \ArrayAccess) {
-                $container[OpenApiVerifierMiddleware::OPENAPI_VERFIER_CONTAINER_KEY] = $this;
-            } elseif (method_exists($container, 'set')) {
-                $container->set(OpenApiVerifierMiddleware::OPENAPI_VERFIER_CONTAINER_KEY, $this);
-            } elseif (method_exists($container, 'add')) {
-                $container->add(OpenApiVerifierMiddleware::OPENAPI_VERFIER_CONTAINER_KEY, $this);
-            } else {
-                throw new \RuntimeException('Unusable container');
-            }
-            $app->add(new OpenApiVerifierMiddleware($container));
+            $app->add(new OpenApiVerifierMiddleware(
+                $this->getOpenApiVerifier(),
+                fn (OpenApiSchemaMismatchException $oasme, ResponseInterface $response) => $this->failSchemaMismatch($oasme, $response)
+            ));
         }
     }
 }

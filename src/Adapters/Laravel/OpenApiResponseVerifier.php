@@ -4,7 +4,9 @@ namespace Radebatz\OpenApi\Verifier\Adapters\Laravel;
 
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Foundation\Application;
+use Psr\Http\Message\ResponseInterface;
 use Radebatz\OpenApi\Verifier\Adapters\AbstractOpenApiResponseVerifier;
+use Radebatz\OpenApi\Verifier\OpenApiSchemaMismatchException;
 use Radebatz\OpenApi\Verifier\VerifiesOpenApi;
 
 /**
@@ -14,14 +16,18 @@ trait OpenApiResponseVerifier
 {
     use AbstractOpenApiResponseVerifier, VerifiesOpenApi;
 
-    public function registerOpenApiVerifier(?Application $app = null, ?string $specification = null)
+    public function registerOpenApiVerifier(?Application $app = null, ?string $specification = null): void
     {
         $app = $app ?: $this->app;
 
         $this->prepareOpenApiSpecificationLoader('app', $specification);
 
         if ($this->getOpenApiSpecificationLoader()) {
-            $app->instance(OpenApiVerifierMiddleware::OPENAPI_VERFIER_CONTAINER_KEY, $this);
+            // the kernel resolves the middleware by class name, for `handle()` and `terminate()` alike
+            $app->instance(OpenApiVerifierMiddleware::class, new OpenApiVerifierMiddleware(
+                $this->getOpenApiVerifier(),
+                fn (OpenApiSchemaMismatchException $oasme, ResponseInterface $response) => $this->failSchemaMismatch($oasme, $response)
+            ));
             $app[Kernel::class]->pushMiddleware(OpenApiVerifierMiddleware::class);
         }
     }

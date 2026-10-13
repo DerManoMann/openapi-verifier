@@ -58,20 +58,20 @@ trait VerifiesOpenApi
         return $this->openapiSpecificationLoader;
     }
 
-    public function failSchemaMismatch(OpenApiSchemaMismatchException $oasme, ResponseInterface $response)
+    /**
+     * Fail the current test with the mismatch, its error summary and the response body.
+     *
+     * Does nothing outside a PHPUnit test case.
+     */
+    public function failSchemaMismatch(OpenApiSchemaMismatchException $oasme, ResponseInterface $response): void
     {
         if ($this instanceof TestCase) {
-            $this->fail(sprintf(
-                '%s:%s%s%s%s%s%s%s',
-                $oasme->getMessage(),
-                PHP_EOL,
-                $oasme->getErrorSummary(),
-                PHP_EOL,
+            $this->fail(implode(PHP_EOL, [
+                $oasme->getMessage() . ':',
+                (string) $oasme->getErrorSummary(),
                 '',
-                PHP_EOL,
                 (string) $response->getBody(),
-                PHP_EOL
-            ));
+            ]));
         }
     }
 }

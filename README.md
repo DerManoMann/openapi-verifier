@@ -121,6 +121,18 @@ class UsersTest extends TestCase
 }
 
 ```
+### PSR-15 middleware
+Any PSR-15 stack (Slim, Mezzio and others) can verify its responses with the middleware. A response that does not
+match throws `OpenApiSchemaMismatchException`. An optional callback is called with the exception and the response
+first, to report the mismatch in a way of your own.
+
+```php
+use Radebatz\OpenApi\Verifier\Adapters\Psr15\OpenApiVerifierMiddleware;
+use Radebatz\OpenApi\Verifier\OpenApiVerifier;
+
+$app->add(new OpenApiVerifierMiddleware(OpenApiVerifier::fromSpecification('openapi.yaml')));
+```
+
 ### Laravel adapter
 The adapter will try to resolve the specification dynamically in this order:
 * filename passed into `registerOpenApiVerifier()`
@@ -171,7 +183,7 @@ The adapter will try to resolve the specification dynamically in this order:
 
 Simplest way is to register the verifier in the `Tests\Functional\BaseTestCase`.
 
-**Attention**: In order to be able to resolve routes with placeholders (i.e. something like `/user/{id}`) it is required to register the verifier **before** the routing middleware.
+The adapter adds the PSR-15 middleware below, and a mismatch fails the test with the error summary and the response body.
 
 ```php
 <?php
@@ -192,7 +204,7 @@ class BaseTestCase extends TestCase
         
         $app = new App();
         
-        // register OpenApi verifier
+        // register OpenApi verifier, before or after the routing middleware
         $this->registerOpenApiVerifier($app, __DIR__ . '/../specifications/users.yaml');
         $app->addRoutingMiddleware();
         
