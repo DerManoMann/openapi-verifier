@@ -10,19 +10,11 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Radebatz\OpenApi\Verifier\Adapters\Slim\OpenApiResponseVerifier;
-use Slim\App;
 use Slim\Factory\AppFactory;
 
 class SlimAdapterTest extends TestCase
 {
     use OpenApiResponseVerifier;
-
-    protected function setUp(): void
-    {
-        if (!class_exists('\\Slim\\App') || version_compare(App::VERSION, '4.0.0', '<')) {
-            $this->markTestSkipped('Slim not installed.');
-        }
-    }
 
     #[Test]
     public function passVerificationUsers(): void
@@ -68,7 +60,7 @@ class SlimAdapterTest extends TestCase
         $this->runApp('GET', '/user/1', valid: false, verifierFirst: false);
     }
 
-    protected function runApp(string $requestMethod, string $requestUri, bool $valid, bool $verifierFirst = true)
+    protected function runApp(string $requestMethod, string $requestUri, bool $valid, bool $verifierFirst = true): ResponseInterface
     {
         $request = (new Psr17Factory())->createServerRequest($requestMethod, $requestUri);
 

@@ -14,11 +14,18 @@ use Radebatz\OpenApi\Verifier\Schema\SchemaValidator;
 
 class OpenApiVerifierTest extends TestCase
 {
+    /**
+     * @param  array<string, mixed> $schema
+     * @return array<string, mixed>
+     */
     protected static function json(array $schema): array
     {
         return ['content' => ['application/json' => ['schema' => $schema]]];
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected static function requiring(string $property): array
     {
         return ['type' => 'object', 'required' => [$property]];
@@ -47,9 +54,12 @@ class OpenApiVerifierTest extends TestCase
             ],
         ];
 
-        return OpenApiVerifier::fromSpecification(json_decode(json_encode($specification)));
+        return OpenApiVerifier::fromSpecification(json_decode((string) json_encode($specification)));
     }
 
+    /**
+     * @return iterable<array<mixed>>
+     */
     public static function responses(): iterable
     {
         // path, status, body, content type, expected: true verified, false nothing to verify, null mismatch
@@ -83,6 +93,9 @@ class OpenApiVerifierTest extends TestCase
         $this->assertSame($expected, $this->verifier()->verifyResponseBody('get', $path, $statusCode, $body, $contentType));
     }
 
+    /**
+     * @return iterable<array<mixed>>
+     */
     public static function dialects(): iterable
     {
         $ref = ['$ref' => '#/components/schemas/thing'];
@@ -110,6 +123,9 @@ class OpenApiVerifierTest extends TestCase
         yield '3.1 reference' => ['3.1.0', $ref, '{"id":1}', true];
     }
 
+    /**
+     * @param array<string, mixed> $schema
+     */
     #[Test]
     #[DataProvider('dialects')]
     public function verifyDialect(string $version, array $schema, string $body, ?bool $expected): void
@@ -124,14 +140,14 @@ class OpenApiVerifierTest extends TestCase
             $this->expectException(OpenApiSchemaMismatchException::class);
         }
 
-        $verifier = OpenApiVerifier::fromSpecification(json_decode(json_encode($specification)));
+        $verifier = OpenApiVerifier::fromSpecification(json_decode((string) json_encode($specification)));
         $this->assertSame($expected, $verifier->verifyResponseBody('get', '/thing', 200, $body));
     }
 
     #[Test]
     public function translationLeavesTheSpecificationAlone(): void
     {
-        $specification = json_decode(json_encode([
+        $specification = json_decode((string) json_encode([
             'openapi' => '3.0.0',
             'paths' => ['/thing' => ['get' => ['responses' => ['200' => self::json(['$ref' => '#/components/schemas/thing'])]]]],
             'components' => ['schemas' => ['thing' => ['type' => 'string', 'nullable' => true]]],
@@ -162,7 +178,7 @@ class OpenApiVerifierTest extends TestCase
             }
         };
 
-        $specification = json_decode(json_encode([
+        $specification = json_decode((string) json_encode([
             'openapi' => '3.0.3',
             'paths' => ['/thing' => ['get' => ['responses' => ['200' => self::json(['type' => 'string', 'nullable' => true])]]]],
         ]));

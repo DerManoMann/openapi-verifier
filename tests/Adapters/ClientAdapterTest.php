@@ -23,6 +23,9 @@ class ClientAdapterTest extends TestCase
         return OpenApiVerifier::fromSpecification(__DIR__ . '/../specifications/users.yaml');
     }
 
+    /**
+     * @return iterable<array<mixed>>
+     */
     public static function responses(): iterable
     {
         // path, body, expected error (null: valid)

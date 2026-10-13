@@ -7,22 +7,21 @@ use Symfony\Component\Yaml\Yaml;
 
 class OpenApiSpecificationLoader
 {
-    protected $filename;
-    protected $specification;
+    protected \stdClass $specification;
 
     /**
-     * @param $specification object|string The specification object or filename
+     * @param mixed $specification the specification object, or the filename of a JSON or YAML document
      */
-    public function __construct($specification)
+    public function __construct(mixed $specification)
     {
         $this->specification = $this->resolveSpecification($specification);
     }
 
-    protected function resolveSpecification($specification)
+    protected function resolveSpecification(mixed $specification): \stdClass
     {
         $resolved = null;
         if (is_string($specification)) {
-            if (false !== strpos($specification, '.yaml') || false !== strpos($specification, '.yml')) {
+            if (preg_match('/\.ya?ml$/i', $specification)) {
                 try {
                     $resolved = (object) Yaml::parseFile($specification, Yaml::PARSE_OBJECT_FOR_MAP);
                 } catch (ParseException $parseException) {
@@ -32,15 +31,18 @@ class OpenApiSpecificationLoader
                         $parseException
                     );
                 }
-            } elseif (file_exists($specification)) {
-                $resolved = json_decode(file_get_contents($specification));
+            } elseif (file_exists($specification) && false !== ($json = file_get_contents($specification))) {
+                $resolved = json_decode($json);
             }
 
-            if (!$resolved) {
+            if (!$resolved instanceof \stdClass) {
                 throw new \InvalidArgumentException(sprintf('Could not load specification: %s', $specification));
             }
-        } elseif (is_object($specification)) {
+        } elseif ($specification instanceof \stdClass) {
             $resolved = $specification;
+        } elseif (is_object($specification)) {
+            // any other object, as plain data
+            $resolved = json_decode((string) json_encode($specification));
         } else {
             throw new \InvalidArgumentException('Invalid specification');
         }
@@ -78,7 +80,7 @@ class OpenApiSpecificationLoader
         }
 
         // copy, so the components do not end up inside the specification itself
-        $schema = is_object($schema) ? clone $schema : (object) $schema;
+        $schema = $schema instanceof \stdClass ? clone $schema : (object) (array) $schema;
         $schema->components = $this->property($this->specification, 'components') ?? new \stdClass();
 
         return $schema;

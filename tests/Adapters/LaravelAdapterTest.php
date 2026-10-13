@@ -4,21 +4,18 @@ namespace Radebatz\OpenApi\Verifier\Tests\Adapters;
 
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Application;
+use Illuminate\Foundation\Testing\TestCase;
 use Illuminate\Support\Facades\Facade;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Attributes\Test;
 use Radebatz\OpenApi\Verifier\Adapters\Laravel\OpenApiResponseVerifier;
 
-class LaravelAdapterTest extends LaravelTestCase
+class LaravelAdapterTest extends TestCase
 {
     use OpenApiResponseVerifier;
 
     protected function setUp(): void
     {
-        if (!class_exists('\\Illuminate\\Foundation\\Application')) {
-            $this->markTestSkipped('Laravel not installed.');
-        }
-
         parent::setUp();
 
         $this->registerOpenApiVerifier(null, __DIR__ . '/../specifications/users.yaml');
@@ -27,7 +24,7 @@ class LaravelAdapterTest extends LaravelTestCase
     #[Test]
     public function passVerificationUsers(): void
     {
-        $this->createApplication()
+        $this->app
             ->get('router')->get('/users', function () {
                 return '{"data":[{"id":1,"name":"joe","email":"joe@cool.com"}]}';
             });
@@ -40,7 +37,7 @@ class LaravelAdapterTest extends LaravelTestCase
     #[Test]
     public function failVerificationUsers(): void
     {
-        $this->createApplication()
+        $this->app
             ->get('router')->get('/users', function () {
                 return '{"data":[{"id":1,"email":"joe@cool.com"}]}';
             });
@@ -53,7 +50,7 @@ class LaravelAdapterTest extends LaravelTestCase
     #[Test]
     public function passVerificationUser(): void
     {
-        $this->createApplication()
+        $this->app
             ->get('router')->get('/user/{id}', function () {
                 return '{"data":{"id":1,"name":"joe","email":"joe@cool.com"}}';
             });
@@ -66,7 +63,7 @@ class LaravelAdapterTest extends LaravelTestCase
     #[Test]
     public function failVerificationUser(): void
     {
-        $this->createApplication()
+        $this->app
             ->get('router')->get('/user/{id}', function () {
                 return '{"data":{"id":1,"name":"joe"}}';
             });
@@ -77,22 +74,20 @@ class LaravelAdapterTest extends LaravelTestCase
         $this->get('/user/1');
     }
 
-    /** @inheritdoc */
-    public function createApplication()
+    /**
+     * Laravel's `setUp()` calls this and keeps the result in `$this->app`.
+     */
+    public function createApplication(): Application
     {
-        if (!$this->app) {
-            /** @var Application $app */
-            $app = require __DIR__ . '/../../vendor/laravel/laravel/bootstrap/app.php';
-            $app->make(Kernel::class)->bootstrap();
-            $app['config']->set([
-                'app.environment' => 'local',
-                'app.debug' => true,
-            ]);
-            Facade::setFacadeApplication($app);
+        /** @var Application $app */
+        $app = require __DIR__ . '/../../vendor/laravel/laravel/bootstrap/app.php';
+        $app->make(Kernel::class)->bootstrap();
+        $app['config']->set([
+            'app.environment' => 'local',
+            'app.debug' => true,
+        ]);
+        Facade::setFacadeApplication($app);
 
-            $this->app = $app;
-        }
-
-        return $this->app;
+        return $app;
     }
 }

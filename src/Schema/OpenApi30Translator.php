@@ -47,7 +47,8 @@ final class OpenApi30Translator
             return array_map($this->translateNode(...), $node);
         }
 
-        if (!is_object($node)) {
+        // the copy comes from `json_decode()`, so every object in it is a `stdClass`
+        if (!$node instanceof \stdClass) {
             return $node;
         }
 
