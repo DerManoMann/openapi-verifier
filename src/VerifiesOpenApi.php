@@ -65,7 +65,8 @@ trait VerifiesOpenApi
 
     public function getOpenApiSpecificationLoader(): ?OpenApiSpecificationLoader
     {
-        if (!$this->openapiSpecificationLoader && (property_exists($this, 'openapiSpecification') && $this->openapiSpecification)) {
+        // isset() is false for a declared but uninitialized typed property, where a read would throw
+        if (!$this->openapiSpecificationLoader && isset($this->openapiSpecification) && $this->openapiSpecification) {
             $this->openapiSpecificationLoader = new OpenApiSpecificationLoader($this->openapiSpecification);
         }
 
