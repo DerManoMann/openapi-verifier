@@ -17,4 +17,4 @@ return RectorConfig::configure()
         SortAttributeNamedArgsRector::class,
         SortCallLikeNamedArgsRector::class,
     ])
-    ->withPhpVersion(PhpVersion::PHP_81);
+    ->withPhpVersion(PhpVersion::PHP_82);

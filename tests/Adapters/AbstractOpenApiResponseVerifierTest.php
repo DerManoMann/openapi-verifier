@@ -2,6 +2,7 @@
 
 namespace Radebatz\OpenApi\Verifier\Tests\Adapters;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Radebatz\OpenApi\Verifier\Adapters\AbstractOpenApiResponseVerifier;
 use Radebatz\OpenApi\Verifier\VerifiesOpenApi;
@@ -40,7 +41,7 @@ class AbstractOpenApiResponseVerifierTest extends TestCase
         ));
     }
 
-    /** @test */
+    #[Test]
     public function explicitSpecification()
     {
         $this->appRoot = '/does/not/exist';
@@ -50,7 +51,7 @@ class AbstractOpenApiResponseVerifierTest extends TestCase
         $this->assertVerifiesUsers();
     }
 
-    /** @test */
+    #[Test]
     public function discoveredSpecification()
     {
         $this->tmpDir = sys_get_temp_dir() . '/openapi-verifier-' . uniqid();
@@ -63,7 +64,7 @@ class AbstractOpenApiResponseVerifierTest extends TestCase
         $this->assertVerifiesUsers();
     }
 
-    /** @test */
+    #[Test]
     public function generatedSpecification()
     {
         // no tests/openapi.{json,yaml} under tests/, so this generates from tests/Fixtures
