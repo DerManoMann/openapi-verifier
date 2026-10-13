@@ -67,7 +67,9 @@ final class OpenApiVerifier
     /**
      * Verify a response body for the given request method, path and status code.
      *
-     * @return bool `true` if the body has been validated, `false` if not (no matching schema)
+     * A body that is not JSON is not validated if its content type is not JSON either.
+     *
+     * @return bool `true` if the body has been validated, `false` if not (no matching schema, or not JSON)
      *
      * @throws OpenApiSchemaMismatchException
      */
@@ -77,11 +79,26 @@ final class OpenApiVerifier
             return false;
         }
 
-        if ([] !== ($errors = $this->schemaValidator->validate(json_decode($body), $schema, $this->specificationLoader->getOpenApiVersion()))) {
+        $data = json_decode($body);
+        if (null === $data && JSON_ERROR_NONE !== json_last_error() && !$this->claimsJson($contentType)) {
+            return false;
+        }
+
+        if ([] !== ($errors = $this->schemaValidator->validate($data, $schema, $this->specificationLoader->getOpenApiVersion()))) {
             throw (new OpenApiSchemaMismatchException(sprintf('Schema mismatch: %s[%s]:%s', $method, $statusCode, $path)))
                 ->setErrors($errors);
         }
 
         return true;
+    }
+
+    /**
+     * Whether the content type is JSON, or missing, in which case the body is taken to be JSON.
+     */
+    private function claimsJson(?string $contentType): bool
+    {
+        $type = strtolower(trim(explode(';', (string) $contentType)[0]));
+
+        return '' === $type || 'application/json' === $type || str_ends_with($type, '+json');
     }
 }

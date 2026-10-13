@@ -47,7 +47,7 @@ How the response is looked up:
   first, and the optional third argument of `verify()` skips the matching and uses the given template.
 * **Status code**: the exact code, then its range (`2XX`), then `default`.
 * **Media type**: the response's `Content-Type`, including `+json` types such as `application/problem+json`.
-  Without a match it falls back to `application/json`. Only JSON bodies are validated.
+  Without a match it falls back to `application/json`, so a JSON body labelled `text/html` is still validated.
 
 Bodies are validated with [opis/json-schema](https://github.com/opis/json-schema), which supports JSON Schema
 2020-12, the dialect of OpenAPI 3.1. OpenAPI 3.0 documents are translated first: `nullable` and the boolean form of
@@ -75,7 +75,8 @@ The body is validated against that schema as written:
 * `required` properties and types are checked.
 * Formats that opis knows, such as `date-time` and `email`, are checked.
 * Properties the schema does not declare are allowed, unless it sets `additionalProperties: false`.
-* A body that is not valid JSON is validated as `null`.
+* A body that is not valid JSON is validated as `null`, so it fails. With a `Content-Type` that is not JSON it is
+  skipped instead.
 
 ### Guzzle and PSR-18 clients
 Verifying on the client side needs no framework. It works against a running server, a mock
