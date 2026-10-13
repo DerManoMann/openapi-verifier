@@ -80,6 +80,10 @@ class OpenApiVerifierTest extends TestCase
         yield 'json suffix media type mismatch' => ['/problems', 200, '{}', 'application/problem+json', null];
         yield 'non-json media type skipped' => ['/problems', 200, 'hello', 'text/plain', false];
         yield 'unmatched content type falls back to json' => ['/users/42', 200, '{"id":42}', 'text/html; charset=UTF-8', true];
+        yield 'unmatched content type falls back to json, mismatch' => ['/users/42', 200, '{"name":"joe"}', 'text/html', null];
+        yield 'unmatched content type, body not json, skipped' => ['/users/42', 200, '<p>hi</p>', 'application/xml', false];
+        yield 'json content type, body not json, mismatch' => ['/users/42', 200, '<p>hi</p>', 'application/json', null];
+        yield 'no content type, body not json, mismatch' => ['/users/42', 200, '<p>hi</p>', null, null];
     }
 
     #[Test]
