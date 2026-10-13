@@ -58,7 +58,17 @@ class SlimAdapterTest extends TestCase
         $this->runApp('GET', '/user/1', valid: false);
     }
 
-    protected function runApp(string $requestMethod, string $requestUri, bool $valid)
+    #[Test]
+    public function verifierRegisteredAfterRouting(): void
+    {
+        // the path is matched against the specification's templates, so the order no longer matters
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessageMatches('/required - The property email is required/');
+
+        $this->runApp('GET', '/user/1', valid: false, verifierFirst: false);
+    }
+
+    protected function runApp(string $requestMethod, string $requestUri, bool $valid, bool $verifierFirst = true)
     {
         $request = (new Psr17Factory())->createServerRequest($requestMethod, $requestUri);
 
@@ -89,9 +99,13 @@ class SlimAdapterTest extends TestCase
             });
         }
 
-        // register OpenApi verifier BEFORE routing middleware
-        $this->registerOpenApiVerifier($app, __DIR__ . '/../specifications/users.yaml');
-        $app->addRoutingMiddleware();
+        if ($verifierFirst) {
+            $this->registerOpenApiVerifier($app, __DIR__ . '/../specifications/users.yaml');
+            $app->addRoutingMiddleware();
+        } else {
+            $app->addRoutingMiddleware();
+            $this->registerOpenApiVerifier($app, __DIR__ . '/../specifications/users.yaml');
+        }
 
         return $app->handle($request);
     }

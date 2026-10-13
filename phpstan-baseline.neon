@@ -7,52 +7,10 @@ parameters:
 			path: src/Adapters/AbstractOpenApiResponseVerifier.php
 
 		-
-			message: '#^Call to method failSchemaMismatch\(\) on an unknown class Radebatz\\OpenApi\\Verifier\\VerifiesOpenApi\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Adapters/Laravel/OpenApiVerifierMiddleware.php
-
-		-
-			message: '#^Call to method verifyOpenApi\(\) on an unknown class Radebatz\\OpenApi\\Verifier\\VerifiesOpenApi\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Adapters/Laravel/OpenApiVerifierMiddleware.php
-
-		-
-			message: '#^PHPDoc tag @var for variable \$verifier has invalid type Radebatz\\OpenApi\\Verifier\\VerifiesOpenApi\.$#'
-			identifier: varTag.trait
-			count: 1
-			path: src/Adapters/Laravel/OpenApiVerifierMiddleware.php
-
-		-
-			message: '#^Call to method failSchemaMismatch\(\) on an unknown class Radebatz\\OpenApi\\Verifier\\VerifiesOpenApi\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Adapters/Slim/OpenApiVerifierMiddleware.php
-
-		-
-			message: '#^Call to method verifyOpenApi\(\) on an unknown class Radebatz\\OpenApi\\Verifier\\VerifiesOpenApi\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Adapters/Slim/OpenApiVerifierMiddleware.php
-
-		-
-			message: '#^PHPDoc tag @var for variable \$verifier has invalid type Radebatz\\OpenApi\\Verifier\\VerifiesOpenApi\.$#'
-			identifier: varTag.trait
-			count: 1
-			path: src/Adapters/Slim/OpenApiVerifierMiddleware.php
-
-		-
 			message: '#^Negated boolean expression is always false\.$#'
 			identifier: booleanNot.alwaysFalse
 			count: 1
 			path: tests/Adapters/LaravelAdapterTest.php
-
-		-
-			message: '#^Access to an undefined property Radebatz\\OpenApi\\Verifier\\Tests\\Adapters\\SlimAdapterTest\:\:\$app\.$#'
-			identifier: property.notFound
-			count: 1
-			path: tests/Adapters/SlimAdapterTest.php
 
 		-
 			message: '#^Right side of \|\| is always false\.$#'
