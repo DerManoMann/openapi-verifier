@@ -6,138 +6,74 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Radebatz\OpenApi\Verifier\OpenApiSchemaMismatchException;
+use Radebatz\OpenApi\Verifier\Schema\SchemaError;
 
 class OpenApiSchemaMismatchExceptionTest extends TestCase
 {
-    private OpenApiSchemaMismatchException $subject;
-
-    protected function setUp(): void
-    {
-        $this->subject = new OpenApiSchemaMismatchException();
-    }
-
     #[Test]
     public function getErrorsReturnsSetData(): void
     {
-        $value = [[
-            'property' => 'some-property',
-            'pointer' => 'some-pointer',
-            'message' => 'some-message',
-            'constraint' => 'some-constraint',
-            'context' => PHP_INT_MAX,
-        ]];
+        $errors = [new SchemaError('/data/0/name', 'type', 'some-message')];
 
-        $this->subject->setErrors($value);
+        $this->assertSame($errors, (new OpenApiSchemaMismatchException())->setErrors($errors)->getErrors());
+    }
 
-        self::assertSame(
-            $value,
-            $this->subject->getErrors(),
-        );
+    public static function errors(): iterable
+    {
+        yield 'no errors' => [[], null];
+
+        yield 'single error' => [
+            [new SchemaError('/data/name', 'type', 'some-message')],
+            <<<ERROR
+            type - some-message
+              - /data/name
+            ERROR,
+        ];
+
+        yield 'whole document' => [
+            [new SchemaError('', 'type', 'some-message')],
+            <<<ERROR
+            type - some-message
+              - /
+            ERROR,
+        ];
+
+        yield 'same keyword and message, two pointers' => [
+            [new SchemaError('/data/b', 'type', 'some-message'), new SchemaError('/data/a', 'type', 'some-message')],
+            <<<ERROR
+            type - some-message
+              - /data/b
+              - /data/a
+            ERROR,
+        ];
+
+        yield 'list items share a line' => [
+            [
+                new SchemaError('/data/0/name', 'required', 'some-message'),
+                new SchemaError('/data/1/name', 'required', 'some-message'),
+                new SchemaError('/data/12/name', 'required', 'some-message'),
+            ],
+            <<<ERROR
+            required - some-message
+              - /data/*/name (2 more)
+            ERROR,
+        ];
+
+        yield 'different messages are separate groups' => [
+            [new SchemaError('/a', 'type', 'one'), new SchemaError('/b', 'type', 'two')],
+            <<<ERROR
+            type - one
+              - /a
+            type - two
+              - /b
+            ERROR,
+        ];
     }
 
     #[Test]
-    #[DataProvider('errorDataProvider')]
-    public function getErrorSummaryReturnsExpectedResult(
-        array $errors,
-        null|string $expected_result,
-    ): void {
-        $this->subject->setErrors($errors);
-
-        self::assertSame(
-            $expected_result,
-            $this->subject->getErrorSummary(),
-        );
-    }
-
-    public static function errorDataProvider(): \Generator
+    #[DataProvider('errors')]
+    public function getErrorSummary(array $errors, ?string $expected): void
     {
-        // no errors, no message
-        yield [
-            [],
-            null,
-        ];
-
-        // single error; JsonSchema 5.x
-        yield [
-            [
-                [
-                    'property' => 'some-property',
-                    'pointer' => 'some-pointer',
-                    'message' => 'some-message',
-                    'constraint' => 'some-constraint',
-                    'context' => PHP_INT_MAX,
-                ],
-            ],
-            <<<ERROR
-            some-constraint - some-message
-              - some-property
-            ERROR,
-        ];
-
-        // single error; JsonSchema 6
-        yield [
-            [
-                [
-                    'property' => 'some-property',
-                    'pointer' => 'some-pointer',
-                    'message' => 'some-message',
-                    'constraint' => ['name' => 'some-constraint', 'params' => []],
-                    'context' => PHP_INT_MAX,
-                ],
-            ],
-            <<<ERROR
-            some-constraint - some-message
-              - some-property
-            ERROR,
-        ];
-
-        // multiple errors
-        yield [
-            [
-                [
-                    'property' => 'some-property2',
-                    'pointer' => 'some-pointer2',
-                    'message' => 'some-message',
-                    'constraint' => ['name' => 'some-constraint', 'params' => []],
-                    'context' => PHP_INT_MAX,
-                ],
-                [
-                    'property' => 'some-property',
-                    'pointer' => 'some-pointer',
-                    'message' => 'some-message',
-                    'constraint' => ['name' => 'some-constraint', 'params' => []],
-                    'context' => PHP_INT_MAX,
-                ],
-            ],
-            <<<ERROR
-            some-constraint - some-message
-              - some-property2
-              - some-property
-            ERROR,
-        ];
-
-        // multiple errors having the same property
-        yield [
-            [
-                [
-                    'property' => 'some-property[2]',
-                    'pointer' => 'some-pointer2',
-                    'message' => 'some-message',
-                    'constraint' => ['name' => 'some-constraint', 'params' => []],
-                    'context' => abs(PHP_INT_MAX),
-                ],
-                [
-                    'property' => 'some-property[2]',
-                    'pointer' => 'some-pointer',
-                    'message' => 'some-message',
-                    'constraint' => ['name' => 'some-constraint', 'params' => []],
-                    'context' => PHP_INT_MAX,
-                ],
-            ],
-            <<<ERROR
-            some-constraint - some-message
-              - some-property[*] (1 more)
-            ERROR,
-        ];
+        $this->assertSame($expected, (new OpenApiSchemaMismatchException())->setErrors($errors)->getErrorSummary());
     }
 }

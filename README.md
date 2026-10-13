@@ -49,6 +49,22 @@ How the response is looked up:
 * **Media type**: the response's `Content-Type`, including `+json` types such as `application/problem+json`.
   Without a match it falls back to `application/json`. Only JSON bodies are validated.
 
+Bodies are validated with [opis/json-schema](https://github.com/opis/json-schema), which supports JSON Schema
+2020-12, the dialect of OpenAPI 3.1. OpenAPI 3.0 documents are translated first: `nullable` and the boolean form of
+`exclusiveMinimum` and `exclusiveMaximum` become their 2020-12 equivalents.
+
+Another engine can be used by passing a `Schema\SchemaValidator` to the verifier. It gets each schema as the document
+writes it, together with the document's OpenAPI version, so it can handle 3.0 its own way or use
+`Schema\OpenApi30Translator`.
+
+A mismatch carries one `Schema\SchemaError` per problem, with a JSON pointer into the body, the failing keyword and a
+message. `getErrorSummary()` groups them:
+
+```
+required - The required properties (name) are missing
+  - /data/* (2 more)
+```
+
 ### Guzzle and PSR-18 clients
 Verifying on the client side needs no framework. It works against a running server, a mock
 handler or anything else a client can talk to.

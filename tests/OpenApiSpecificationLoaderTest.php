@@ -35,7 +35,7 @@ class OpenApiSpecificationLoaderTest extends TestCase
         $this->assertTrue(is_object($specificationLoader));
     }
 
-    public static function schemaUrls()
+    public static function responseSchemas()
     {
         return [
             'ucmethod-json-ok' => [__DIR__ . '/specifications/users.json', 'GET', '/users', 200, true],
@@ -48,14 +48,19 @@ class OpenApiSpecificationLoaderTest extends TestCase
     }
 
     #[Test]
-    #[DataProvider('schemaUrls')]
-    public function getSchemaUrlFor($specification, $method, $path, $statusCode, $valid)
+    #[DataProvider('responseSchemas')]
+    public function getResponseSchemaFor($specification, $method, $path, $statusCode, $valid)
     {
         $specificationLoader = new OpenApiSpecificationLoader($specification);
 
-        $schemaUrl = $specificationLoader->getResponseSchemaUrlFor($method, $path, $statusCode);
+        $schema = $specificationLoader->getResponseSchemaFor($method, $path, $statusCode);
 
-        $assert = $valid ? 'assertNotNull' : 'assertNull';
-        $this->{$assert}($schemaUrl);
+        if ($valid) {
+            $this->assertNotNull($schema);
+            // carries the components, so its references resolve
+            $this->assertObjectHasProperty('components', $schema);
+        } else {
+            $this->assertNull($schema);
+        }
     }
 }

@@ -27,9 +27,9 @@ class ClientAdapterTest extends TestCase
     {
         // path, body, expected error (null: valid)
         yield 'users' => ['/users', '{"data":[{"id":1,"name":"joe","email":"joe@cool.com"}]}', null];
-        yield 'users mismatch' => ['/users', '{"data":[{"id":1,"email":"joe@cool.com"}]}', 'The property name is required'];
+        yield 'users mismatch' => ['/users', '{"data":[{"id":1,"email":"joe@cool.com"}]}', 'The required properties (name) are missing'];
         yield 'user, by template' => ['/user/1', '{"data":{"id":1,"name":"joe","email":"joe@cool.com"}}', null];
-        yield 'user mismatch, by template' => ['/user/1', '{"data":{"id":1,"name":"joe"}}', 'The property email is required'];
+        yield 'user mismatch, by template' => ['/user/1', '{"data":{"id":1,"name":"joe"}}', 'The required properties (email) are missing'];
         yield 'not in the specification' => ['/nope', 'anything', null];
     }
 

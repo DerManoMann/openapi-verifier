@@ -46,7 +46,7 @@ class LaravelAdapterTest extends LaravelTestCase
             });
 
         $this->expectException(AssertionFailedError::class);
-        $this->expectExceptionMessageMatches('/required - The property name is required/');
+        $this->expectExceptionMessageMatches('/required - The required properties \(name\) are missing/');
         $this->get('/users');
     }
 
@@ -72,7 +72,7 @@ class LaravelAdapterTest extends LaravelTestCase
             });
 
         $this->expectException(AssertionFailedError::class);
-        $this->expectExceptionMessageMatches('/required - The property email is required/');
+        $this->expectExceptionMessageMatches('/required - The required properties \(email\) are missing/');
 
         $this->get('/user/1');
     }

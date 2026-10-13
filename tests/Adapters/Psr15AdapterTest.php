@@ -65,6 +65,6 @@ class Psr15AdapterTest extends TestCase
         } catch (OpenApiSchemaMismatchException) {
         }
 
-        $this->assertStringContainsString('The property email is required', (string) $seen);
+        $this->assertStringContainsString('The required properties (email) are missing', (string) $seen);
     }
 }
