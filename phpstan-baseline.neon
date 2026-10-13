@@ -43,12 +43,6 @@ parameters:
 			path: src/Adapters/Slim/OpenApiVerifierMiddleware.php
 
 		-
-			message: '#^If condition is always true\.$#'
-			identifier: if.alwaysTrue
-			count: 1
-			path: src/VerifiesOpenApi.php
-
-		-
 			message: '#^Negated boolean expression is always false\.$#'
 			identifier: booleanNot.alwaysFalse
 			count: 1

@@ -27,6 +27,28 @@ composer require radebatz/openapi-verifier
 After that all required classes should be availabe in your project to add routing support.
 
 ## Usage
+### The verifier
+`OpenApiVerifier` checks a response against the specification. It needs no test case and no framework,
+so anything that sees a request and its response can use it.
+
+```php
+use Radebatz\OpenApi\Verifier\OpenApiVerifier;
+
+$verifier = OpenApiVerifier::fromSpecification(__DIR__ . '/specifications/users.yaml');
+
+// throws `OpenApiSchemaMismatchException` if the body does not match;
+// returns `false` if the specification has no schema for this response
+$verifier->verify($request, $response);
+```
+
+How the response is looked up:
+* **Path**: a literal match first, then the path templates, so `/user/1` finds `/user/{id}`. When several
+  templates match, the one with the most literal characters wins. A base path from `servers` is stripped
+  first, and the optional third argument of `verify()` skips the matching and uses the given template.
+* **Status code**: the exact code, then its range (`2XX`), then `default`.
+* **Media type**: the response's `Content-Type`, including `+json` types such as `application/problem+json`.
+  Without a match it falls back to `application/json`. Only JSON bodies are validated.
+
 ### Manual verification
 The `VerifiesOpenApi` trait can be used directly and customized in 3 ways in order to provide the reqired OpenApi specifications:
 * Overriding the method `getOpenApiSpecificationLoader()` as shown below
@@ -41,6 +63,7 @@ namespace Tests\Feature;
 use Radebatz\OpenApi\Verifier\VerifiesOpenApi;
 use Radebatz\OpenApi\Verifier\OpenApiSpecificationLoader;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class UsersTest extends TestCase
 {
@@ -52,7 +75,7 @@ class UsersTest extends TestCase
         return new OpenApiSpecificationLoader(__DIR__ . '/specifications/users.yaml');
     }
 
-    /** @test */
+    #[Test]
     public function index()
     {
         // PSR client
@@ -83,6 +106,7 @@ namespace Tests\Feature;
 
 use Radebatz\OpenApi\Verifier\Adapters\Laravel\OpenApiResponseVerifier;
 use Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class UsersTest extends TestCase
 {
@@ -95,7 +119,7 @@ class UsersTest extends TestCase
         $this->registerOpenApiVerifier(/* $this->>createApplication() */ /* , [specification filename] */);
     }
 
-    /** @test */
+    #[Test]
     public function index()
     {
         // will `fail` if schema found and validation fails
@@ -150,9 +174,11 @@ class BaseTestCase extends TestCase
 
 namespace Tests\Functional;
 
+use PHPUnit\Framework\Attributes\Test;
+
 class UsersTest extends BaseTestCase
 {
-    /** @test */
+    #[Test]
     public function index()
     {
         // will `fail` if schema found and validation fails
