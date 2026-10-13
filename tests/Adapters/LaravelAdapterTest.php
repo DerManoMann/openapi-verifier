@@ -10,7 +10,7 @@ use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Attributes\Test;
 use Radebatz\OpenApi\Verifier\Adapters\Laravel\OpenApiResponseVerifier;
 
-class LaravelAdapterTest extends TestCase
+final class LaravelAdapterTest extends TestCase
 {
     use OpenApiResponseVerifier;
 
@@ -25,7 +25,7 @@ class LaravelAdapterTest extends TestCase
     public function passVerificationUsers(): void
     {
         $this->app
-            ->get('router')->get('/users', function () {
+            ->get('router')->get('/users', function (): string {
                 return '{"data":[{"id":1,"name":"joe","email":"joe@cool.com"}]}';
             });
 
@@ -38,7 +38,7 @@ class LaravelAdapterTest extends TestCase
     public function failVerificationUsers(): void
     {
         $this->app
-            ->get('router')->get('/users', function () {
+            ->get('router')->get('/users', function (): string {
                 return '{"data":[{"id":1,"email":"joe@cool.com"}]}';
             });
 
@@ -51,7 +51,7 @@ class LaravelAdapterTest extends TestCase
     public function passVerificationUser(): void
     {
         $this->app
-            ->get('router')->get('/user/{id}', function () {
+            ->get('router')->get('/user/{id}', function (): string {
                 return '{"data":{"id":1,"name":"joe","email":"joe@cool.com"}}';
             });
 
@@ -64,7 +64,7 @@ class LaravelAdapterTest extends TestCase
     public function failVerificationUser(): void
     {
         $this->app
-            ->get('router')->get('/user/{id}', function () {
+            ->get('router')->get('/user/{id}', function (): string {
                 return '{"data":{"id":1,"name":"joe"}}';
             });
 

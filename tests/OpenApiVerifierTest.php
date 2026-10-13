@@ -12,7 +12,7 @@ use Radebatz\OpenApi\Verifier\OpenApiVerifier;
 use Radebatz\OpenApi\Verifier\Schema\SchemaError;
 use Radebatz\OpenApi\Verifier\Schema\SchemaValidator;
 
-class OpenApiVerifierTest extends TestCase
+final class OpenApiVerifierTest extends TestCase
 {
     /**
      * @param  array<string, mixed> $schema
@@ -168,7 +168,7 @@ class OpenApiVerifierTest extends TestCase
     #[Test]
     public function aValidatorGetsTheSchemaAsWrittenAndTheVersion(): void
     {
-        $validator = new class implements SchemaValidator {
+        $validator = new class () implements SchemaValidator {
             public ?string $version = null;
 
             public ?\stdClass $schema = null;
@@ -190,8 +190,8 @@ class OpenApiVerifierTest extends TestCase
         try {
             OpenApiVerifier::fromSpecification($specification, $validator)->verifyResponseBody('get', '/thing', 200, '"x"');
             $this->fail('No exception thrown');
-        } catch (OpenApiSchemaMismatchException $oasme) {
-            $this->assertSame('custom', $oasme->getErrors()[0]->keyword);
+        } catch (OpenApiSchemaMismatchException $openApiSchemaMismatchException) {
+            $this->assertSame('custom', $openApiSchemaMismatchException->getErrors()[0]->keyword);
         }
 
         $this->assertSame('3.0.3', $validator->version);

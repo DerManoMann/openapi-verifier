@@ -5,9 +5,10 @@ namespace Radebatz\OpenApi\Verifier\Tests\Adapters;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Radebatz\OpenApi\Verifier\Adapters\AbstractOpenApiResponseVerifier;
+use Radebatz\OpenApi\Verifier\OpenApiSpecificationLoader;
 use Radebatz\OpenApi\Verifier\VerifiesOpenApi;
 
-class AbstractOpenApiResponseVerifierTest extends TestCase
+final class AbstractOpenApiResponseVerifierTest extends TestCase
 {
     use AbstractOpenApiResponseVerifier;
     use VerifiesOpenApi;
@@ -32,7 +33,7 @@ class AbstractOpenApiResponseVerifierTest extends TestCase
 
     protected function assertVerifiesUsers(): void
     {
-        $this->assertNotNull($this->getOpenApiSpecificationLoader());
+        $this->assertInstanceOf(OpenApiSpecificationLoader::class, $this->getOpenApiSpecificationLoader());
         $this->assertTrue($this->verifyOpenApiResponseBody(
             'get',
             '/users',

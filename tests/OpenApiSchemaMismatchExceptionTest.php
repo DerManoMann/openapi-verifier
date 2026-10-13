@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Radebatz\OpenApi\Verifier\OpenApiSchemaMismatchException;
 use Radebatz\OpenApi\Verifier\Schema\SchemaError;
 
-class OpenApiSchemaMismatchExceptionTest extends TestCase
+final class OpenApiSchemaMismatchExceptionTest extends TestCase
 {
     #[Test]
     public function getErrorsReturnsSetData(): void

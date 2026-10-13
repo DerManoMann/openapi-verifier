@@ -2,6 +2,7 @@
 
 namespace Radebatz\OpenApi\Verifier\Adapters;
 
+use Composer\Autoload\ClassLoader;
 use OpenApi\Generator;
 
 trait AbstractOpenApiResponseVerifier
@@ -41,9 +42,9 @@ trait AbstractOpenApiResponseVerifier
      */
     protected function getAppRoot(): string
     {
-        $classLoader = (new \ReflectionClass(\Composer\Autoload\ClassLoader::class))->getFileName();
+        $classLoader = (new \ReflectionClass(ClassLoader::class))->getFileName();
         if (false === $classLoader) {
-            throw new \RuntimeException('Cannot locate the project root: Composer\'s ClassLoader has no file');
+            throw new \RuntimeException("Cannot locate the project root: Composer's ClassLoader has no file");
         }
 
         return dirname($classLoader, 3);

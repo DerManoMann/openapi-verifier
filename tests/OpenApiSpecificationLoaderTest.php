@@ -7,22 +7,17 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Radebatz\OpenApi\Verifier\OpenApiSpecificationLoader;
 
-class OpenApiSpecificationLoaderTest extends TestCase
+final class OpenApiSpecificationLoaderTest extends TestCase
 {
-    /**
-     * @return iterable<array<mixed>>
-     */
-    public static function specifications(): iterable
+    public static function specifications(): \Iterator
     {
-        return [
-            [__DIR__ . '/specifications/users.json', true],
-            [__DIR__ . '/specifications/users.yaml', true],
-            [__DIR__ . '/specifications/nope.json', false],
-            [__DIR__ . '/specifications/nope.yaml', false],
-            [__DIR__ . '/specifications/nope.yml', false],
-            [new \stdClass(), true],
-            [[], false],
-        ];
+        yield [__DIR__ . '/specifications/users.json', true];
+        yield [__DIR__ . '/specifications/users.yaml', true];
+        yield [__DIR__ . '/specifications/nope.json', false];
+        yield [__DIR__ . '/specifications/nope.yaml', false];
+        yield [__DIR__ . '/specifications/nope.yml', false];
+        yield [new \stdClass(), true];
+        yield [[], false];
     }
 
     #[Test]
@@ -39,19 +34,14 @@ class OpenApiSpecificationLoaderTest extends TestCase
         $this->assertSame('3.0.0', $specificationLoader->getOpenApiVersion());
     }
 
-    /**
-     * @return iterable<array<mixed>>
-     */
-    public static function responseSchemas(): iterable
+    public static function responseSchemas(): \Iterator
     {
-        return [
-            'ucmethod-json-ok' => [__DIR__ . '/specifications/users.json', 'GET', '/users', 200, true],
-            'lcmethod-json-ok' =>[__DIR__ . '/specifications/users.json', 'get', '/users', 200, true],
-            'yaml-ok' => [__DIR__ . '/specifications/users.yaml', 'get', '/users', 200, true],
-            'path-no-match' => [__DIR__ . '/specifications/users.yaml', 'get', '/foo', 200, false],
-            'status-no-match' => [__DIR__ . '/specifications/users.json', 'get', '/users', 404, false],
-            'status-no-schema' => [__DIR__ . '/specifications/users.yaml', 'get', '/users', 401, false],
-        ];
+        yield 'ucmethod-json-ok' => [__DIR__ . '/specifications/users.json', 'GET', '/users', 200, true];
+        yield 'lcmethod-json-ok' => [__DIR__ . '/specifications/users.json', 'get', '/users', 200, true];
+        yield 'yaml-ok' => [__DIR__ . '/specifications/users.yaml', 'get', '/users', 200, true];
+        yield 'path-no-match' => [__DIR__ . '/specifications/users.yaml', 'get', '/foo', 200, false];
+        yield 'status-no-match' => [__DIR__ . '/specifications/users.json', 'get', '/users', 404, false];
+        yield 'status-no-schema' => [__DIR__ . '/specifications/users.yaml', 'get', '/users', 401, false];
     }
 
     #[Test]
@@ -63,7 +53,7 @@ class OpenApiSpecificationLoaderTest extends TestCase
         $schema = $specificationLoader->getResponseSchemaFor($method, $path, $statusCode);
 
         if ($valid) {
-            $this->assertNotNull($schema);
+            $this->assertInstanceOf(\stdClass::class, $schema);
             // carries the components, so its references resolve
             $this->assertObjectHasProperty('components', $schema);
         } else {

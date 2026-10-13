@@ -12,7 +12,7 @@ use Psr\Http\Message\ResponseInterface;
 use Radebatz\OpenApi\Verifier\Adapters\Slim\OpenApiResponseVerifier;
 use Slim\Factory\AppFactory;
 
-class SlimAdapterTest extends TestCase
+final class SlimAdapterTest extends TestCase
 {
     use OpenApiResponseVerifier;
 
@@ -21,7 +21,7 @@ class SlimAdapterTest extends TestCase
     {
         $response = $this->runApp('GET', '/users', valid: true);
 
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertSame(200, $response->getStatusCode());
     }
 
     #[Test]
@@ -38,7 +38,7 @@ class SlimAdapterTest extends TestCase
     {
         $response = $this->runApp('GET', '/user/1', valid: true);
 
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertSame(200, $response->getStatusCode());
     }
 
     #[Test]
@@ -68,23 +68,23 @@ class SlimAdapterTest extends TestCase
 
         // register test route as we do not have an actual app...
         if ($valid) {
-            $app->get('/users', function (RequestInterface $request, ResponseInterface $response) {
+            $app->get('/users', function (RequestInterface $request, ResponseInterface $response): ResponseInterface {
                 $response->getBody()->write('{"data":[{"id":1,"name":"joe","email":"joe@cool.com"}]}');
 
                 return $response;
             });
-            $app->get('/user/{id}', function (RequestInterface $request, ResponseInterface $response) {
+            $app->get('/user/{id}', function (RequestInterface $request, ResponseInterface $response): ResponseInterface {
                 $response->getBody()->write('{"data":{"id":1,"name":"joe","email":"joe@cool.com"}}');
 
                 return $response;
             });
         } else {
-            $app->get('/users', function (RequestInterface $request, ResponseInterface $response) {
+            $app->get('/users', function (RequestInterface $request, ResponseInterface $response): ResponseInterface {
                 $response->getBody()->write('{"data":[{"id":1,"email":"joe@cool.com"}]}');
 
                 return $response;
             });
-            $app->get('/user/{id}', function (RequestInterface $request, ResponseInterface $response) {
+            $app->get('/user/{id}', function (RequestInterface $request, ResponseInterface $response): ResponseInterface {
                 $response->getBody()->write('{"data":{"id":1,"name":"joe"}}');
 
                 return $response;
