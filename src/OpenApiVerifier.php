@@ -43,11 +43,18 @@ final class OpenApiVerifier
      */
     public function verify(RequestInterface $request, ResponseInterface $response, ?string $pathTemplate = null): bool
     {
+        $body = $response->getBody();
+        $content = (string) $body;
+        if ($body->isSeekable()) {
+            // the caller reads the body next, and casting left the stream at its end
+            $body->rewind();
+        }
+
         return $this->verifyResponseBody(
             $request->getMethod(),
             $pathTemplate ?? $request->getUri()->getPath(),
             $response->getStatusCode(),
-            (string) $response->getBody(),
+            $content,
             $response->getHeaderLine('Content-Type') ?: null
         );
     }
