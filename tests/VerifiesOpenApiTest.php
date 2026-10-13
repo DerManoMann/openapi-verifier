@@ -15,7 +15,10 @@ class VerifiesOpenApiTest extends TestCase
 {
     use VerifiesOpenApi;
 
-    public static function responses()
+    /**
+     * @return iterable<array<mixed>>
+     */
+    public static function responses(): iterable
     {
         return [
             'users-invalid-json' => ['get', '/users', 200, 'xxx', false, false],
@@ -29,7 +32,7 @@ class VerifiesOpenApiTest extends TestCase
 
     #[Test]
     #[DataProvider('responses')]
-    public function verifyBody($method, $path, $statusCode, $content, $isValid, $isVerified)
+    public function verifyBody(string $method, string $path, int $statusCode, string $content, bool $isValid, bool $isVerified): void
     {
         if (!$isValid) {
             $this->expectException(OpenApiSchemaMismatchException::class);
@@ -47,7 +50,7 @@ class VerifiesOpenApiTest extends TestCase
     }
 
     #[Test]
-    public function verifyRequestResponse()
+    public function verifyRequestResponse(): void
     {
         $psr17Factory = new Psr17Factory();
         $creator = new ServerRequestCreator($psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory);

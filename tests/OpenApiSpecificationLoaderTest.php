@@ -9,7 +9,10 @@ use Radebatz\OpenApi\Verifier\OpenApiSpecificationLoader;
 
 class OpenApiSpecificationLoaderTest extends TestCase
 {
-    public static function specifications()
+    /**
+     * @return iterable<array<mixed>>
+     */
+    public static function specifications(): iterable
     {
         return [
             [__DIR__ . '/specifications/users.json', true],
@@ -24,7 +27,7 @@ class OpenApiSpecificationLoaderTest extends TestCase
 
     #[Test]
     #[DataProvider('specifications')]
-    public function loadSpecification($filename, $valid)
+    public function loadSpecification(mixed $filename, bool $valid): void
     {
         if (!$valid) {
             $this->expectException(\InvalidArgumentException::class);
@@ -32,10 +35,14 @@ class OpenApiSpecificationLoaderTest extends TestCase
 
         $specificationLoader = new OpenApiSpecificationLoader($filename);
 
-        $this->assertTrue(is_object($specificationLoader));
+        // the fixtures are 3.0.0, and a document that does not say counts as 3.0.0 too
+        $this->assertSame('3.0.0', $specificationLoader->getOpenApiVersion());
     }
 
-    public static function responseSchemas()
+    /**
+     * @return iterable<array<mixed>>
+     */
+    public static function responseSchemas(): iterable
     {
         return [
             'ucmethod-json-ok' => [__DIR__ . '/specifications/users.json', 'GET', '/users', 200, true],
@@ -49,7 +56,7 @@ class OpenApiSpecificationLoaderTest extends TestCase
 
     #[Test]
     #[DataProvider('responseSchemas')]
-    public function getResponseSchemaFor($specification, $method, $path, $statusCode, $valid)
+    public function getResponseSchemaFor(string $specification, string $method, string $path, int $statusCode, bool $valid): void
     {
         $specificationLoader = new OpenApiSpecificationLoader($specification);
 

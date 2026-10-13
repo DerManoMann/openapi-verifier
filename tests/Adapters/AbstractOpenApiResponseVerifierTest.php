@@ -25,7 +25,7 @@ class AbstractOpenApiResponseVerifierTest extends TestCase
         }
     }
 
-    protected function getAppRoot()
+    protected function getAppRoot(): string
     {
         return $this->appRoot;
     }
@@ -42,7 +42,7 @@ class AbstractOpenApiResponseVerifierTest extends TestCase
     }
 
     #[Test]
-    public function explicitSpecification()
+    public function explicitSpecification(): void
     {
         $this->appRoot = '/does/not/exist';
 
@@ -52,7 +52,7 @@ class AbstractOpenApiResponseVerifierTest extends TestCase
     }
 
     #[Test]
-    public function discoveredSpecification()
+    public function discoveredSpecification(): void
     {
         $this->tmpDir = sys_get_temp_dir() . '/openapi-verifier-' . uniqid();
         mkdir($this->tmpDir . '/tests', 0777, true);
@@ -65,7 +65,7 @@ class AbstractOpenApiResponseVerifierTest extends TestCase
     }
 
     #[Test]
-    public function generatedSpecification()
+    public function generatedSpecification(): void
     {
         // no tests/openapi.{json,yaml} under tests/, so this generates from tests/Fixtures
         $this->appRoot = dirname(__DIR__);

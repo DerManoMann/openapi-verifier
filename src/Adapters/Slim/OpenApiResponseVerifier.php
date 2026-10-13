@@ -13,6 +13,11 @@ trait OpenApiResponseVerifier
 {
     use AbstractOpenApiResponseVerifier, VerifiesOpenApi;
 
+    /**
+     * @template TContainer of \Psr\Container\ContainerInterface|null
+     *
+     * @param App<TContainer> $app
+     */
     public function registerOpenApiVerifier(App $app, ?string $specification = null): void
     {
         $this->prepareOpenApiSpecificationLoader('src', $specification);

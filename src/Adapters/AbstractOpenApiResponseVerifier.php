@@ -8,44 +8,44 @@ trait AbstractOpenApiResponseVerifier
 {
     protected object|string|null $openapiSpecification = null;
 
-    protected function prepareOpenApiSpecificationLoader(string $srcDir, ?string $specification = null)
+    /**
+     * Find the specification: the given one, then `tests/openapi.json` or `tests/openapi.yaml`,
+     * then one generated from `$srcDir`.
+     */
+    protected function prepareOpenApiSpecificationLoader(string $srcDir, ?string $specification = null): void
     {
-        $appRoot = null;
-
         if ($specification) {
             $this->openapiSpecification = $specification;
         }
 
-        // try loader
-        $specificationLoader = $this->getOpenApiSpecificationLoader();
+        if ($this->getOpenApiSpecificationLoader()) {
+            return;
+        }
 
-        if (!$specificationLoader) {
-            $appRoot = $appRoot ?: $this->getAppRoot();
+        $appRoot = $this->getAppRoot();
 
-            // try some default filenames
-            foreach (['openapi.json', 'openapi.yaml'] as $specfile) {
-                if (file_exists($specification = $appRoot . '/tests/' . $specfile)) {
-                    $this->openapiSpecification = $specification;
-                    break;
-                }
+        foreach (['openapi.json', 'openapi.yaml'] as $specfile) {
+            if (file_exists($filename = $appRoot . '/tests/' . $specfile)) {
+                $this->openapiSpecification = $filename;
+
+                return;
             }
-
-            // try loader again
-            $specificationLoader = $this->getOpenApiSpecificationLoader();
         }
 
-        if (!$specificationLoader) {
-            $appRoot = $appRoot ?: $this->getAppRoot();
-
-            $openApi = (new Generator())->generate([$appRoot . '/' . $srcDir]);
-            $this->openapiSpecification = json_decode($openApi->toJson());
-        }
+        $openApi = (new Generator())->generate([$appRoot . '/' . $srcDir]);
+        $this->openapiSpecification = json_decode($openApi->toJson());
     }
 
-    protected function getAppRoot()
+    /**
+     * The project root: three levels above Composer's `ClassLoader`, in `vendor/composer/`.
+     */
+    protected function getAppRoot(): string
     {
-        $rc = new \ReflectionClass('\Composer\Autoload\ClassLoader');
+        $classLoader = (new \ReflectionClass(\Composer\Autoload\ClassLoader::class))->getFileName();
+        if (false === $classLoader) {
+            throw new \RuntimeException('Cannot locate the project root: Composer\'s ClassLoader has no file');
+        }
 
-        return dirname(dirname(dirname($rc->getFileName())));
+        return dirname($classLoader, 3);
     }
 }

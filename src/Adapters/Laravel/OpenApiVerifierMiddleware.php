@@ -2,11 +2,14 @@
 
 namespace Radebatz\OpenApi\Verifier\Adapters\Laravel;
 
+use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Http\Message\ResponseInterface;
 use Radebatz\OpenApi\Verifier\OpenApiSchemaMismatchException;
 use Radebatz\OpenApi\Verifier\OpenApiVerifier;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Terminating middleware verifying every response against the specification.
@@ -29,18 +32,21 @@ final class OpenApiVerifierMiddleware
         $this->psrHttpFactory = new PsrHttpFactory($psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory);
     }
 
-    public function handle($request, \Closure $next)
+    public function handle(Request $request, \Closure $next): Response
     {
         return $next($request);
     }
 
-    public function terminate($request, $response): void
+    public function terminate(Request $request, Response $response): void
     {
         $psrRequest = $this->psrHttpFactory->createRequest($request);
         $psrResponse = $this->psrHttpFactory->createResponse($response);
 
         try {
-            $this->verifier->verify($psrRequest, $psrResponse, $request->route()?->uri);
+            // what `route()` calls; its docblock claims a route is always there, but a request that
+            // matched none, a 404 for example, has none
+            $route = ($request->getRouteResolver())();
+            $this->verifier->verify($psrRequest, $psrResponse, $route instanceof Route ? $route->uri() : null);
         } catch (OpenApiSchemaMismatchException $oasme) {
             if ($this->onMismatch instanceof \Closure) {
                 ($this->onMismatch)($oasme, $psrResponse);

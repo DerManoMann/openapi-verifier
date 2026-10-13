@@ -18,6 +18,9 @@ class OpenApiSchemaMismatchExceptionTest extends TestCase
         $this->assertSame($errors, (new OpenApiSchemaMismatchException())->setErrors($errors)->getErrors());
     }
 
+    /**
+     * @return iterable<array<mixed>>
+     */
     public static function errors(): iterable
     {
         yield 'no errors' => [[], null];
@@ -70,6 +73,9 @@ class OpenApiSchemaMismatchExceptionTest extends TestCase
         ];
     }
 
+    /**
+     * @param list<SchemaError> $errors
+     */
     #[Test]
     #[DataProvider('errors')]
     public function getErrorSummary(array $errors, ?string $expected): void
