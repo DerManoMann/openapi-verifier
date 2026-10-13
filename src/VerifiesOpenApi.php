@@ -2,11 +2,9 @@
 
 namespace Radebatz\OpenApi\Verifier;
 
-use JsonSchema\Uri\UriRetriever;
-use JsonSchema\Validator;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\RequestInterface;
 
 trait VerifiesOpenApi
 {
@@ -19,48 +17,35 @@ trait VerifiesOpenApi
      *
      * @throws OpenApiSchemaMismatchException
      */
-    public function verifyOpenApiResponseBody(string $method, string $path, int $statusCode, string $body): bool
+    public function verifyOpenApiResponseBody(string $method, string $path, int $statusCode, string $body, ?string $contentType = null): bool
     {
-        if ($schemaUrl = $this->getOpenApiSpecificationLoader()->getResponseSchemaUrlFor($method, $path, $statusCode)) {
-            $retriever = new UriRetriever();
-            if ($schema = $retriever->retrieve($schemaUrl)) {
-                $validator = new Validator();
-
-                $validator->check(json_decode($body), $schema);
-
-                if (!$validator->isValid()) {
-                    throw (new OpenApiSchemaMismatchException(sprintf('Schema mismatch: %s[%s]:%s', $method, $statusCode, $path)))
-                        ->setErrors($validator->getErrors());
-                }
-
-                return true;
-            }
-        }
-
-        return false;
+        return $this->getOpenApiVerifier()->verifyResponseBody($method, $path, $statusCode, $body, $contentType);
     }
 
     /**
      * Verify the response body for the given request and response.
      *
-     * The optional path override will enforce using the given path to lookup the spec, instead
-     * of taking the path from the given `$request`.
-     * This is useful in cases of dynamic path elements where the configured route contains
-     * placeholders (typically something like `{id}`).
+     * The path is matched against the specification's path templates. The optional `$path`
+     * skips that and is used as given, typically the route pattern of a framework, which
+     * contains placeholders like `{id}`.
      *
      * @param  string|null $path optional path override
      * @return bool        `true` if the content has been validated, `false` if not (no matching schema)
      *
      * @throws OpenApiSchemaMismatchException
      */
-    public function verifyOpenApi(ServerRequestInterface $request, ResponseInterface $response, ?string $path = null): bool
+    public function verifyOpenApi(RequestInterface $request, ResponseInterface $response, ?string $path = null): bool
     {
-        return $this->verifyOpenApiResponseBody(
-            $request->getMethod(),
-            $path ?? $request->getUri()->getPath(),
-            $response->getStatusCode(),
-            (string) $response->getBody()
-        );
+        return $this->getOpenApiVerifier()->verify($request, $response, $path);
+    }
+
+    public function getOpenApiVerifier(): OpenApiVerifier
+    {
+        if (!($loader = $this->getOpenApiSpecificationLoader()) instanceof OpenApiSpecificationLoader) {
+            throw new \LogicException('No OpenAPI specification to verify against');
+        }
+
+        return new OpenApiVerifier($loader);
     }
 
     public function getOpenApiSpecificationLoader(): ?OpenApiSpecificationLoader
