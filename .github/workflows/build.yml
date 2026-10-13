@@ -11,11 +11,53 @@ on:
       - main
 
 jobs:
-  laravel-adapter:
-    uses: ./.github/workflows/laravel.yml
-    with:
-      php-versions: '8.2,8.3,8.4'
-  slim-adapter:
-    uses: ./.github/workflows/slim.yml
-    with:
-      php-versions: '8.1,8.2,8.3,8.4,8.5'
+  test:
+    runs-on: ${{ matrix.operating-system }}
+    env:
+      COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.GITHUB_TOKEN }}"}}'
+      COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    strategy:
+      fail-fast: true
+      matrix:
+        operating-system: [ ubuntu-latest ]
+        php: [ '8.2', '8.3', '8.4', '8.5' ]
+        # both frameworks are in require-dev, so a single run covers both adapters; Laravel is
+        # the only one with more than one supported major, so it is the only axis varied here
+        laravel: [ '12.0', '13.0' ]
+        dependencies: [ 'lowest', 'highest' ]
+        exclude:
+          - php: '8.2'
+            laravel: '13.0'
+
+    name: PHP ${{ matrix.php }} / Laravel ${{ matrix.laravel }} on ${{ matrix.operating-system }} with ${{ matrix.dependencies }} dependencies
+
+    steps:
+      - uses: actions/checkout@v7
+        name: Checkout repository
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: pcov
+
+      - name: Pin Laravel version
+        run: composer require --dev laravel/laravel "^${{ matrix.laravel }}" -W --no-update
+
+      - name: Composer install
+        uses: ramsey/composer-install@v4
+        with:
+          dependency-versions: ${{ matrix.dependencies }}
+
+      - name: PHPUnit + Code coverage
+        run: |
+          mkdir -p build/logs
+          vendor/bin/phpunit --coverage-text --coverage-clover build/logs/clover.xml
+
+      - name: Code coverage upload to Coveralls
+        if: matrix.php == '8.3' && matrix.dependencies == 'highest' && matrix.laravel == '13.0'
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          composer require php-coveralls/php-coveralls -W
+          vendor/bin/php-coveralls -v --coverage_clover=build/logs/clover.xml

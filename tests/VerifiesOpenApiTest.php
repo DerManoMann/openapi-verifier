@@ -4,6 +4,8 @@ namespace Radebatz\OpenApi\Verifier\Tests;
 
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Nyholm\Psr7Server\ServerRequestCreator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Radebatz\OpenApi\Verifier\OpenApiSchemaMismatchException;
 use Radebatz\OpenApi\Verifier\OpenApiSpecificationLoader;
@@ -25,11 +27,8 @@ class VerifiesOpenApiTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider responses
-     */
+    #[Test]
+    #[DataProvider('responses')]
     public function verifyBody($method, $path, $statusCode, $content, $isValid, $isVerified)
     {
         if (!$isValid) {
@@ -47,7 +46,7 @@ class VerifiesOpenApiTest extends TestCase
         $this->assertEquals($isVerified, $verified);
     }
 
-    /** @test */
+    #[Test]
     public function verifyRequestResponse()
     {
         $psr17Factory = new Psr17Factory();

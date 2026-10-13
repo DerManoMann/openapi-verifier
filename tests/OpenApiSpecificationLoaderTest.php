@@ -2,6 +2,8 @@
 
 namespace Radebatz\OpenApi\Verifier\Tests;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Radebatz\OpenApi\Verifier\OpenApiSpecificationLoader;
 
@@ -20,11 +22,8 @@ class OpenApiSpecificationLoaderTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider specifications
-     */
+    #[Test]
+    #[DataProvider('specifications')]
     public function loadSpecification($filename, $valid)
     {
         if (!$valid) {
@@ -48,11 +47,8 @@ class OpenApiSpecificationLoaderTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider schemaUrls
-     */
+    #[Test]
+    #[DataProvider('schemaUrls')]
     public function getSchemaUrlFor($specification, $method, $path, $statusCode, $valid)
     {
         $specificationLoader = new OpenApiSpecificationLoader($specification);

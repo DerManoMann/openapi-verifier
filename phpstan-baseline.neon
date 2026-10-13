@@ -1,68 +1,56 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Call to method failSchemaMismatch\(\) on an unknown class Radebatz\\OpenApi\\Verifier\\VerifiesOpenApi\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Adapters/Laravel/OpenApiVerifierMiddleware.php
-
-		-
-			message: '#^Call to method verifyOpenApi\(\) on an unknown class Radebatz\\OpenApi\\Verifier\\VerifiesOpenApi\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Adapters/Laravel/OpenApiVerifierMiddleware.php
-
-		-
-			message: '#^PHPDoc tag @var for variable \$verifier has invalid type Radebatz\\OpenApi\\Verifier\\VerifiesOpenApi\.$#'
-			identifier: varTag.trait
-			count: 1
-			path: src/Adapters/Laravel/OpenApiVerifierMiddleware.php
-
-		-
-			message: '#^Call to method failSchemaMismatch\(\) on an unknown class Radebatz\\OpenApi\\Verifier\\VerifiesOpenApi\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Adapters/Slim/OpenApiVerifierMiddleware.php
-
-		-
-			message: '#^Call to method verifyOpenApi\(\) on an unknown class Radebatz\\OpenApi\\Verifier\\VerifiesOpenApi\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Adapters/Slim/OpenApiVerifierMiddleware.php
-
-		-
-			message: '#^PHPDoc tag @var for variable \$verifier has invalid type Radebatz\\OpenApi\\Verifier\\VerifiesOpenApi\.$#'
-			identifier: varTag.trait
-			count: 1
-			path: src/Adapters/Slim/OpenApiVerifierMiddleware.php
-
-		-
-			message: '#^If condition is always true\.$#'
-			identifier: if.alwaysTrue
-			count: 1
-			path: tests/Adapters/AbstractOpenApiResponseVerifierTest.php
-
-		-
 			message: '#^Ternary operator condition is always false\.$#'
 			identifier: ternary.alwaysFalse
 			count: 1
-			path: tests/Adapters/AbstractOpenApiResponseVerifierTest.php
+			path: src/Adapters/AbstractOpenApiResponseVerifier.php
+
+		-
+			message: '#^Call to method failSchemaMismatch\(\) on an unknown class Radebatz\\OpenApi\\Verifier\\VerifiesOpenApi\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Adapters/Laravel/OpenApiVerifierMiddleware.php
+
+		-
+			message: '#^Call to method verifyOpenApi\(\) on an unknown class Radebatz\\OpenApi\\Verifier\\VerifiesOpenApi\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Adapters/Laravel/OpenApiVerifierMiddleware.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$verifier has invalid type Radebatz\\OpenApi\\Verifier\\VerifiesOpenApi\.$#'
+			identifier: varTag.trait
+			count: 1
+			path: src/Adapters/Laravel/OpenApiVerifierMiddleware.php
+
+		-
+			message: '#^Call to method failSchemaMismatch\(\) on an unknown class Radebatz\\OpenApi\\Verifier\\VerifiesOpenApi\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Adapters/Slim/OpenApiVerifierMiddleware.php
+
+		-
+			message: '#^Call to method verifyOpenApi\(\) on an unknown class Radebatz\\OpenApi\\Verifier\\VerifiesOpenApi\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Adapters/Slim/OpenApiVerifierMiddleware.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$verifier has invalid type Radebatz\\OpenApi\\Verifier\\VerifiesOpenApi\.$#'
+			identifier: varTag.trait
+			count: 1
+			path: src/Adapters/Slim/OpenApiVerifierMiddleware.php
 
 		-
 			message: '#^If condition is always true\.$#'
 			identifier: if.alwaysTrue
 			count: 1
-			path: tests/Adapters/LaravelAdapterTest.php
+			path: src/VerifiesOpenApi.php
 
 		-
 			message: '#^Negated boolean expression is always false\.$#'
 			identifier: booleanNot.alwaysFalse
-			count: 1
-			path: tests/Adapters/LaravelAdapterTest.php
-
-		-
-			message: '#^Ternary operator condition is always false\.$#'
-			identifier: ternary.alwaysFalse
 			count: 1
 			path: tests/Adapters/LaravelAdapterTest.php
 
@@ -73,20 +61,8 @@ parameters:
 			path: tests/Adapters/SlimAdapterTest.php
 
 		-
-			message: '#^If condition is always true\.$#'
-			identifier: if.alwaysTrue
-			count: 1
-			path: tests/Adapters/SlimAdapterTest.php
-
-		-
 			message: '#^Right side of \|\| is always false\.$#'
 			identifier: booleanOr.rightAlwaysFalse
-			count: 1
-			path: tests/Adapters/SlimAdapterTest.php
-
-		-
-			message: '#^Ternary operator condition is always false\.$#'
-			identifier: ternary.alwaysFalse
 			count: 1
 			path: tests/Adapters/SlimAdapterTest.php
 
@@ -101,9 +77,3 @@ parameters:
 			identifier: method.alreadyNarrowedType
 			count: 1
 			path: tests/OpenApiSpecificationLoaderTest.php
-
-		-
-			message: '#^If condition is always true\.$#'
-			identifier: if.alwaysTrue
-			count: 1
-			path: tests/VerifiesOpenApiTest.php
