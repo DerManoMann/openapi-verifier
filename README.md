@@ -26,6 +26,9 @@ composer require radebatz/openapi-verifier
 ```
 After that all required classes should be availabe in your project to add routing support.
 
+Some features need further packages, such as a framework adapter or YAML support. They are listed
+as suggestions, and `composer suggests radebatz/openapi-verifier` shows them.
+
 ## Usage
 ### Manual verification
 The `VerifiesOpenApi` trait can be used directly and customized in 3 ways in order to provide the reqired OpenApi specifications:
