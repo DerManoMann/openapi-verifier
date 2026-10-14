@@ -14,7 +14,8 @@ use Radebatz\OpenApi\Verifier\VerifiesOpenApi;
  */
 trait OpenApiResponseVerifier
 {
-    use AbstractOpenApiResponseVerifier, VerifiesOpenApi;
+    use AbstractOpenApiResponseVerifier;
+    use VerifiesOpenApi;
 
     public function registerOpenApiVerifier(?Application $app = null, ?string $specification = null): void
     {

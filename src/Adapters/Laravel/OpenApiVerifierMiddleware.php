@@ -47,12 +47,12 @@ final class OpenApiVerifierMiddleware
             // matched none, a 404 for example, has none
             $route = ($request->getRouteResolver())();
             $this->verifier->verify($psrRequest, $psrResponse, $route instanceof Route ? $route->uri() : null);
-        } catch (OpenApiSchemaMismatchException $oasme) {
+        } catch (OpenApiSchemaMismatchException $openApiSchemaMismatchException) {
             if ($this->onMismatch instanceof \Closure) {
-                ($this->onMismatch)($oasme, $psrResponse);
+                ($this->onMismatch)($openApiSchemaMismatchException, $psrResponse);
             }
 
-            throw $oasme;
+            throw $openApiSchemaMismatchException;
         }
     }
 }

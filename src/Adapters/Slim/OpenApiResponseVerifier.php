@@ -11,7 +11,8 @@ use Slim\App;
 
 trait OpenApiResponseVerifier
 {
-    use AbstractOpenApiResponseVerifier, VerifiesOpenApi;
+    use AbstractOpenApiResponseVerifier;
+    use VerifiesOpenApi;
 
     /**
      * @template TContainer of \Psr\Container\ContainerInterface|null

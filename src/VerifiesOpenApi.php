@@ -3,8 +3,8 @@
 namespace Radebatz\OpenApi\Verifier;
 
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
 trait VerifiesOpenApi
 {

@@ -32,12 +32,12 @@ final class OpenApiVerifierMiddleware implements MiddlewareInterface
 
         try {
             $this->verifier->verify($request, $response);
-        } catch (OpenApiSchemaMismatchException $oasme) {
+        } catch (OpenApiSchemaMismatchException $openApiSchemaMismatchException) {
             if ($this->onMismatch instanceof \Closure) {
-                ($this->onMismatch)($oasme, $response);
+                ($this->onMismatch)($openApiSchemaMismatchException, $response);
             }
 
-            throw $oasme;
+            throw $openApiSchemaMismatchException;
         }
 
         return $response;

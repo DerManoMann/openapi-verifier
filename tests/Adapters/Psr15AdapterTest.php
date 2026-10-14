@@ -13,7 +13,7 @@ use Radebatz\OpenApi\Verifier\Adapters\Psr15\OpenApiVerifierMiddleware;
 use Radebatz\OpenApi\Verifier\OpenApiSchemaMismatchException;
 use Radebatz\OpenApi\Verifier\OpenApiVerifier;
 
-class Psr15AdapterTest extends TestCase
+final class Psr15AdapterTest extends TestCase
 {
     protected function handle(string $body, ?\Closure $onMismatch = null): ResponseInterface
     {
@@ -22,7 +22,7 @@ class Psr15AdapterTest extends TestCase
             $onMismatch
         );
 
-        $handler = new class($body) implements RequestHandlerInterface {
+        $handler = new class ($body) implements RequestHandlerInterface {
             public function __construct(private readonly string $body)
             {
             }

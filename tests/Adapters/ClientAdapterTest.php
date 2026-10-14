@@ -16,7 +16,7 @@ use Radebatz\OpenApi\Verifier\Adapters\Psr18\OpenApiVerifyingClient;
 use Radebatz\OpenApi\Verifier\OpenApiSchemaMismatchException;
 use Radebatz\OpenApi\Verifier\OpenApiVerifier;
 
-class ClientAdapterTest extends TestCase
+final class ClientAdapterTest extends TestCase
 {
     protected function verifier(): OpenApiVerifier
     {
@@ -45,10 +45,10 @@ class ClientAdapterTest extends TestCase
         try {
             /** @var ResponseInterface $response */
             $response = $send();
-        } catch (OpenApiSchemaMismatchException $oasme) {
-            $this->assertStringContainsString($error, (string) $oasme->getErrorSummary());
+        } catch (OpenApiSchemaMismatchException $openApiSchemaMismatchException) {
+            $this->assertStringContainsString($error, (string) $openApiSchemaMismatchException->getErrorSummary());
 
-            throw $oasme;
+            throw $openApiSchemaMismatchException;
         }
 
         // verifying must leave the body for the caller to read
@@ -61,9 +61,10 @@ class ClientAdapterTest extends TestCase
     {
         $stack = HandlerStack::create(new MockHandler([new Response(200, ['Content-Type' => 'application/json'], $body)]));
         $stack->push(new OpenApiVerifierMiddleware($this->verifier()), 'openapi-verifier');
+
         $client = new Client(['handler' => $stack, 'base_uri' => 'http://localhost']);
 
-        $this->send(fn () => $client->get($path), $body, $error);
+        $this->send(fn (): ResponseInterface => $client->get($path), $body, $error);
     }
 
     #[Test]
@@ -72,6 +73,7 @@ class ClientAdapterTest extends TestCase
     {
         $stack = HandlerStack::create(new MockHandler([new Response(200, ['Content-Type' => 'application/json'], $body)]));
         $stack->push(new OpenApiVerifierMiddleware($this->verifier()), 'openapi-verifier');
+
         $client = new Client(['handler' => $stack, 'base_uri' => 'http://localhost']);
 
         $this->send(fn () => $client->getAsync($path)->wait(), $body, $error);
@@ -84,6 +86,6 @@ class ClientAdapterTest extends TestCase
         $inner = new Client(['handler' => HandlerStack::create(new MockHandler([new Response(200, ['Content-Type' => 'application/json'], $body)]))]);
         $client = new OpenApiVerifyingClient($inner, $this->verifier());
 
-        $this->send(fn () => $client->sendRequest(new Request('GET', 'http://localhost' . $path)), $body, $error);
+        $this->send(fn (): ResponseInterface => $client->sendRequest(new Request('GET', 'http://localhost' . $path)), $body, $error);
     }
 }

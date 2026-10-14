@@ -11,23 +11,18 @@ use Radebatz\OpenApi\Verifier\OpenApiSchemaMismatchException;
 use Radebatz\OpenApi\Verifier\OpenApiSpecificationLoader;
 use Radebatz\OpenApi\Verifier\VerifiesOpenApi;
 
-class VerifiesOpenApiTest extends TestCase
+final class VerifiesOpenApiTest extends TestCase
 {
     use VerifiesOpenApi;
 
-    /**
-     * @return iterable<array<mixed>>
-     */
-    public static function responses(): iterable
+    public static function responses(): \Iterator
     {
-        return [
-            'users-invalid-json' => ['get', '/users', 200, 'xxx', false, false],
-            'invalid-path' => ['get', '/xxxxx', 200, 'xxx', true, false],
-            'users-no-schema-invalid-json' => ['get', '/users', 401, 'xxx', true, false],
-            'users-verified-bad' => ['get', '/users', 200, '{"data":[{}]}', false, true],
-            'users-verified-ok' => ['get', '/users', 200, '{"data":[{"id":1,"name":"joe","email":"joe@cool.com"}]}', true, true],
-            'users-verified-nullable-ok' => ['get', '/users', 200, '{"data":[{"id":1,"name":"joe","email":"joe@cool.com", "dob": null}]}', true, true],
-        ];
+        yield 'users-invalid-json' => ['get', '/users', 200, 'xxx', false, false];
+        yield 'invalid-path' => ['get', '/xxxxx', 200, 'xxx', true, false];
+        yield 'users-no-schema-invalid-json' => ['get', '/users', 401, 'xxx', true, false];
+        yield 'users-verified-bad' => ['get', '/users', 200, '{"data":[{}]}', false, true];
+        yield 'users-verified-ok' => ['get', '/users', 200, '{"data":[{"id":1,"name":"joe","email":"joe@cool.com"}]}', true, true];
+        yield 'users-verified-nullable-ok' => ['get', '/users', 200, '{"data":[{"id":1,"name":"joe","email":"joe@cool.com", "dob": null}]}', true, true];
     }
 
     #[Test]
@@ -46,7 +41,7 @@ class VerifiesOpenApiTest extends TestCase
             }
         }
 
-        $this->assertEquals($isVerified, $verified);
+        $this->assertSame($isVerified, $verified);
     }
 
     #[Test]
@@ -69,7 +64,7 @@ class VerifiesOpenApiTest extends TestCase
     }
 
     /** @inheritdoc */
-    protected function getOpenApiSpecificationLoader(): ?OpenApiSpecificationLoader
+    protected function getOpenApiSpecificationLoader(): OpenApiSpecificationLoader
     {
         return new OpenApiSpecificationLoader(__DIR__ . '/specifications/users.yaml');
     }
