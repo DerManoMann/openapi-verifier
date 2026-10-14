@@ -32,6 +32,9 @@ composer require radebatz/openapi-verifier
 ```
 After that all required classes should be available in your project.
 
+Some features need further packages, such as a framework adapter or YAML support. They are listed
+as suggestions, and `composer suggests radebatz/openapi-verifier` shows them.
+
 ## Usage
 ### The verifier
 `OpenApiVerifier` checks a response against the specification. It needs no test case and no framework,
@@ -46,6 +49,8 @@ $verifier = OpenApiVerifier::fromSpecification(__DIR__ . '/specifications/users.
 // returns `false` if the specification has no schema for this response
 $verifier->verify($request, $response);
 ```
+
+The specification can be a JSON or YAML file, or an already decoded object.
 
 How the response is looked up:
 * **Path**: a literal match first, then the path templates, so `/user/1` finds `/user/{id}`. When several

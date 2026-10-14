@@ -90,6 +90,7 @@
         "guzzlehttp/guzzle": "To verify responses in a Guzzle client, with the Guzzle middleware",
         "laravel/framework": "To use the Laravel adapter",
         "slim/slim": "To use the Slim adapter",
+        "symfony/yaml": "To load YAML specifications",
         "zircote/swagger-php": "To generate the specification from PHP attributes when none is given"
     }
 }
