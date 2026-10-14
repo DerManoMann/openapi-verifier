@@ -3,6 +3,7 @@
 namespace Radebatz\OpenApi\Verifier\Adapters;
 
 use Composer\Autoload\ClassLoader;
+use OpenApi\Builder;
 use OpenApi\Generator;
 
 trait AbstractOpenApiResponseVerifier
@@ -33,8 +34,35 @@ trait AbstractOpenApiResponseVerifier
             }
         }
 
-        $openApi = (new Generator())->generate([$appRoot . '/' . $srcDir]);
-        $this->openapiSpecification = json_decode($openApi->toJson());
+        $this->openapiSpecification = $this->generateOpenApiSpecification($appRoot . '/' . $srcDir);
+    }
+
+    /**
+     * Generate the specification from `$sourceDir` with swagger-php, in its default mode.
+     *
+     * Override to configure the generation, for example `Mode::SPEC` for a project written in
+     * `OpenApi\Spec` attributes on swagger-php 6.x.
+     */
+    protected function generateOpenApiSpecification(string $sourceDir): object
+    {
+        if (class_exists(Builder::class)) {
+            $json = (new Builder())->addSource($sourceDir)->build()->toJson();
+        } elseif (class_exists(Generator::class)) {
+            // swagger-php before 6.4
+            $json = (string) (new Generator())->generate([$sourceDir])?->toJson();
+        } else {
+            throw new \LogicException(sprintf(
+                'No specification found: none given, and neither tests/openapi.json nor tests/openapi.yaml exists. Generating one from %s requires zircote/swagger-php.',
+                $sourceDir
+            ));
+        }
+
+        $specification = json_decode($json);
+        if (!$specification instanceof \stdClass) {
+            throw new \RuntimeException(sprintf('Could not generate a specification from %s', $sourceDir));
+        }
+
+        return $specification;
     }
 
     /**
