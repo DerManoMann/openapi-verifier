@@ -69,6 +69,7 @@
     "suggest": {
         "laravel/laravel": "A PHP framework",
         "slim/slim": "A PHP framework",
+        "symfony/yaml": "To load YAML specifications",
         "zircote/swagger-php": "OpenApi library to generate OpenAPI documentation from PHP annotations."
     }
 }

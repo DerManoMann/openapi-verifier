@@ -23,6 +23,10 @@ class OpenApiSpecificationLoader
         $resolved = null;
         if (is_string($specification)) {
             if (false !== strpos($specification, '.yaml') || false !== strpos($specification, '.yml')) {
+                if (!class_exists(Yaml::class)) {
+                    throw new \LogicException(sprintf('Unable to load specification "%s" as symfony/yaml is not installed. Try running "composer require symfony/yaml".', $specification));
+                }
+
                 try {
                     $resolved = (object) Yaml::parseFile($specification, Yaml::PARSE_OBJECT_FOR_MAP);
                 } catch (ParseException $parseException) {
