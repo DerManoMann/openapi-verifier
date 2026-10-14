@@ -57,12 +57,7 @@ trait AbstractOpenApiResponseVerifier
             ));
         }
 
-        $specification = json_decode($json);
-        if (!$specification instanceof \stdClass) {
-            throw new \RuntimeException(sprintf('Could not generate a specification from %s', $sourceDir));
-        }
-
-        return $specification;
+        return (object) json_decode($json);
     }
 
     /**
