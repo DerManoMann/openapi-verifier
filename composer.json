@@ -1,6 +1,19 @@
 {
     "name": "radebatz/openapi-verifier",
-    "description": "Verify JSON (api response) against OpenAPI specification.",
+    "description": "Verifies API responses against an OpenAPI specification, in Laravel and Slim tests, as PSR-15 middleware or in a Guzzle or PSR-18 client.",
+    "keywords": [
+        "openapi",
+        "swagger",
+        "api",
+        "testing",
+        "phpunit",
+        "validation",
+        "psr-15",
+        "psr-18",
+        "guzzle",
+        "laravel",
+        "slim"
+    ],
     "license": [
         "MIT"
     ],
