@@ -34,8 +34,8 @@
         ],
         "test": "export XDEBUG_MODE=off && phpunit",
         "refresh-specs": [
-            "@php vendor/bin/openapi tests/Fixtures -o tests/specifications/users.json",
-            "@php vendor/bin/openapi tests/Fixtures -o tests/specifications/users.yaml"
+            "@php vendor/bin/openapi tests/Fixtures --version 3.0.0 -o tests/specifications/users.json",
+            "@php vendor/bin/openapi tests/Fixtures --version 3.0.0 -o tests/specifications/users.yaml"
         ],
         "check-specs": [
             "@refresh-specs",
@@ -84,7 +84,7 @@
         "rector/rector": "^2.0",
         "slim/slim": "^4.0",
         "symfony/yaml": "^6.0|^7.0",
-        "zircote/swagger-php": "^4.8 || ^5.0 || ^6.0"
+        "zircote/swagger-php": "^4.8 || ^5.0 || ^6.0 || ^7.0"
     },
     "suggest": {
         "guzzlehttp/guzzle": "To verify responses in a Guzzle client, with the Guzzle middleware",
