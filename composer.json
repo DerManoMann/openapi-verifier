@@ -34,8 +34,8 @@
         ],
         "test": "export XDEBUG_MODE=off && phpunit",
         "refresh-specs": [
-            "@php vendor/bin/openapi tests/Fixtures -o tests/specifications/users.json",
-            "@php vendor/bin/openapi tests/Fixtures -o tests/specifications/users.yaml"
+            "@php vendor/bin/openapi tests/Fixtures --version 3.0.0 -o tests/specifications/users.json",
+            "@php vendor/bin/openapi tests/Fixtures --version 3.0.0 -o tests/specifications/users.yaml"
         ],
         "check-specs": [
             "@refresh-specs",

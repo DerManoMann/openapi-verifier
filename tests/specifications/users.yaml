@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.0.0
 info:
   title: API
   version: '1.0'
@@ -78,9 +78,8 @@ components:
         email:
           type: string
         dob:
-          type:
-            - string
-            - 'null'
+          type: string
+          nullable: true
       required:
         - id
         - name
@@ -94,30 +93,25 @@ components:
             first:
               type: string
             last:
-              type:
-                - string
-                - 'null'
+              type: string
+              nullable: true
             prev:
-              type:
-                - string
-                - 'null'
+              type: string
+              nullable: true
             next:
-              type:
-                - string
-                - 'null'
+              type: string
+              nullable: true
         meta:
           type: object
           properties:
             current_page:
               type: integer
             from:
-              type:
-                - integer
-                - 'null'
+              type: integer
+              nullable: true
             to:
-              type:
-                - integer
-                - 'null'
+              type: integer
+              nullable: true
             per_page:
               type: integer
             path:
