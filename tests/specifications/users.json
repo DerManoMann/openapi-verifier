@@ -1,5 +1,5 @@
 {
-    "openapi": "3.0.0",
+    "openapi": "3.1.0",
     "info": {
         "title": "API",
         "version": "1.0"
@@ -42,9 +42,7 @@
                                             "$ref": "#/components/schemas/paginate"
                                         },
                                         {
-                                            "required": [
-                                                "data"
-                                            ],
+                                            "type": "object",
                                             "properties": {
                                                 "data": {
                                                     "type": "array",
@@ -53,7 +51,9 @@
                                                     }
                                                 }
                                             },
-                                            "type": "object"
+                                            "required": [
+                                                "data"
+                                            ]
                                         }
                                     ]
                                 }
@@ -92,15 +92,15 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "required": [
-                                        "data"
-                                    ],
+                                    "type": "object",
                                     "properties": {
                                         "data": {
                                             "$ref": "#/components/schemas/user"
                                         }
                                     },
-                                    "type": "object"
+                                    "required": [
+                                        "data"
+                                    ]
                                 }
                             }
                         }
@@ -120,11 +120,7 @@
     "components": {
         "schemas": {
             "user": {
-                "required": [
-                    "id",
-                    "name",
-                    "email"
-                ],
+                "type": "object",
                 "properties": {
                     "id": {
                         "type": "integer"
@@ -136,48 +132,64 @@
                         "type": "string"
                     },
                     "dob": {
-                        "type": "string",
-                        "nullable": true
+                        "type": [
+                            "string",
+                            "null"
+                        ]
                     }
                 },
-                "type": "object"
+                "required": [
+                    "id",
+                    "name",
+                    "email"
+                ]
             },
             "paginate": {
+                "type": "object",
                 "properties": {
                     "links": {
-                        "schema": "links",
+                        "type": "object",
                         "properties": {
                             "first": {
                                 "type": "string"
                             },
                             "last": {
-                                "type": "string",
-                                "nullable": true
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
                             },
                             "prev": {
-                                "type": "string",
-                                "nullable": true
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
                             },
                             "next": {
-                                "type": "string",
-                                "nullable": true
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
                             }
-                        },
-                        "type": "object"
+                        }
                     },
                     "meta": {
-                        "schema": "meta",
+                        "type": "object",
                         "properties": {
                             "current_page": {
                                 "type": "integer"
                             },
                             "from": {
-                                "type": "integer",
-                                "nullable": true
+                                "type": [
+                                    "integer",
+                                    "null"
+                                ]
                             },
                             "to": {
-                                "type": "integer",
-                                "nullable": true
+                                "type": [
+                                    "integer",
+                                    "null"
+                                ]
                             },
                             "per_page": {
                                 "type": "integer"
@@ -185,17 +197,12 @@
                             "path": {
                                 "type": "string"
                             }
-                        },
-                        "type": "object"
+                        }
                     }
-                },
-                "type": "object"
+                }
             }
         },
         "responses": {
-            "200": {
-                "description": "Success"
-            },
             "401": {
                 "description": "Unauthorized"
             }

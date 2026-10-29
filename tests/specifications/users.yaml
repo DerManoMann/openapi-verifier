@@ -1,4 +1,4 @@
-openapi: 3.0.0
+openapi: 3.1.0
 info:
   title: API
   version: '1.0'
@@ -32,7 +32,7 @@ paths:
               schema:
                 allOf:
                   - { $ref: '#/components/schemas/paginate' }
-                  - { required: [data], properties: { data: { type: array, items: { $ref: '#/components/schemas/user' } } }, type: object }
+                  - { type: object, properties: { data: { type: array, items: { $ref: '#/components/schemas/user' } } }, required: [data] }
         '401':
           $ref: '#/components/responses/401'
       security:
@@ -56,11 +56,11 @@ paths:
           content:
             application/json:
               schema:
-                required:
-                  - data
+                type: object
                 properties:
                   data: { $ref: '#/components/schemas/user' }
-                type: object
+                required:
+                  - data
         '401':
           $ref: '#/components/responses/401'
       security:
@@ -69,10 +69,7 @@ paths:
 components:
   schemas:
     user:
-      required:
-        - id
-        - name
-        - email
+      type: object
       properties:
         id:
           type: integer
@@ -81,46 +78,51 @@ components:
         email:
           type: string
         dob:
-          type: string
-          nullable: true
-      type: object
+          type:
+            - string
+            - 'null'
+      required:
+        - id
+        - name
+        - email
     paginate:
+      type: object
       properties:
         links:
-          schema: links
+          type: object
           properties:
             first:
               type: string
             last:
-              type: string
-              nullable: true
+              type:
+                - string
+                - 'null'
             prev:
-              type: string
-              nullable: true
+              type:
+                - string
+                - 'null'
             next:
-              type: string
-              nullable: true
-          type: object
+              type:
+                - string
+                - 'null'
         meta:
-          schema: meta
+          type: object
           properties:
             current_page:
               type: integer
             from:
-              type: integer
-              nullable: true
+              type:
+                - integer
+                - 'null'
             to:
-              type: integer
-              nullable: true
+              type:
+                - integer
+                - 'null'
             per_page:
               type: integer
             path:
               type: string
-          type: object
-      type: object
   responses:
-    '200':
-      description: Success
     '401':
       description: Unauthorized
   securitySchemes:

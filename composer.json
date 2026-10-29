@@ -84,7 +84,7 @@
         "rector/rector": "^2.0",
         "slim/slim": "^4.0",
         "symfony/yaml": "^6.0|^7.0",
-        "zircote/swagger-php": "^4.8 || ^5.0 || ^6.0"
+        "zircote/swagger-php": "^4.8 || ^5.0 || ^6.0 || ^7.0"
     },
     "suggest": {
         "guzzlehttp/guzzle": "To verify responses in a Guzzle client, with the Guzzle middleware",
