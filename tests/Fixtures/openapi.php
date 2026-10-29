@@ -21,7 +21,6 @@ use OpenApi\Attributes as OAT;
         new OAT\Property(
             property: 'links',
             type: 'object',
-            schema: 'links',
             properties: [
                 new OAT\Property(property: 'first', type: 'string'),
                 new OAT\Property(property: 'last', type: 'string', nullable: true),
@@ -32,7 +31,6 @@ use OpenApi\Attributes as OAT;
         new OAT\Property(
             property: 'meta',
             type: 'object',
-            schema: 'meta',
             properties: [
                 new OAT\Property(property: 'current_page', type: 'integer'),
                 new OAT\Property(property: 'from', type: 'integer', nullable: true),
@@ -42,10 +40,6 @@ use OpenApi\Attributes as OAT;
             ]
         ),
     ],
-)]
-#[OAT\Response(
-    response: 200,
-    description: 'Success'
 )]
 #[OAT\Response(
     response: 401,
