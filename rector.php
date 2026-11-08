@@ -3,6 +3,7 @@
 use Rector\CodeQuality\Rector\Attribute\SortAttributeNamedArgsRector;
 use Rector\CodeQuality\Rector\FuncCall\SortCallLikeNamedArgsRector;
 use Rector\Config\RectorConfig;
+use Rector\Php82\Rector\Class_\ReadOnlyClassRector;
 use Rector\ValueObject\PhpVersion;
 
 return RectorConfig::configure()
@@ -12,6 +13,8 @@ return RectorConfig::configure()
         // of the generated specifications
         SortAttributeNamedArgsRector::class,
         SortCallLikeNamedArgsRector::class,
+        // the public classes stay open to subclasses with properties of their own
+        ReadOnlyClassRector::class,
     ])
     ->withPreparedSets(
         deadCode: true,
@@ -21,4 +24,5 @@ return RectorConfig::configure()
         phpunitCodeQuality: true,
     )
     ->withAttributesSets(phpunit: true)
-    ->withPhpVersion(PhpVersion::PHP_82);
+    ->withPhpVersion(PhpVersion::PHP_82)
+    ->withPhpSets();

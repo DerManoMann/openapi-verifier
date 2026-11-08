@@ -24,7 +24,7 @@ jobs:
         with:
           dependency-versions: 'highest'
 
-      - name: Static Code Analysis
+      - name: Check Code Style
         run: composer lint
 
       - name: Fixture specs match the generator

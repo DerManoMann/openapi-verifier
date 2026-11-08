@@ -10,10 +10,9 @@ return (new PhpCsFixer\Config())
     ->setRules([
         '@PSR12' => true,
         'blank_line_after_opening_tag' => false,
-        '@DoctrineAnnotation' => true,
         'array_syntax' => ['syntax' => 'short'],
         'no_unused_imports' => true,
-        'ordered_imports' => true,
+        'ordered_imports' => ['imports_order' => ['class', 'function', 'const']],
         'blank_line_before_statement' => ['statements' => ['return']],
         'modifier_keywords' => true,
         'cast_spaces' => ['space' => 'single'],
