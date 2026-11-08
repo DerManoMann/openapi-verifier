@@ -25,9 +25,7 @@ final class LaravelAdapterTest extends TestCase
     public function passVerificationUsers(): void
     {
         $this->app
-            ->get('router')->get('/users', function (): string {
-                return '{"data":[{"id":1,"name":"joe","email":"joe@cool.com"}]}';
-            });
+            ->get('router')->get('/users', fn (): string => '{"data":[{"id":1,"name":"joe","email":"joe@cool.com"}]}');
 
         $response = $this->get('/users');
 
@@ -38,9 +36,7 @@ final class LaravelAdapterTest extends TestCase
     public function failVerificationUsers(): void
     {
         $this->app
-            ->get('router')->get('/users', function (): string {
-                return '{"data":[{"id":1,"email":"joe@cool.com"}]}';
-            });
+            ->get('router')->get('/users', fn (): string => '{"data":[{"id":1,"email":"joe@cool.com"}]}');
 
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessageMatches('/required - The required properties \(name\) are missing/');
@@ -51,9 +47,7 @@ final class LaravelAdapterTest extends TestCase
     public function passVerificationUser(): void
     {
         $this->app
-            ->get('router')->get('/user/{id}', function (): string {
-                return '{"data":{"id":1,"name":"joe","email":"joe@cool.com"}}';
-            });
+            ->get('router')->get('/user/{id}', fn (): string => '{"data":{"id":1,"name":"joe","email":"joe@cool.com"}}');
 
         $response = $this->get('/user/1');
 
@@ -64,9 +58,7 @@ final class LaravelAdapterTest extends TestCase
     public function failVerificationUser(): void
     {
         $this->app
-            ->get('router')->get('/user/{id}', function (): string {
-                return '{"data":{"id":1,"name":"joe"}}';
-            });
+            ->get('router')->get('/user/{id}', fn (): string => '{"data":{"id":1,"name":"joe"}}');
 
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessageMatches('/required - The required properties \(email\) are missing/');
