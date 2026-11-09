@@ -71,5 +71,6 @@ return (new PhpCsFixer\Config())
 
         'php_unit_attributes' => true,
     ])
+    ->setCacheFile(__DIR__ . '/.cache/php-cs-fixer')
     ->setFinder($finder)
     ;
