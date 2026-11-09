@@ -1,4 +1,5 @@
 parameters:
+    tmpDir: .cache/phpstan
     phpVersion: 80200
     level: 7
     paths:
