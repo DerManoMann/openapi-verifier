@@ -13,6 +13,8 @@ Supported ways to hook in:
 * **Guzzle and PSR-18 clients**: verifies responses on the client side, against a running server or a mock.
 * **The verifier on its own**: `OpenApiVerifier` needs only a request and its response.
 
+Verified responses can also be recorded, and added to a swagger-php build as examples.
+
 ## Requirements
 * [PHP 8.2 or higher](http://www.php.net/)
 
@@ -271,6 +273,59 @@ class UsersTest extends BaseTestCase
     }
 }
 ```
+
+### Recording examples
+A response the verifier has just checked is a real example that matches its schema. Set `OPENAPI_VERIFIER_EXAMPLES`
+to a directory and every verified JSON body is written there, whichever adapter does the verifying:
+
+```sh
+OPENAPI_VERIFIER_EXAMPLES=tests/examples vendor/bin/phpunit
+```
+
+Each body goes to `<method>/<path template>/<status>.json`, so `GET /users/{id}` answered with 200 is
+`get/users/{id}/200.json`. There is one file per operation and status code. When several tests get the same status
+from one operation, the body recorded last is kept, so a file stays the same between runs only while that test
+returns the same body.
+
+To keep tokens or personal data out of the files, set `OPENAPI_VERIFIER_EXAMPLES_SCRUB` to a comma-separated list of
+JSON pointers. Their values are replaced with `***`, and a `*` segment matches every key or index. A scrubbed value may
+no longer match its schema, such as `***` in an integer field, and swagger-php then publishes it as the example as it
+stands.
+
+```sh
+OPENAPI_VERIFIER_EXAMPLES_SCRUB=/token,/data/*/email
+```
+
+In code, pass an `ExampleRecorder` to the verifier instead:
+
+```php
+use Radebatz\OpenApi\Verifier\ExampleRecorder;
+use Radebatz\OpenApi\Verifier\OpenApiVerifier;
+use Radebatz\OpenApi\Verifier\OpenApiSpecificationLoader;
+
+$verifier = new OpenApiVerifier(
+    new OpenApiSpecificationLoader(__DIR__ . '/specifications/users.yaml'),
+    exampleRecorder: new ExampleRecorder(__DIR__ . '/examples', scrub: ['/token']),
+);
+```
+
+#### Adding recorded examples to a swagger-php build
+With swagger-php 7.3 or later, in `hybrid` mode (the default) or `spec` mode but not `classic`,
+`RecordedExamplesPlugin` adds the recorded examples to the generated document:
+
+```php
+use OpenApi\Builder;
+use Radebatz\OpenApi\Verifier\Integrations\OpenApi\RecordedExamplesPlugin;
+
+$result = (new Builder())
+    ->addSource('src')
+    ->withPlugins([RecordedExamplesPlugin::class => ['directory' => 'tests/examples']])
+    ->build();
+```
+
+Each JSON response gets the example recorded for its operation and status code. A response keyed by a range (`2XX`)
+or `default` gets none, and a response whose media type already has an `example` or `examples`, or whose schema has an
+`example`, keeps it.
 
 ## Upgrading from 2.x
 **Requirements**

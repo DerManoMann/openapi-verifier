@@ -16,11 +16,19 @@ final class OpenApiVerifier
 {
     private readonly SchemaValidator $schemaValidator;
 
+    private readonly ?ExampleRecorder $exampleRecorder;
+
+    /**
+     * @param ExampleRecorder|null $exampleRecorder records each verified body; by default the one
+     *                                              `OPENAPI_VERIFIER_EXAMPLES` asks for, if any
+     */
     public function __construct(
         private readonly OpenApiSpecificationLoader $specificationLoader,
         ?SchemaValidator $schemaValidator = null,
+        ?ExampleRecorder $exampleRecorder = null,
     ) {
         $this->schemaValidator = $schemaValidator ?? new OpisSchemaValidator();
+        $this->exampleRecorder = $exampleRecorder ?? ExampleRecorder::fromEnvironment();
     }
 
     /**
@@ -87,6 +95,10 @@ final class OpenApiVerifier
         if ([] !== ($errors = $this->schemaValidator->validate($data, $schema, $this->specificationLoader->getOpenApiVersion()))) {
             throw (new OpenApiSchemaMismatchException(sprintf('Schema mismatch: %s[%s]:%s', $method, $statusCode, $path)))
                 ->setErrors($errors);
+        }
+
+        if ($this->exampleRecorder instanceof ExampleRecorder && null !== ($template = $this->specificationLoader->resolvePath($path))) {
+            $this->exampleRecorder->record($method, $template, $statusCode, $data);
         }
 
         return true;
